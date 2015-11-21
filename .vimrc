@@ -1,31 +1,46 @@
-set tabstop=4
+"""""""""""""
+"my setting
+""""""""""""""
+
+set tabstop=2
 set number
+inoremap <silent> jj <ESC>
 """""""""""""
 " Neo Bundle 
 """""""""""""
-set nocompatible	"be iMproved
-filetype plugin indent off
 
 if has('vim_starting')
-	set runtimepath+=~/.vim/bundle/neobundle.vim
-	call neobundle#begin(expand('~/.vim/bundle/'))
-	NeoBundleFetch 'Shougo/neobundle.vim'
-	" check for uninstalled plugin
-	NeoBundleCheck
+	set nocompatible		" Be IMproved
 
-	" originalrepos on git hub
-	NeoBundle 'Shoug/unite.vim'
-	NeoBundle 'Shoug/vimproc'
-	NeoBundle 'The-NERD-tree'
-	NeoBundle 'The-NERD-Commiter'
-	NeoBundle 'Gist.vim'
-	call neobundle#end()
+	" Required:
+	set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
+
+" Requird:
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+" Let NeoBundle manage NeoBudle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+" check for uninstalled plugin
+
+" originalrepos on git hub
+NeoBundle 'Shoug/unite.vim'
+NeoBundle 'Shoug/vimproc'
+NeoBundle 'The-NERD-tree'
+NeoBundle 'The-NERD-Commiter'
+NeoBundle 'Gist.vim'
+
+call neobundle#end()
+
 ""NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 
-filetype plugin indent on	" requied!
-filetype indent on
-syntax on
+" Required:
+filetype plugin indent on	
+
+" If there are uninstalled bundles fonund on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
 
 
 """"""""""
