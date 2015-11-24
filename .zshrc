@@ -5,10 +5,10 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 hash -d home=/Users/kotaro/src/github.com/k4h4shi/dotfiles
 setopt auto_pushd
-setopt pushd_ignore_daps
+# setopt pushd_ignore_daps
 setopt extended_glob
 setopt hist_ignore_space
-zsyle ':completion:*:default' menu select=1
+# zsyle ':completion:*:default' menu select=1
 WORDCHARS='*?_-.[]~=&;!#%^(){}<>'
 
 # google search by w3m
