@@ -33,10 +33,10 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " check for uninstalled plugin
 
 " originalrepos on git hub
-NeoBundle 'Shoug/unite.vim'
-NeoBundle 'Shoug/vimproc'
-NeoBundle 'The-NERD-tree'
-NeoBundle 'The-NERD-Commiter'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'The-NERD-Commenter'
 NeoBundle 'Gist.vim'
 
 call neobundle#end()
@@ -48,7 +48,7 @@ filetype plugin indent on
 
 " If there are uninstalled bundles fonund on startup,
 " this will conveniently prompt you to install them.
-"NeoBundleCheck
+NeoBundleCheck
 
 
 """"""""""
@@ -56,6 +56,4 @@ filetype plugin indent on
 """"""""""
 let NERDTreeShowHidden = 1
 let file_name = expand("%:p")
-if has('vim_starting') && file_name == ""
-		autocmd VimEnter * execute 'NERDTree ./'
-endif
+autocmd vimenter * if !argc() | NERDTree |endif
