@@ -1,10 +1,18 @@
 """""""""""""
 "my setting
 """"""""""""""
-
+" about tab
 set tabstop=2
+set autoindent
+set shiftwidth=2
+set expandtab
+
+" number
 set number
+
+" use jj as <ESC>
 inoremap <silent> jj <ESC>
+
 """""""""""""
 " Neo Bundle 
 """""""""""""
