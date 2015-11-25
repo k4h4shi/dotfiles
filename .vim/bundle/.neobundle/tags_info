@@ -1,6 +1,9 @@
 Gist.vim
 The-NERD-Commenter
+lightline.vim
 neobundle.vim
+neocomplete.vim
 nerdtree
+ref.vim
+sudo.vim
 unite.vim
-vimproc.vim

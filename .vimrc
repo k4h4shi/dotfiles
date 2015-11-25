@@ -34,10 +34,14 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " originalrepos on git hub
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/vimproc.vim'
+"NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'The-NERD-Commenter'
 NeoBundle 'Gist.vim'
+NeoBundle 'sudo.vim'
+NeoBundle 'ref.vim'
 
 call neobundle#end()
 
