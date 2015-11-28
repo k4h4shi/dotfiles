@@ -13,7 +13,7 @@ set number
 " set color
 syntax on
 " use jj as <ESC>
-inoremap <silent> ;; <ESC>
+inoremap <silent> jj <ESC>
 
 """""""""""""
 " Neo Bundle 
