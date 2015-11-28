@@ -10,8 +10,10 @@ set expandtab
 " number
 set number
 
+" set color
+syntax on
 " use jj as <ESC>
-inoremap <silent> jj <ESC>
+inoremap <silent> ;; <ESC>
 
 """""""""""""
 " Neo Bundle 
@@ -20,7 +22,7 @@ inoremap <silent> jj <ESC>
 if has('vim_starting')
 	set nocompatible		" Be IMproved
 
-	" Required:
+	" required:
 	set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
 
@@ -61,3 +63,6 @@ NeoBundleCheck
 let NERDTreeShowHidden = 1
 let file_name = expand("%:p")
 autocmd vimenter * if !argc() | NERDTree |endif
+
+
+
