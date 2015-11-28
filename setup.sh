@@ -7,7 +7,7 @@ setup() {
 	dotfiles=$HOME/.dotfiles
 
 	has() {
-		type "$HOME/.dotfiles
+		type "$HOME/.dotfiles"
 	}
 
 	symlink() {
@@ -23,6 +23,7 @@ setup() {
 	has git && symlink "$dotfiles/.gitconfig" "$HOME/.gitconfig"
 	has git && symlink "$dotfiles/.zshrc" "$HOME/.zshrc"
 	has vim && symlink "$dotfiles/.vimrc" "$HOME/.vimrc"
+  has tmux && symlink "$dotfiles/.tmux.conf" "$HOME/.tmux.conf"
 }
 
 setup
