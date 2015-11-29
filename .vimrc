@@ -62,7 +62,7 @@ NeoBundleCheck
 """"""""""
 let NERDTreeShowHidden = 1
 let file_name = expand("%:p")
-autocmd vimenter * if !argc() | NERDTree |endif
+autocmd vimenter * if !argc() | NERDTree | endif
 
 
 
