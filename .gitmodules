@@ -1,12 +1,8 @@
 [submodule ".vim/bundle/neobundle.vim"]
 	path = .vim/bundle/neobundle.vim
-	url = https://github.com/Shougo/neobundle.vim
-[submodule ".tmux/plugins/tpm/tpm"]
-	path = .tmux/plugins/tpm/tpm
-	url = https://github.com/tmux-plugins/tpm
-[submodule ".tmux/tpm"]
-	path = .tmux/tpm
-	url = https://github.com/tmux-plugins/tpm
+  url = https://github.com/Shougo/neobundle.vim
+  ignore = dirty
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
+  url = https://github.com/tmux-plugins/tpm
+  ignore = dirty

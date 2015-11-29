@@ -1,1 +1,2 @@
-/vimfiles/bundle/*
+.vim/bundle/*
+.tmux/tpm/*
