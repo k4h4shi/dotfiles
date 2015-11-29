@@ -3,27 +3,22 @@
 ###########################################################
 I just started to build this dotfiles, so It's still not ready.
 if you would like to see my newbie rubish, or just make fun of 
-me or somthing, feel free to do so.
-
-
-after you cloned this dotfiles, you shuld run iniilize.sh
-then run deploy.sh and you are ready to go...
+me or somthing, feel free to do so...
 
 
 
-# configure > make > make install
+###########################################################
+
+git clone https://github.com/k4h4shi/dotfiles.git
+cd dotfiles
+./install.sh
 
 
-# configure or init 
+# clone submodule 
+git submodule init
+git submodule update
 
-indentifiy the curenntly os and then initilize...
+or
 
+git submodule update --init
 
-# make 
-
-compile the sorce and add some parameter or...
-
-
-# make install
-
-install the dotfiles...
