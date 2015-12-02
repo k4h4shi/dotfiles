@@ -99,6 +99,16 @@ is_windows() {
     fi
 }
 
+# get_os returns OS name of the platform that is running
+get_os() {
+  local os
+  for os in osx linux windows; do
+    if is_$os; then
+      echo $os
+    fi
+  done
+}
+
 # log
 
 logging() {

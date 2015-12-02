@@ -1,31 +1,30 @@
 #!/bin/bash
 
-
-newline() {
+e_newline() {
   printf "\n"
 }
 
-header() {
+e_header() {
   printf " \033[37;1m%s\033[m\n" "$*"
 }
 
-error() {
+e_error() {
   printf " \033[31m%s\033[m\n" "✖ $*" 1>&2
 }
 
-warning() {
+e_warning() {
   printf " \033[31m%s\033[m\n" " $*"
 }
 
-done() {
+e_done() {
   printf " \033[37;1m%s\033[m...\033[32mOK\033[m\n" "✔ $*"
 }
 
-arrow() {
+e_arrow() {
   printf " \033[37;1m%s\033[m\n" "➜ $*"
 }
 
-indent() {
+e_indent() {
   for ((i=0; i<${1:-4}; i++)); do
       echon " "
   done
@@ -46,11 +45,11 @@ noecho() {
   fi
 }
 
-success() {
+e_success() {
   printf " \033[37;1m%s\033[m%s...\033[32mOK\033[m\n" "✔ " "$*"
 }
 
-failure() {
+e_failure() {
   die "${1:-$FUNCNAME}"
 }
 ink() {

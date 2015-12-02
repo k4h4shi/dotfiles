@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# set DOTPATH as default variable
-if [ -z "${DOTPPATH:-}" ]; then
-  DOTPATH=~/.dotfiles; export DOTPATH
-fi
+## set DOTPATH as default variable
+#if [ -z "${DOTPPATH:-}" ]; then
+#  DOTPATH=~/.dotfiles; export DOTPATH
+#fi
+
 
 # is_exists returns true if excutable $1 exists $PATH
 is_exists() {
