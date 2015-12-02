@@ -4,8 +4,9 @@
 trap 'echo Error: $0:$LINENO stopped; exit1' ERR INT
 set -eu
 
-# Load os_check.sh to determine witch directory this script should run.
-. "$DOTPATH"/etc/lib/os_check.sh
+. "$DOTPATH"/etc/lib/core.sh
+. "$DOTPATH"/etc/lib/lang.sh
+. "$DOTPATH"/etc/lib/util.sh
 
 if [ -z "$DOTPATH" ]; then
     echo '$DOTPATH not set' >&2
@@ -28,7 +29,7 @@ done 2>/dev/null &
 for i in "$DOTPATH"/etc/init/"$(get_os"/*.sh
 do
     if [ -f "$i" ]; then
-        log_info "$(e_arrow "$(basename "$i")")"
+        log_info "$(arrow "$(basename "$i")")"
         if [ "${DEBUG:-}" != 1 ]; then
             bash "$i"
         fi

@@ -36,7 +36,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " originalrepos on git hub
 NeoBundle 'Shougo/unite.vim'
-"NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'Shougo/vimproc.vim'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'itchyny/lightline.vim'

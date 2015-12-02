@@ -1,7 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/Kotaro/dotfiles/.git'
 let g:netrw_dirhist_2='/Users/Kotaro/dotfiles/.git/hooks'
 let g:netrw_dirhist_3='/Users/Kotaro/dotfiles/.git'
 let g:netrw_dirhist_4='/Users/Kotaro/dotfiles/.git/info'
 let g:netrw_dirhist_5='/Users/Kotaro/dotfiles/.git'
+let g:netrw_dirhist_6='/Users/kotaro/dotfiles/etc/lib/io.sh'
