@@ -1,7 +1,7 @@
 # Neobundles plugins
 .vim/bundle/*
 # tpm plugins
-.tmux/tpm/*
+.tmux/plugins/*
 # .netrwhist
-.vim/.netrwhist
+.netrwhist
 
