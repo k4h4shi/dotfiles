@@ -9,7 +9,7 @@ source "$DOTPATH"/etc/lib/io.sh
 source "$DOTPATH"/etc/lib/util.sh
 
 # This script is only supported with OS X
-if ! is ox; then
+if ! is_osx; then
   log_fail "error: this script is only supported with os"
   exit 1
 fi
