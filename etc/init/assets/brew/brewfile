@@ -13,6 +13,8 @@ brew 'tree'
 brew 'vim'
 brew 'wget'
 brew 'zsh'
+brew 'reattach-to-user-namespace'
+brew 'shellcheck'
 
 tap 'caskroom/cask'
 brew 'brew-cask'
