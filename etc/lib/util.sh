@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source "$DOTPATH"/etc/lib/lang.sh
+
+
 # shell                                           
 
 is_bash(){
