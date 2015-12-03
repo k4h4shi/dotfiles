@@ -3,7 +3,7 @@ autoload -Uz compinit; compinit
 setopt auto_cd
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias dotfiles='cd /Users/kotaro/src/github.com/k4h4shi/dotfiles'
+alias dotfiles='cd /Users/kotaro/dotfiles'
 hash  
 setopt auto_pushd
 # setopt pushd_ignore_daps
