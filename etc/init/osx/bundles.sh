@@ -1,5 +1,10 @@
 #!/bin_bash
 
+source "$DOTPATH"/etc/lib/core.sh
+source "$DOTPATH"/etc/lib/lang.sh
+source "$DOTPATH"/etc/lib/io.sh
+source "$DOTPATH"/etc/lib/util.sh
+
 # Stop script if erroers occur
 trap 'echo Error: $0:$LINENO stopped; exit 1' ERR INT
 set -eu
@@ -16,7 +21,7 @@ if has "brew"; then
      exit 1
     fi
 
-    buitin cd "$DOTPATH"/etc/init/assets/brew
+    builtin cd "$DOTPATH"/etc/init/assets/brew
     if [ ! -f Brewfile ]; then
       brew bundle dump
     fi
