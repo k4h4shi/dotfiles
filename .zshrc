@@ -12,3 +12,4 @@ setopt hist_ignore_space
 # zsyle ':completion:*:default' menu select=1
 WORDCHARS='*?_-.[]~=&;!#%^(){}<>'
 
+export PATH="/usr/local/bin:$PATH"
