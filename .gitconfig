@@ -57,4 +57,7 @@
 				edit-unmerged = "!f() { git ls-files --unmerged | cut -f2 | sort -u ; }; 'f'"
 				add-unmerged = "!f() { git ls-files --unmerged | cut f2 | sort -u ; }; git add 'f'"
 				gr = grep
-				gn = grep -n
+  gn = grep -n
+
+[ghq]
+	root = /Users/kotaro/src
