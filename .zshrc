@@ -3,13 +3,31 @@ autoload -Uz compinit; compinit
 setopt auto_cd
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias dotfiles='cd /Users/kotaro/dotfiles'
+alias dotfiles='cd $HOME/src/github.com/k4h4shi/dotfiles/'
 hash  
 setopt auto_pushd
+
 # setopt pushd_ignore_daps
 setopt extended_glob
 setopt hist_ignore_space
+
 # zsyle ':completion:*:default' menu select=1
 WORDCHARS='*?_-.[]~=&;!#%^(){}<>'
 
 export PATH="/usr/local/bin:$PATH"
+
+# export GOPATH
+export GOPATH="$HOME/src"
+export PATH="$PATH:$HOME/bin"
+#peco
+function peco-src () {
+  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-src
+bindkey '^]' peco-src
+
