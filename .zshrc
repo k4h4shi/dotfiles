@@ -17,7 +17,7 @@ WORDCHARS='*?_-.[]~=&;!#%^(){}<>'
 export PATH="/usr/local/bin:$PATH"
 
 # export GOPATH
-export GOPATH="$HOME/src"
+export GOPATH="$HOME"
 export PATH="$PATH:$HOME/bin"
 #peco
 function peco-src () {
