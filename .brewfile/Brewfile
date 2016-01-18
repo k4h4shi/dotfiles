@@ -1,0 +1,69 @@
+
+# tap repositories and their packages
+
+tap caskroom/cask
+brew brew-cask
+cask 1password
+cask appcleaner
+cask bettertouchtool
+cask clipmenu
+cask cyberduck
+cask dropbox
+cask evernote
+cask firefox
+cask google-chrome
+cask google-japanese-ime
+cask hosts
+cask karabiner
+cask macvim
+cask messenger
+cask skitch
+cask skype
+cask soundflower
+cask vagrant
+cask virtualbox
+
+tap homebrew/bundle
+
+tap rcmdnk/file
+brew brew-file
+
+# Other Homebrew packages
+brew boost
+brew colordiff
+brew figlet
+brew fortune
+brew gdbm
+brew git
+brew go
+brew hub
+brew libevent
+brew mysql
+brew openssl
+brew pcre
+brew pkg-config
+brew python
+brew readline
+brew reattach-to-user-namespace
+brew shellcheck
+brew sqlite
+brew tig
+brew tmux
+brew tree
+brew vim
+brew wget
+brew zsh
+
+# Below applications were installed by Cask,
+# but do not have corresponding casks.
+
+#cask kobito (!)
+
+# App Store applications
+appstore FreeMan
+appstore LadioCast
+appstore Logic Pro X
+appstore Xcode
+
+# Other commands
+gt k4h4shi/brewfile

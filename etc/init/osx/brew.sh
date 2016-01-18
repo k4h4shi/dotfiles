@@ -29,7 +29,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 if has "brew"; then
   brew doctor
 else
-  log_fail "error: brew: failed to insattl"
+  log_fail "error: brew: failed to install"
   exit 1
 fi
 
