@@ -1,27 +1,33 @@
 
 # tap repositories and their packages
 
-tap caskroom/cask
+tap Caskroom/cask
 brew brew-cask
 cask 1password
 cask appcleaner
 cask bettertouchtool
 cask clipmenu
 cask cyberduck
+cask dash
 cask dropbox
 cask evernote
 cask firefox
 cask google-chrome
 cask google-japanese-ime
 cask hosts
+cask java
 cask karabiner
+cask kext-utility
 cask macvim
 cask messenger
 cask skitch
 cask skype
 cask soundflower
+cask sts
 cask vagrant
 cask virtualbox
+
+tap caskroom/cask
 
 tap homebrew/bundle
 
@@ -30,7 +36,10 @@ brew brew-file
 
 # Other Homebrew packages
 brew boost
+brew chefdk
 brew colordiff
+brew ctags
+brew dnsMasq
 brew figlet
 brew fortune
 brew gdbm
@@ -38,26 +47,26 @@ brew git
 brew go
 brew hub
 brew libevent
+brew lua
 brew mysql
 brew openssl
 brew pcre
 brew pkg-config
 brew python
+brew rbenv
+brew rbenv-gemset
 brew readline
 brew reattach-to-user-namespace
+brew ruby-build
 brew shellcheck
 brew sqlite
+brew ssh-copy-id
 brew tig
 brew tmux
 brew tree
 brew vim
 brew wget
 brew zsh
-
-# Below applications were installed by Cask,
-# but do not have corresponding casks.
-
-#cask kobito (!)
 
 # App Store applications
 appstore FreeMan
