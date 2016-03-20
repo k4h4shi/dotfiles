@@ -1,15 +1,20 @@
 
 # tap repositories and their packages
 
-tap Caskroom/cask
+tap caskroom/cask
 brew brew-cask
 cask 1password
+cask alfred
 cask appcleaner
+cask astah-community
+cask aurora
 cask bettertouchtool
+cask chefdk
 cask clipmenu
 cask cyberduck
 cask dash
 cask dropbox
+cask eclipse-java
 cask evernote
 cask firefox
 cask google-chrome
@@ -22,12 +27,12 @@ cask macvim
 cask messenger
 cask skitch
 cask skype
+cask slack
 cask soundflower
-cask sts
 cask vagrant
 cask virtualbox
 
-tap caskroom/cask
+tap caskroom/versions
 
 tap homebrew/bundle
 
@@ -35,11 +40,12 @@ tap rcmdnk/file
 brew brew-file
 
 # Other Homebrew packages
+brew autoconf
 brew boost
-brew chefdk
+brew chromedriver
 brew colordiff
 brew ctags
-brew dnsMasq
+brew dnsmasq
 brew figlet
 brew fortune
 brew gdbm
@@ -48,10 +54,13 @@ brew go
 brew hub
 brew libevent
 brew lua
+brew maven
 brew mysql
 brew openssl
+brew otto
 brew pcre
 brew pkg-config
+brew postgresql
 brew python
 brew rbenv
 brew rbenv-gemset
@@ -72,6 +81,8 @@ brew zsh
 appstore FreeMan
 appstore LadioCast
 appstore Logic Pro X
+appstore Pocket
+appstore Reeder
 appstore Xcode
 
 # Other commands

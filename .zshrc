@@ -19,6 +19,7 @@ export PATH="/usr/local/bin:$PATH"
 # export GOPATH
 export GOPATH="$HOME"
 export PATH="$PATH:$HOME/bin"
+
 # peco
 function peco-src () {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
