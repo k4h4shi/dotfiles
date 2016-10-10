@@ -2,60 +2,45 @@
 # tap repositories and their packages
 
 tap caskroom/cask
-brew brew-cask
-cask 1password
-cask alfred
-cask appcleaner
-cask astah-community
-cask aurora
-cask bettertouchtool
-cask chefdk
-cask clipmenu
-cask cyberduck
-cask dash
-cask dropbox
-cask eclipse-java
-cask evernote
-cask firefox
-cask google-chrome
-cask google-japanese-ime
-cask hosts
-cask java
-cask karabiner
-cask kext-utility
-cask macvim
-cask messenger
-cask skitch
-cask skype
-cask slack
-cask soundflower
-cask vagrant
-cask virtualbox
 
 tap caskroom/versions
 
+tap homebrew/boneyard
+
 tap homebrew/bundle
 
+tap homebrew/core
+
+tap neovim/neovim
+
 tap rcmdnk/file
-brew brew-file
 
 # Other Homebrew packages
 brew autoconf
+brew automake
 brew boost
+brew brew-file
+brew ccat
 brew chromedriver
+brew cmake
 brew colordiff
 brew ctags
 brew dnsmasq
 brew figlet
 brew fortune
 brew gdbm
+brew gettext
 brew git
 brew go
 brew hub
 brew libevent
+brew libtool
 brew lua
 brew maven
 brew mysql
+brew neovim
+brew ninja
+brew node
 brew openssl
 brew otto
 brew pcre
@@ -66,24 +51,69 @@ brew rbenv
 brew rbenv-gemset
 brew readline
 brew reattach-to-user-namespace
+brew rsense
 brew ruby-build
 brew shellcheck
+brew sl
 brew sqlite
 brew ssh-copy-id
 brew tig
 brew tmux
 brew tree
-brew vim
+brew vim --with-lua
 brew wget
+brew xz
 brew zsh
+brew mas
+
+# Cask applications
+cask 1password
+cask alfred
+cask appcleaner
+cask atom
+cask aurora
+cask bettertouchtool
+cask cheatsheet
+cask chefdk
+cask clipmenu
+cask coderunner
+cask cyberduck
+cask dash
+cask dropbox
+cask eclipse-java
+cask evernote
+cask firefox
+cask fluid
+cask franz
+cask google-chrome
+cask google-drive
+cask google-japanese-ime
+cask hosts
+cask hyperswitch
+cask java
+cask karabiner
+cask kext-utility
+cask macvim
+cask messenger
+cask night-owl
+cask pingendo
+cask scroll-reverser
+cask seil
+cask skitch
+cask skype
+cask slack
+cask soundflower
+cask vagrant
+cask virtualbox
 
 # App Store applications
-appstore FreeMan
-appstore LadioCast
-appstore Logic Pro X
-appstore Pocket
-appstore Reeder
-appstore Xcode
+appstore 411246225 Caffeine (1.1.1)
+appstore 478363291 CleanWriterPro (1.3)
+appstore 510934532 FreeMan (1.4.1)
+appstore 896624060 Kobito (2.3.8)
+appstore 411213048 LadioCast (000012000)
+appstore 634148309 Logic Pro X (10.2.4)
+appstore 568494494 Pocket (1.6.2)
 
 # Other commands
 gt k4h4shi/brewfile

@@ -1,12 +1,7 @@
+"
 """"""""""""
 "my setting
 """"""""""""""
-" vimのエンコーディングをutf-8にする。
-set encoding=utf-8
-
-" ファイルフォーマットを設定
-set fileformats=unix,dos,mac
-
 " set color
 syntax on
 
@@ -16,25 +11,22 @@ set autoindent
 set shiftwidth=2
 set expandtab
 
-" number
-set number
-
-
 " use jj as <ESC>
 inoremap <silent> jj <ESC>
 
-"activate load plugin as file type
+"activate load plugin as file type"
+"activate load plugin as file type"
 filetype plugin indent on
 
-"""""""""""""
-" Neo Bundle 
-"""""""""""""
+""""""""""""""
+" Neo Bundle "
+""""""""""""""
 
 if has('vim_starting')
 	set nocompatible		" Be IMproved
 
 	" required:
-	set runtimepath+=~/.vim/bundle/neobundle.vim
+    set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
 
 " Requird:
@@ -59,17 +51,22 @@ NeoBundle 'sudo.vim'
 NeoBundle 'ref.vim'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'thinca/vim-quickrun'
+
+" outline
+NeoBundle 'h1mesuke/unite-outline'
+
+" move on html by opentag and close tag
+NeoBundle 'tmhedberg/matchit'
+
 " auto complete
 NeoBundle 'myhere/vim-nodejs-complete'
-NeoBundle 'marcus/rsense'
-NeoBundle 'supermomonga/neocomplete-rsense.vim'
 
 " static analysis
-NeoBundle 'scrooloose/syntasitc'
+NeoBundle 'scrooloose/syntastic'
 
 " refs
 NeoBundle 'thinca/vim-ref'
-NeoBundle 'yuku-t/vimref-ri'
+NeoBundle 'yuku-t/vim-ref-ri'
 
 " tag jump
 NeoBundle 'szw/vim-tags'
@@ -130,15 +127,14 @@ let g:rsenseUseOmniFunc = 1
 """""""""""""""""""
 " neocomplete.vim "
 """""""""""""""""""
-
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-if !exists('g:neocomplete#force_omini_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
-
+" vim 7.3 だとneocompleteが使えない 
+" let g:acp_enableAtStartup = 0
+" let g:neocomplete#enable_at_startup = 1
+" let g:neocomplete#enable_smart_case = 1
+" if !exists('g:neocomplete#force_omini_input_patterns')
+"   let g:neocomplete#force_omni_input_patterns = {}
+" endif
+" let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
 """""""""""
 " rubocop "
 """""""""""
