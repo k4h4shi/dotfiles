@@ -2,6 +2,6 @@
 .vim/bundle/*
 # tpm plugins
 .tmux/plugins/*
-# .netrwhist
-.netrwhist
 
+.netrwhist
+.DS_Store
