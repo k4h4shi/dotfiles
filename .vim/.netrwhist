@@ -1,7 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/Users/kotaro/src/github.com/k4h4shi/goodbye_chatwork/lib/goodbye_chatwork'
-let g:netrw_dirhist_2='/Users/kotaro/.hyperterm_plugins'
-let g:netrw_dirhist_3='/Users/kotaro/src/github.com/k4h4shi/rooms/docs'
-let g:netrw_dirhist_4='/Users/kotaro/src/github.com/k4h4shi/dotfiles/.vim'
-let g:netrw_dirhist_5='/Users/kotaro/src/github.com/k4h4shi/k4h4shi.com/resources/js'
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/Users/kotaro/src/github.com/k4h4shi/dotfiles/.vim/userautoload'
+let g:netrw_dirhist_2='/Users/kotaro/src/github.com/k4h4shi/dotfiles/.vim'
+let g:netrw_dirhist_3='/Users/kotaro/src/github.com/k4h4shi/dotfiles'
