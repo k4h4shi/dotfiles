@@ -35,11 +35,3 @@ bindkey '^]' peco-src
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap 
 fi
-
-# ruby 
-export PATH=$PATH:/usr/local/bin:/usr/local/Cellar/typesafe-activator/1.2.12:~/Documents/lib/play-2.2.3:$HOME/.rbenv/bin
-
-eval "$(rbenv init -)"
-
-# dash
-alias dash='(){ open dash://$1 }'
