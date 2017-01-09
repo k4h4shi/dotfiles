@@ -6,3 +6,7 @@
 	path = .tmux/plugins/tpm
   url = https://github.com/tmux-plugins/tpm
   ignore = dirty
+[submodule ".vim/tmp/solarized"]
+	path = .vim/tmp/solarized
+  url = https://github.com/altercation/vim-colors-solarized.git
+  ignore = dirty
