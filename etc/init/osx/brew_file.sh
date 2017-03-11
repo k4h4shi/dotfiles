@@ -27,17 +27,18 @@ if has "brew"; then
       exit 1
     fi
 
-    if ! brew install rcmdnk/file/brew-file; then
-     log_fail "error: failed to clone rcmdnk/file/brew-file"
-     exit 1
-    fi
+#    if brew install rcmdnk/file/brew-file; then
+#     log_pass "rcmdnk/file/brew-file is already installed" 
+#    else
+#     log_fail "error: failed to clone rcmdnk/file/brew-file"
+#     exit 1
+#    fi
 
     builtin cd "$DOTPATH"/
     if [ ! -f .brewfile/Brewfile ]; then
-      brew file update
+      brew bundle install
     fi
   
-    brew install
 else
     log_fail "error: require: brew"
     exit 1

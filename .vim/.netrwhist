@@ -1,5 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_cnt =7
 let g:netrw_dirhist_1='/Users/kotaro/src/github.com/k4h4shi/dotfiles/.vim/userautoload'
 let g:netrw_dirhist_2='/Users/kotaro/src/github.com/k4h4shi/dotfiles/.vim'
 let g:netrw_dirhist_3='/Users/kotaro/src/github.com/k4h4shi/dotfiles'
+let g:netrw_dirhist_4='/Users/k4h4shi/labo/ruby/error/static_var/direct.rb'
+let g:netrw_dirhist_5='/Users/k4h4shi/labo/ruby/error/static_var'
+let g:netrw_dirhist_6='/Users/k4h4shi/src/github.com/pubnub/video-sync'
+let g:netrw_dirhist_7='/Users/k4h4shi/labo'

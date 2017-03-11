@@ -1,6 +1,7 @@
 """"""""""""
 " NERDTree "
 """"""""""""
+let NERDTreeShowHidden =1
 let g:NERDTreeChDirMode=2
 let g:NERDTreeShowBookmarks=1
 let g:nerdtree_tabs_focus_on_files=1

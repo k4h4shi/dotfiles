@@ -46,6 +46,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 """"""""""""""""""""""""""""""
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'jistr/vim-nerdtree-tabs' 
 
 "" vimproc
 NeoBundle 'Shougo/vimproc.vim', {
@@ -95,6 +96,9 @@ NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'tpope/vim-surround'
 
+"" js
+NeoBundle 'ryym/vim-riot'
+
 "" ruby
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'osyo-manga/vim-monster'
@@ -104,6 +108,10 @@ NeoBundle 'elzr/vim-json'
 
 NeoBundle 'leafgarland/typescript-vim'
 NeoBundle 'jason0x43/vim-js-indent'
+
+"" アウトライン表示
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'h1mesuke/unite-outline'
 
 call neobundle#end()
 
