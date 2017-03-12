@@ -1,5 +1,26 @@
+" vim-plug self managing
+if has('vim_starting')
+  set rtp+=~/.vim/plugged/vim-plug
+  if !isdirectory(expand('~/.vim/plugged/vim-plug'))
+    echo 'install vim-plug...'
+    call system('mkdir -p ~/.vim/plugged/vim-plug')
+    call system('git clone https://github.com/junegunn/vim-plug.git ~/.vim/plugged/vim-plug/autoload')
+  end
+endif
+
 call plug#begin('~/.vim/plugged')
+
+"" vim-plug
+Plug 'junegunn/vim-plug',
+        \ {'dir': '~/.vim/plugged/vim-plug/autoload'}
+
+"" unite.vim
+Plug 'Shougo/unite.vim'
+
+"" colortheme  
 Plug 'altercation/vim-colors-solarized'
+
+"" nerdtree
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs' 
 
@@ -56,7 +77,4 @@ Plug 'elzr/vim-json'
 Plug 'leafgarland/typescript-vim'
 Plug 'jason0x43/vim-js-indent'
 
-"" アウトライン表示
-Plug 'Shougo/unite.vim'
-Plug 'h1mesuke/unite-outline'
 call plug#end()
