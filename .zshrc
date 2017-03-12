@@ -35,3 +35,4 @@ bindkey '^]' peco-src
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap 
 fi
+alias ctags=/usr/local/Cellar/ctags/<version>/bin/ctags

@@ -1,5 +1,5 @@
-# Neobundles plugins
-.vim/bundle/*
+# vim-plug plugins
+.vim/plugged/*
 # tpm plugins
 .tmux/plugins/*
 

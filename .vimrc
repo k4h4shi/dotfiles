@@ -1,2 +1,3 @@
 runtime! init/*.vim
-runtime! /plugins/*.vim
+runtime! plugin/*.vim
+runtime! plugin/settings/*.vim
