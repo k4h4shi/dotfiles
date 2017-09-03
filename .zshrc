@@ -31,8 +31,15 @@ function peco-src () {
 }
 zle -N peco-src
 bindkey '^]' peco-src
+
 # brew-file
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap 
 fi
-alias ctags=/usr/local/Cellar/ctags/<version>/bin/ctags
+# alias ctags=/usr/local/Cellar/ctags/<version>/bin/ctags
+
+# ghq, peco, hub
+alias g='cd $(ghq root)/$(ghq list | peco)'
+alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+
+clear

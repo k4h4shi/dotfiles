@@ -4,8 +4,8 @@
 
 # same setting as http://yuroyoro.hatenablog.com/entry/20101008/1286531851
 [user]
-				name = kotaro takahashi
-				email = kotaro.t@k4h4shi.com
+	name = kotaro takahashi
+	email = kotaro.t@k4h4shi.com
 [color]
 				status = auto
 				diff = auto
@@ -14,8 +14,9 @@
 [push]
 				default = tracking
 [core]
-				excludesfile = ~/.gitignore_global
-				autocrlf = input
+	excludesfile = /Users/k4h4shi/.gitignore_global
+  autocrlf = input
+  editor = vim
 [alias]
 				st = status
 				sh = show
@@ -61,3 +62,13 @@
 
 [ghq]
 	root = ~/src
+[hub]
+	protocol = https
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/k4h4shi/.stCommitMsg

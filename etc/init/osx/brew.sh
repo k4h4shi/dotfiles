@@ -19,7 +19,7 @@ if has "brew"; then
   exit
 fi
 
-# The script dependent on ruby
+# This script dependent on ruby
 if ! has "ruby"; then
   log_fail "error: require: ruby"
   exit 1

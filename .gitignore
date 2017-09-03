@@ -1,7 +1,12 @@
 # vim-plug plugins
 .vim/plugged/*
+
 # tpm plugins
 .tmux/plugins/*
 
+# api setting
+.vim/plugin/settings/.hateblo.vim
+
+# cash files
 .netrwhist
 .DS_Store

@@ -2,11 +2,11 @@
 # tap repositories and their packages
 
 tap caskroom/cask
+cask 1password
 cask alfred
 cask appcleaner
 cask bettertouchtool
 cask cheatsheet
-cask clipmenu
 cask coderunner
 cask cyberduck
 cask dash
@@ -14,24 +14,27 @@ cask dropbox
 cask eclipse-java
 cask firefox
 cask google-chrome
-cask google-drive
 cask google-japanese-ime
 cask hosts
 cask hyperswitch
 cask java
 cask karabiner
+cask mysqlworkbench
 cask pingendo
 cask scroll-reverser
+cask sequel-pro
 cask skitch
 cask skype
 cask slack
+cask sourcetree
+cask staruml
+cask totalspaces
 cask vagrant
 cask virtualbox
 
 tap caskroom/versions
 
 tap homebrew/boneyard
-brew rsense
 
 tap homebrew/bundle
 
@@ -47,20 +50,32 @@ brew dnsmasq
 brew doxygen
 brew figlet
 brew fortune
+brew freetype
 brew gdbm
+brew ghq
 brew git
 brew go
+brew haskell-stack
 brew hub
 brew icu4c
+brew imagemagick
+brew imagemagick@6
+brew jenkins
+brew jpeg
 brew libevent
+brew libpng
+brew libtiff
+brew libtool
 brew lua
 brew mas
 brew maven
 brew mysql
 brew node
 brew openssl
+brew openssl@1.1
 brew otto
 brew pcre
+brew peco
 brew pkg-config
 brew postgresql
 brew rbenv
@@ -77,6 +92,7 @@ brew tmux
 brew tree
 brew vim --with-lua
 brew wget
+brew xz
 brew zsh
 
 tap rcmdnk/file
@@ -84,6 +100,11 @@ brew brew-file
 
 # Other Homebrew packages
 brew npm
+brew rsense
+
+# Cask applications
+cask clipmenu
+cask google-drive
 
 # Other commands
 mas 'FreeMan', id: 510934532

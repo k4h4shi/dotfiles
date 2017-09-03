@@ -11,8 +11,6 @@ this dotfiles just started to build, so It's still not for someone except me.
 
 but if you would like to see my newbie rubish, feel free to do so.
 
-
-
 Installation
 
 git clone https://github.com/k4h4shi/dotfiles.git
