@@ -8,7 +8,6 @@ cask appcleaner
 cask bettertouchtool
 cask cheatsheet
 cask coderunner
-cask cyberduck
 cask dash
 cask dropbox
 cask eclipse-java
@@ -16,19 +15,15 @@ cask firefox
 cask google-chrome
 cask google-japanese-ime
 cask hosts
+cask hyper
 cask hyperswitch
 cask java
-cask karabiner
+cask lepton
 cask mysqlworkbench
-cask pingendo
 cask scroll-reverser
 cask sequel-pro
-cask skitch
 cask skype
 cask slack
-cask sourcetree
-cask staruml
-cask totalspaces
 cask vagrant
 cask virtualbox
 
@@ -55,6 +50,7 @@ brew gdbm
 brew ghq
 brew git
 brew go
+brew googler
 brew haskell-stack
 brew hub
 brew icu4c
@@ -78,12 +74,14 @@ brew pcre
 brew peco
 brew pkg-config
 brew postgresql
+brew python3
 brew rbenv
 brew rbenv-gemset
 brew readline
 brew reattach-to-user-namespace
 brew ruby-build
 brew shellcheck
+brew shpotify
 brew sl
 brew sqlite
 brew ssh-copy-id
