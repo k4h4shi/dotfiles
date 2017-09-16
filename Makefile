@@ -1,32 +1,27 @@
 DOTPATH    := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
-CANDIDATES := $(wildcard .??*) 
-EXCLUSIONS := .DS_Store .git .gitmodules .travis.yml
+CANDIDATES := $(wildcard .??*) bin
+EXCLUSIONS := .DS_Store .git .gitmodules
 DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 
-all: install
+.DEFAULT_GOAL := help
 
+all:
+	
 help:
-	@echo "make list           #=> Show dot files in this repo"
-	@echo "make deploy         #=> Create symlink to home directory"
-	@echo "make init           #=> Setup environment settings"
-	@echo "make test           #=> Test dotfiles and init scripts"
-	@echo "make update         #=> Fetch changes for this repo"
-	@echo "make install        #=> Run make update, deploy, init"
-	@echo "make clean          #=> Remove the dot files and this repo"
+	@echo "init    => Initialize enviroment settings."
+	@echo "deploy  => Create symlinks to home directory."
+	@echo "update  => Fetch all changes from remote repo."
+	@echo "install => Run update, deploy, init"
+	@echo "clean   => remove the dotfiles"
+	@echo "destroy => remove the dotfiles and this repo"
 
-list:
-	@$(foreach val, $(DOTFILES), /bin/ls -dF $(val);)
+init:
+	@DOTPAH=$(DOTPATH) bash $(DOTPATH)/etc/init/init.sh
 
 deploy:
 	@echo '==> Start to deploy dotfiles to home directory.'
 	@echo ''
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
-
-init:
-	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/init/init.sh
-
-test:
-	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/test/test.sh
 
 update:
 	git pull origin master
@@ -35,9 +30,11 @@ update:
 	git submodule foreach git pull origin master
 
 install: update deploy init
-	@exec $$SHELL
 
 clean:
-	@echo 'Remove dot files in your home directory...'
+	@echo 'Remove dot files from your home directory.'
 	@-$(foreach val, $(DOTFILES), rm -vrf $(HOME)/$(val);)
+
+destroy: clean
+	@echo 'Romove this repository.'
 	-rm -rf $(DOTPATH)
