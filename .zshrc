@@ -38,8 +38,12 @@ if [ -f $(brew --prefix)/etc/brew-wrap ];then
 fi
 # alias ctags=/usr/local/Cellar/ctags/<version>/bin/ctags
 
-# ghq, peco, hub
+# alias
 alias g='cd $(ghq root)/$(ghq list | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias ggl='googler'
+alias k4h4shi.com='cd $HOME/src/github.com/k4h4shi/k4h4shi.com/'
 
+# set default editor as vim
+export EDITOR=vim
 clear
