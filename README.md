@@ -13,13 +13,13 @@ cd dotfiles
 ### Make
 You can deploy, install, clean, or destroy with make commands.
 
-You can `make help` to show the help.
+You can use `make help` to show the help same as down below.
 
-#### available commands
-- help    => show help.
+```
 - init    => Initialize enviroment settings.
 - deploy  => Create symlinks to home directory.
 - update  => Fetch all changes from remote repo.
 - install => Run update, deploy, init
 - clean   => remove the dotfiles
 - destroy => remove the dotfiles and this repo
+```
