@@ -1,9 +1,27 @@
+# enviroment var
+export LANG=ja_JP.UTF-8
+export EDITOR=vim
+
+# vim like key bind
 bindkey -v
+
+# enable auto complete
 autoload -Uz compinit; compinit
+
+setopt correct
 setopt auto_cd
+setopt no_beep
+
+# alias
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias dotfiles='cd $HOME/src/github.com/k4h4shi/dotfiles/'
+alias k4h4shi.com='cd $HOME/src/github.com/k4h4shi/k4h4shi.com/'
+
+alias g='cd $(ghq root)/$(ghq list | peco)'
+alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias ggl='googler'
+
 hash  
 setopt auto_pushd
 
@@ -36,14 +54,5 @@ bindkey '^]' peco-src
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap 
 fi
-# alias ctags=/usr/local/Cellar/ctags/<version>/bin/ctags
 
-# alias
-alias g='cd $(ghq root)/$(ghq list | peco)'
-alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
-alias ggl='googler'
-alias k4h4shi.com='cd $HOME/src/github.com/k4h4shi/k4h4shi.com/'
-
-# set default editor as vim
-export EDITOR=vim
 clear
