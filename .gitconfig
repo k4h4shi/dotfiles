@@ -2,8 +2,8 @@
 # .gitconfig
 ##########################################################################
 [user]
-	name = kotaro takahashi
-	email = kotaro.t@k4h4shi.com
+  name = kotaro takahashi
+  email = kotaro.t@k4h4shi.com
 [color]
   status = auto
   diff = auto
@@ -18,6 +18,6 @@
 [alias]
 
 [ghq]
-	root = ~/src
+  root = ~/src
 [hub]
-	protocol = https
+  protocol = https
