@@ -66,8 +66,6 @@ Installed Plugins:
 ### vim
 Plugins:
 - [junegunn/vim-plug](https://github.com/junegunn/vim-plug)
-- [Shougo/unite.vim](https://github.com/Shougo/unite.vim)
-- [altercation/vim-colors-solarized](https://github.com/altercation/vim-colors-solarized)
 - [scrooloose/nerdtree](https://github.com/scrooloose/nerdtree)
 - [jistr/vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs)
 - [Shougo/vimproc.vim](https://github.com/Shougo/vimproc.vim)

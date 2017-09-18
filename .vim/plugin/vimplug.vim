@@ -14,12 +14,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-plug',
         \ {'dir': '~/.vim/plugged/vim-plug/autoload'}
 
-"" unite.vim
-Plug 'Shougo/unite.vim'
-
-"" colortheme  
-Plug 'altercation/vim-colors-solarized'
-
 "" nerdtree
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs' 
