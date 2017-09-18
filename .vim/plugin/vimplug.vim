@@ -51,7 +51,7 @@ Plug 'scrooloose/syntastic'
 Plug 'pmsorhaindo/syntastic-local-eslint.vim'
 
 "" markdownプレビュー
-""Plug 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 Plug 'kannokanno/previm'
 Plug 'tyru/open-browser.vim'
 
@@ -67,6 +67,7 @@ Plug 'tpope/vim-surround'
 "" js
 Plug 'ryym/vim-riot'
 Plug 'posva/vim-vue'
+
 "" ruby
 Plug 'tpope/vim-endwise'
 Plug 'osyo-manga/vim-monster'
@@ -77,11 +78,8 @@ Plug 'elzr/vim-json'
 Plug 'leafgarland/typescript-vim'
 Plug 'jason0x43/vim-js-indent'
 
-"" はてなへ投稿
-Plug 'mattn/webapi-vim'
-Plug 'Shougo/unite.vim'
-Plug 'moznion/hateblo.vim'
 
 "" dash
 Plug 'rizzatti/dash.vim'
 call plug#end()
+
