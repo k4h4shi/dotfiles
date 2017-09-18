@@ -65,31 +65,31 @@ Installed Plugins:
 
 ### vim
 Plugins:
-- [junegunn/vim-plug](https://github.com/junegunn/vim-plug)
-- [scrooloose/nerdtree](https://github.com/scrooloose/nerdtree)
-- [jistr/vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs)
-- [Shougo/vimproc.vim](https://github.com/Shougo/vimproc.vim)
-- [thinca/vim-quickrun](https://github.com/thinca/vim-quickrun)
-- [Shougo/neocomplete](https://github.com/Shougo/neocomplete)
-- [Shougo/neocomplcache](https://github.com/Shougo/neocomplcache)
-- [Shougo/neosnippet](https://github.com/Shougo/neosnippet)
-- [Shougo/neosnippet-snippets](https://github.com/Shougo/neosnippet-snippets)
-- [honza/vim-snippets](https://github.com/honza/vim-snippets)
-- [majutsushi/tagbar](https://github.com/majutsushi/tagbar)
-- [szw/vim-tags](https://github.com/szw/vim-tags)
-- [scrooloose/syntastic](https://github.com/scrooloose/syntastic)
-- [pmsorhaindo/syntastic-local-eslint.vim](https://github.com/pmsorhaindo/syntastic-local-eslint.vim)
-- [plasticboy/vim-markdown](https://github.com/plasticboy/vim-markdown)
-- [kannokanno/previm](https://github.com/kannokanno/previm)
-- [tyru/open-browser.vim](https://github.com/tyru/open-browser.vim)
-- [Yggdroot/indentLine](https://github.com/Yggdroot/indentLine)
-- [alvan/vim-closetag](https://github.com/alvan/vim-closetag)
-- [hail2u/vim-css3-syntax](https://github.com/hail2u/vim-css3-syntax)
-- [mattn/emmet-vim](https://github.com/mattn/emmet-vim)
-- [tpope/vim-surround](https://github.com/tpope/vim-surround)
-- [ryym/vim-riot](https://github.com/ryym/vim-riot)
-- [posva/vim-vue](https://github.com/posva/vim-vue)
-- [elzr/vim-json](https://github.com/elzr/vim-json)
-- [leafgarland/typescript-vim](https://github.com/leafgarland/typescript-vim)
-- [jason0x43/vim-js-indent](https://github.com/jason0x43/vim-js-indent)
-- [rizzatti/dash.vim](https://github.com/rizzatti/dash.vim)
+- [junegunn/vim-plug](https://github.com/junegunn/vim-plug): Plugin manager
+- [scrooloose/nerdtree](https://github.com/scrooloose/nerdtree):  File system explorer
+- [jistr/vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs): Plugin making NERDTree like a true panel. shared among tabs.
+- [Shougo/vimproc.vim](https://github.com/Shougo/vimproc.vim): Asynchronous executer.
+- [thinca/vim-quickrun](https://github.com/thinca/vim-quickrun): Source code  runner.
+- [Shougo/neocomplete](https://github.com/Shougo/neocomplete): Auto complete with cache
+- [Shougo/neocomplcache](https://github.com/Shougo/neocomplcache): Substitution for neocomplete
+- [Shougo/neosnippet](https://github.com/Shougo/neosnippet): Auto complete with Snippete
+- [Shougo/neosnippet-snippets](https://github.com/Shougo/neosnippet-snippets): Standard Snippets for neosnippete
+- [honza/vim-snippets](https://github.com/honza/vim-snippets): Snippets files for various programming languages
+- [majutsushi/tagbar](https://github.com/majutsushi/tagbar): A class outline viewer
+- [szw/vim-tags](https://github.com/szw/vim-tags): The Ctags generator for vim
+- [scrooloose/syntastic](https://github.com/scrooloose/syntastic): An external syntax checker
+- [pmsorhaindo/syntastic-local-eslint.vim](https://github.com/pmsorhaindo/syntastic-local-eslint.vim): ESLint runner for syntastics
+- [plasticboy/vim-markdown](https://github.com/plasticboy/vim-markdown): Syntax highlighting, matching rules and mappings for markdown
+- [kannokanno/previm](https://github.com/kannokanno/previm): A previewr for markdown
+- [tyru/open-browser.vim](https://github.com/tyru/open-browser.vim): Open URI with a browser from editor
+- [Yggdroot/indentLine](https://github.com/Yggdroot/indentLine): A plugin used for displaying thin vertical lines at each indentation.
+- [alvan/vim-closetag](https://github.com/alvan/vim-closetag): Auto tag closer
+- [hail2u/vim-css3-syntax](https://github.com/hail2u/vim-css3-syntax): syntax highliter for CSS 3
+- [mattn/emmet-vim](https://github.com/mattn/emmet-vim): emmet for vim
+- [tpope/vim-surround](https://github.com/tpope/vim-surround): utility for surroundings.
+- [ryym/vim-riot](https://github.com/ryym/vim-riot): syntax highlighting and indentation for riot.js
+- [posva/vim-vue](https://github.com/posva/vim-vue): syntax highlighting for vue.js
+- [elzr/vim-json](https://github.com/elzr/vim-json): Distinct highlighting of keywords vs values, JSON-specific (non-JS) warnings, quote concealing.
+- [leafgarland/typescript-vim](https://github.com/leafgarland/typescript-vim): Typescript syntax files for Vim
+- [jason0x43/vim-js-indent](https://github.com/jason0x43/vim-js-indent): Vim indenter for standalone and embedded JavaScript and TypeScrip
+- [rizzatti/dash.vim](https://github.com/rizzatti/dash.vim): search for dash from vim 
