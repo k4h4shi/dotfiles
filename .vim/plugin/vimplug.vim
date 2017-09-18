@@ -68,10 +68,6 @@ Plug 'tpope/vim-surround'
 Plug 'ryym/vim-riot'
 Plug 'posva/vim-vue'
 
-"" ruby
-Plug 'tpope/vim-endwise'
-Plug 'osyo-manga/vim-monster'
-
 "" JSON syntax
 Plug 'elzr/vim-json'
 
