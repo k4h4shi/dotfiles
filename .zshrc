@@ -15,14 +15,18 @@ setopt no_beep
 # alias
 alias ...='cd ../..'
 alias ....='cd ../../..'
-alias dotfiles='cd $HOME/src/github.com/k4h4shi/dotfiles/'
-alias k4h4shi.com='cd $HOME/src/github.com/k4h4shi/k4h4shi.com/'
 
 alias g='cd $(ghq root)/$(ghq list | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias gv='vim $(ghq list -p | peco)/README.md'
+
 alias ggl='googler'
 
+alias dotfiles='$HOME/src/github.com/k4h4shi/dotfiles/'
+alias k4h4shi.com='$HOME/src/github.com/k4h4shi/k4h4shi.com/'
+
 hash  
+
 setopt auto_pushd
 
 # setopt pushd_ignore_daps

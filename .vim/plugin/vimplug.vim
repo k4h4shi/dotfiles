@@ -59,17 +59,13 @@ Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
 
 "" js
+Plug 'jason0x43/vim-js-indent'
 Plug 'ryym/vim-riot'
 Plug 'posva/vim-vue'
 
 "" JSON syntax
 Plug 'elzr/vim-json'
 
-Plug 'leafgarland/typescript-vim'
-Plug 'jason0x43/vim-js-indent'
 
-
-"" dash
-Plug 'rizzatti/dash.vim'
 call plug#end()
 
