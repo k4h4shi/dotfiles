@@ -116,13 +116,19 @@ gf: open a file under the cursor
 \y: emmet-vim
 \p: Previm open
 
+\pi: PlugInstall
+\pu: PlugUpdate
+\pc: PlugClean
+\pg: PlugUpgrade
+\ps: PlugStatus
+\pd: PlugDiff
+
 # Dotfiles
 \.: open dotfiles with NERDTree
 \ev: edit .vimrc
 \et: edit .tmux.conf
 \ez: edit .zshrc
 \er: edit README.md
-
 ```
 
 Insert mode:

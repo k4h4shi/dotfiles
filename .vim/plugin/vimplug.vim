@@ -24,6 +24,9 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 "" quickrun
 Plug 'thinca/vim-quickrun'
 
+""  ctrlp.vim
+Plug 'ctrlpvim/ctrlp.vim'
+
 "" vim-tmux-navigator
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -69,6 +72,12 @@ Plug 'posva/vim-vue'
 "" JSON syntax
 Plug 'elzr/vim-json'
 
-
 call plug#end()
 
+"" short cut
+nnoremap <leader>pi :PlugInstall<CR>
+nnoremap <leader>pu :PlugUpdate<CR>
+nnoremap <leader>pc :PlugClean<CR>
+nnoremap <leader>pg :PlugUpgrade<CR>
+nnoremap <leader>ps :PlugStatus<CR>
+nnoremap <leader>pd :PlugDiff<CR>
