@@ -34,6 +34,9 @@ destroy => remove the dotfiles and this repo.
 g: peco ~/src/github.com/ => cd selected dir
 gh: peco ~/src/github.com/ => open with hub
 
+c: clear
+ggl: googler
+
 # shortcut
 C-[: vim like command mode
 C-]: peco ~/src/*

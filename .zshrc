@@ -22,8 +22,8 @@ alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias gv='vim $(ghq list -p | peco)/README.md'
 
 alias ggl='googler'
+alias c='clear'
 
-alias dotfiles='$HOME/src/github.com/k4h4shi/dotfiles/'
 alias k4h4shi.com='$HOME/src/github.com/k4h4shi/k4h4shi.com/'
 
 hash  
