@@ -100,7 +100,6 @@ Normal mode:
 \wq: write and quit
 \z: write and quit all
 \e: edit
-\f: find
 \h: help
 
 # Tab and Files
@@ -115,6 +114,7 @@ gf: open a file under the cursor
 \t: TagBar
 \y: emmet-vim
 \p: Previm open
+\f: CtrlP
 
 \pi: PlugInstall
 \pu: PlugUpdate

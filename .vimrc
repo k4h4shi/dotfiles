@@ -63,7 +63,7 @@ noremap <leader>eb :edit $HOME/.bashrc<CR>
 noremap <leader>er :edit $HOME/src/github.com/k4h4shi/dotfiles/README.md<CR>
 
 noremap <leader>h :help
-noremap <leader>f :find
+"noremap <leader>f :find
 noremap <leader>. :NERDTree $HOME/src/github.com/k4h4shi/dotfiles/<CR>
 noremap <leader>b :OpenBookmark
 noremap <leader>q :q<CR>
