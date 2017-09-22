@@ -13,6 +13,7 @@ setopt auto_cd
 setopt no_beep
 
 # alias
+alias .='$HOME/src/github.com/k4h4shi/dotfiles/'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 

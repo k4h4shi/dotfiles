@@ -1,6 +1,5 @@
 # dotfiles
 kotaro.t@k4h4shi's configuration for vim, zsh, tmux and more.
-
 ## Usage
 
 ### Git clone
@@ -24,8 +23,34 @@ clean   => remove the dotfiles.
 destroy => remove the dotfiles and this repo.
 ```
 
+### zsh
+
+```
+# commands
+. : cd dotfiles
+.. : cd ../../
+... : cd ../../../
+
+g: peco ~/src/github.com/ => cd selected dir
+gh: peco ~/src/github.com/ => open with hub
+
+# shortcut
+C-[: vim like command mode
+C-]: peco ~/src/*
+```
+
+### Move Around Tmux Pane and Vim Window
+You can move around pane and window.
+
+```
+C-h select left pane 
+C-j select down pane
+C-k select up pane
+C-l select right pane
+```
+
 ### tmux
-- change prefix to C-t
+- change prefix to C-Space
 - set default-shell as zsh
 - set vim like key-bind
 - set escape-time to 1
@@ -38,19 +63,16 @@ Tmux key bindings:
 | vertical split
 - horizontal split
 
-h select left pane
-j select down pane
-k select up pane
-l select right pane
-
 H resize pane plus 5 to left
 J resize pane plus 5 to down
 K resize pane plus 5 to up
 L resize pane plus 5 to right
 
+c create window
+x close current window
+
 C-h select previous window
 C-l select next window
-C-o select pane
 
 r reload .tmux.conf
 ```
@@ -69,20 +91,35 @@ Installed Plugins:
 
 Normal mode:
 ```
-C-w + h: move pane left
-C-w + j: move pane down
-C-w + k: move pane up
-C-w + l: move pane right
+# Save and Quit
+\w: write
+\q: quit
+\wq: write and quit
+\z: write and quit all
+\e: edit
+\f: find
+\h: help
 
+# Tab and Files
 C-n: next tab
 C-p: prevoius tab 
-
 gf: open a file under the cursor
 
+# Plugin
 \r: QuickRun
-\n: toggle nerdtree
-\t: toggle tagbar
-\f: find current open file in nerdtree
+\n: NERDTree
+\nf: NERDTreeFind
+\t: TagBar
+\y: emmet-vim
+\p: Previm open
+
+# Dotfiles
+\.: open dotfiles with NERDTree
+\ev: edit .vimrc
+\et: edit .tmux.conf
+\ez: edit .zshrc
+\er: edit README.md
+
 ```
 
 Insert mode:

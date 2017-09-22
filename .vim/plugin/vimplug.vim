@@ -24,6 +24,9 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 "" quickrun
 Plug 'thinca/vim-quickrun'
 
+"" vim-tmux-navigator
+Plug 'christoomey/vim-tmux-navigator'
+
 "" 補完
 if Meet_neocomplete_requirements()
   Plug 'Shougo/neocomplete'

@@ -5,7 +5,6 @@
 " - let {variable}={value}: declear variable
 " - autocmd [group] {event} {pat} {cmd}: execute cmd when specific event 
 "   happen.
-
 let mapleader="\<Space>"
 
 "" Encoding
@@ -55,6 +54,22 @@ let g:vim_json_syntax_conceal = 0
 " - xmap: visual mode
 " - ormap: OR
 " - normap: NOR
+
+noremap <leader>e :edit 
+noremap <leader>ev :edit $HOME/.vimrc<CR>
+noremap <leader>et :edit $HOME/.tmux.conf<CR>
+noremap <leader>ez :edit $HOME/.zshrc<CR>
+noremap <leader>eb :edit $HOME/.bashrc<CR>
+noremap <leader>er :edit $HOME/src/github.com/k4h4shi/dotfiles/README.md<CR>
+
+noremap <leader>h :help
+noremap <leader>f :find
+noremap <leader>. :NERDTree $HOME/src/github.com/k4h4shi/dotfiles/<CR>
+noremap <leader>b :OpenBookmark
+noremap <leader>q :q<CR>
+noremap <leader>w :w<CR>
+noremap <leader>wq :wq<CR>
+noremap <leader>z :wqa!<CR>
 
 " use jj as <ESC>
 " inoremap <silent> jj <ESC>
