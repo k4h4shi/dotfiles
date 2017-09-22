@@ -76,19 +76,23 @@ C-w + l: move pane right
 
 C-n: next tab
 C-p: prevoius tab 
+
+gf: open a file under the cursor
+
+\r: QuickRun
+\n: toggle nerdtree
+\t: toggle tagbar
+\f: find current open file in nerdtree
 ```
 
 Insert mode:
 ```
-jj : escape
+C-[ : escape
 Enter(after search): remove highlight
 
 C-n: next suggest
 C-p: previosu suggest
 C-k: apply snipet
-
-<Space> - n: toggle nerdtree
-<Space> - t: toggle tagbar
 ```
 
 Command mode:
