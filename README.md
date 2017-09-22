@@ -120,8 +120,6 @@ gf: open a file under the cursor
 \pu: PlugUpdate
 \pc: PlugClean
 \pg: PlugUpgrade
-\ps: PlugStatus
-\pd: PlugDiff
 
 # Dotfiles
 \.: open dotfiles with NERDTree
