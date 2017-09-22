@@ -47,7 +47,9 @@ brew figlet
 brew fortune
 brew freetype
 brew gdbm
+brew gettext
 brew ghq
+brew gibo
 brew git
 brew go
 brew googler
@@ -56,16 +58,22 @@ brew hub
 brew icu4c
 brew imagemagick
 brew imagemagick@6
+brew jemalloc
 brew jenkins
 brew jpeg
 brew libevent
 brew libpng
+brew libtermkey
 brew libtiff
 brew libtool
+brew libuv
+brew libvterm
 brew lua
 brew mas
 brew maven
+brew msgpack
 brew mysql
+brew neovim
 brew node
 brew openssl
 brew openssl@1.1
@@ -88,6 +96,7 @@ brew ssh-copy-id
 brew tig
 brew tmux
 brew tree
+brew unibilium
 brew vim --with-lua
 brew wget
 brew xz
