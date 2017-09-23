@@ -15,7 +15,6 @@ cask firefox
 cask google-chrome
 cask google-japanese-ime
 cask hosts
-cask hyper
 cask hyperswitch
 cask java
 cask lepton
