@@ -46,6 +46,7 @@ brew doxygen
 brew figlet
 brew fortune
 brew freetype
+brew fzf
 brew gdbm
 brew gettext
 brew ghq

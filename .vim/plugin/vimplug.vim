@@ -27,6 +27,9 @@ Plug 'thinca/vim-quickrun'
 ""  ctrlp.vim
 Plug 'ctrlpvim/ctrlp.vim'
 
+"" vim-shellutils
+Plug 'b4b4r07/vim-shellutils'
+
 "" vim-tmux-navigator
 Plug 'christoomey/vim-tmux-navigator'
 
