@@ -78,7 +78,7 @@ module.exports = {
  
         // [Optional] Set the rgba() app background opacity, useful when enableVibrance is true
         // OPTIONS: From 0.1 to 1
-        backgroundOpacity: 0.3,
+        backgroundOpacity: 1,
  
         // [Optional] Set the accent color for the current active tab
         accentColor: '#64FFDA',
@@ -107,7 +107,10 @@ module.exports = {
     shellArgs: ['--login'],
 
     // for environment variables
-    env: {},
+    env: {
+      LANG: 'ja.UTF-8',
+      LC_ALL: 'ja.UTF-8'
+    },
 
     // set to false for no bell
     bell: false,
@@ -131,7 +134,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hyper-material-theme'],
+  plugins: ['hypersolar-dark'],
   
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
