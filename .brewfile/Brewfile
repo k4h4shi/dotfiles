@@ -6,25 +6,22 @@ cask 1password
 cask alfred
 cask appcleaner
 cask bettertouchtool
-cask cheatsheet
-cask coderunner
 cask dash
 cask dropbox
 cask eclipse-java
 cask firefox
 cask google-chrome
-cask google-japanese-ime
 cask hosts
-cask hyperswitch
 cask java
-cask lepton
-cask mysqlworkbench
+cask livereload
 cask scroll-reverser
-cask sequel-pro
 cask skype
 cask slack
 cask vagrant
 cask virtualbox
+cask visual-studio-code
+cask clipmenu
+cask google-drive
 
 tap caskroom/versions
 
@@ -35,85 +32,33 @@ tap homebrew/bundle
 tap homebrew/core
 brew autoconf
 brew automake
-brew ccat
-brew chromedriver
 brew cmake
-brew colordiff
 brew ctags
-brew dnsmasq
-brew doxygen
-brew figlet
-brew fortune
-brew freetype
-brew fzf
-brew gdbm
-brew gettext
 brew ghq
 brew gibo
 brew git
 brew go
 brew googler
-brew haskell-stack
 brew hub
-brew icu4c
-brew imagemagick
-brew imagemagick@6
-brew jemalloc
-brew jenkins
-brew jpeg
-brew libevent
-brew libpng
-brew libtermkey
-brew libtiff
 brew libtool
-brew libuv
-brew libvterm
 brew lua
 brew mas
 brew maven
-brew msgpack
-brew mysql
-brew neovim
 brew node
-brew openssl
-brew openssl@1.1
-brew otto
-brew pcre
 brew peco
-brew pkg-config
-brew postgresql
 brew python3
-brew rbenv
-brew rbenv-gemset
-brew readline
 brew reattach-to-user-namespace
-brew ruby-build
 brew shellcheck
-brew shpotify
-brew sl
-brew sqlite
 brew ssh-copy-id
 brew tig
 brew tmux
 brew tree
-brew unibilium
 brew vim --with-lua
 brew wget
 brew xz
-brew zsh
+brew yarn
+brew npm
 
 tap rcmdnk/file
 brew brew-file
 
-# Other Homebrew packages
-brew npm
-brew rsense
-
-# Cask applications
-cask clipmenu
-cask google-drive
-
-# Other commands
-mas 'FreeMan', id: 510934532
-mas 'Kobito', id: 896624060
-mas 'Pocket', id: 568494494
