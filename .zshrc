@@ -13,18 +13,19 @@ setopt auto_cd
 setopt no_beep
 
 # alias
-alias .='$HOME/src/github.com/k4h4shi/dotfiles/'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
 alias g='cd $(ghq root)/$(ghq list | peco)'
 alias gh='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias gv='vim $(ghq list -p | peco)/README.md'
-
 alias ggl='googler'
 alias c='clear'
 
+alias dotfiles='$HOME/src/github.com/k4h4shi/dotfiles/'
 alias k4h4shi.com='$HOME/src/github.com/k4h4shi/k4h4shi.com/'
+
+alias ls='ls -G'
 
 hash  
 
@@ -59,5 +60,13 @@ bindkey '^]' peco-src
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap 
 fi
+
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+    eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+
 
 clear

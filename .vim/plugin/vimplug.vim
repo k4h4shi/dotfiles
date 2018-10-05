@@ -75,6 +75,9 @@ Plug 'posva/vim-vue'
 "" JSON syntax
 Plug 'elzr/vim-json'
 
+"" ondark
+Plug 'joshdick/onedark.vim'
+
 call plug#end()
 
 "" short cut

@@ -46,6 +46,9 @@ autocmd FileType * setlocal formatoptions-=ro
 "" show doble quote in JSON
 let g:vim_json_syntax_conceal = 0
 
+"" color and syntax
+syntax on
+
 """"""""""""""""""
 " Keymap Setting "
 """"""""""""""""""
@@ -123,3 +126,6 @@ set ruler
 """""""""""""""""""
 runtime! plugin/*.vim
 runtime! plugin/settings/*.vim
+
+
+
