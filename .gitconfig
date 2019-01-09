@@ -16,8 +16,10 @@
   autocrlf = input
   editor = vim
 [alias]
-
+  tree = log --pretty=format:"%h %s" --graph
 [ghq]
   root = ~/src
 [hub]
   protocol = https
+[credential]
+	helper = osxkeychain

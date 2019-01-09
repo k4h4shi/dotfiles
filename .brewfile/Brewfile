@@ -1,54 +1,49 @@
 
 # tap repositories and their packages
 
-tap caskroom/cask
-cask 1password
-cask alfred
-cask appcleaner
-cask bettertouchtool
-cask dash
-cask dropbox
-cask eclipse-java
-cask firefox
-cask google-chrome
-cask hosts
-cask java
-cask livereload
-cask scroll-reverser
-cask skype
-cask slack
-cask vagrant
-cask virtualbox
-cask visual-studio-code
-cask clipmenu
-cask google-drive
-
-tap caskroom/versions
-
-tap homebrew/boneyard
-
-tap homebrew/bundle
-
 tap homebrew/core
 brew autoconf
 brew automake
 brew cmake
 brew ctags
+brew elm
+brew gdbm
+brew gettext
 brew ghq
 brew gibo
 brew git
+brew glslang
 brew go
 brew googler
 brew hub
+brew icu4c
+brew jq
+brew libevent
+brew libidn2
 brew libtool
+brew libunistring
+brew libyaml
 brew lua
 brew mas
 brew maven
+brew mysql
+brew mysql@5.6
 brew node
+brew nvm
+brew oniguruma
+brew openssl
+brew openssl@1.1
 brew peco
-brew python3
+brew perl
+brew pkg-config
+brew python
+brew rbenv
+brew readline
 brew reattach-to-user-namespace
+brew ruby
+brew ruby-build
 brew shellcheck
+brew sqlite
 brew ssh-copy-id
 brew tig
 brew tmux
@@ -57,8 +52,53 @@ brew vim --with-lua
 brew wget
 brew xz
 brew yarn
-brew npm
+
+tap homebrew/boneyard
+
+tap homebrew/bundle
+
+tap caskroom/cask
+
+tap caskroom/versions
+
+tap caskroom/versions
+
+tap argon/mas
 
 tap rcmdnk/file
 brew brew-file
 
+# Other Homebrew packages
+brew mysql56
+brew python3
+
+# Cask applications
+cask 1password
+cask alfred
+cask appcleaner
+cask atom
+cask audio-hijack
+cask bettertouchtool
+cask dash
+cask db-browser-for-sqlite
+cask dropbox
+cask eclipse-java
+cask firefox
+cask google-chrome
+cask google-drive-file-stream
+cask hosts
+cask insomniaX
+cask java
+cask java8
+cask karabiner
+cask livereload
+cask loopback
+cask mongodb-compass
+cask nosleep
+cask onyx
+cask scroll-reverser
+cask skype
+cask slack
+cask spotify
+cask vagrant
+cask visual-studio-code

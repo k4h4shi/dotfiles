@@ -10,3 +10,5 @@
 # cash files
 .netrwhist
 .DS_Store
+
+.vscode/extensions

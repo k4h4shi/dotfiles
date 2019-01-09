@@ -1,6 +1,17 @@
 # enviroment var
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
+export PATH=~/Library/Python/2.7/bin:$PATH
+export PATH="/usr/local/sbin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+# Android Studio
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 
 # vim like key bind
 bindkey -v
@@ -60,6 +71,15 @@ bindkey '^]' peco-src
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap 
 fi
+# pure
+# autoload -U promptinit; promptinit
+# prompt pure
+
+# rbenv
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+alias be='bundle exec'
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/"
