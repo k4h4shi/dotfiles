@@ -46,7 +46,7 @@ git diff --name-only origin/main...HEAD
 
 ## 3. Reporting
 
-Post your review comments to the PR. To avoid shell escaping issues, write the review content to a temporary file first.
+Post your review to the PR using GitHub's review feature (NOT `gh pr comment`).
 
 1.  **Write Review to File**:
     ```bash
@@ -55,10 +55,22 @@ Post your review comments to the PR. To avoid shell escaping issues, write the r
     # file_path: ./.tmp/review_body.md (Create .tmp directory if missing)
     ```
 
-2.  **Post Comment**:
-    ```bash
-    gh pr review <{args} or PR_NUMBER> --comment --body-file ./.tmp/review_body.md
-    ```
+2.  **Post Review** (重要: `gh pr comment` は使わない):
+
+    - **問題なしの場合**: Approve
+      ```bash
+      gh pr review <PR_NUMBER> --approve --body-file ./.tmp/review_body.md
+      ```
+
+    - **軽微な指摘のみの場合**: Comment (改善提案)
+      ```bash
+      gh pr review <PR_NUMBER> --comment --body-file ./.tmp/review_body.md
+      ```
+
+    - **重要な問題がある場合**: Request Changes
+      ```bash
+      gh pr review <PR_NUMBER> --request-changes --body-file ./.tmp/review_body.md
+      ```
 
 **Write the review comments in JAPANESE.**
 """

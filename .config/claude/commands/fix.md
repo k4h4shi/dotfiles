@@ -61,3 +61,46 @@ When implementation is complete, **BEFORE** attempting to finish:
 git push origin HEAD
 gh pr create --title "feat: Title" --body "Closes #<ISSUE_NUMBER>"
 ```
+
+## 6. Post-PR Workflow (Quality Assurance Loop)
+
+PR作成後、以下のプロセスを**全て問題なくなるまで繰り返す**。
+
+### 6.1 並行タスク（サブエージェントに委譲）
+
+以下の3つを**並行実行**する（各タスク最大15分）:
+
+| タスク | 使用するスキル/エージェント | 内容 |
+|:-------|:---------------------------|:-----|
+| **Geminiレビュー** | `/subagent-review` → `review-checker` | 依頼送信 → 監視 → 指摘対応 |
+| **CI監視** | `ci-debugger` エージェント | `gh pr checks --watch` → 失敗時は修正 |
+| **Codexレビュー** | `review-checker` エージェント | 自動レビュー監視(10分以内) → 指摘対応 |
+
+### 6.2 メインエージェント（並行で実行）
+
+サブエージェント完了を待つ間、以下を実行:
+
+- **整合性確認**: ドキュメント・テスト・実装の整合性をチェック
+- **不整合修正**: 問題があれば修正
+
+### 6.3 ループ判定
+
+```
+if (変更あり) {
+    git add -A && git commit && git push
+    → 6.1 に戻る
+} else if (全サブエージェント成功 && CI通過 && レビュー指摘なし) {
+    → 完了報告してユーザーに通知
+} else {
+    → 6.1 に戻る
+}
+```
+
+### 6.4 完了条件
+
+以下が全て満たされた時点で完了:
+
+- [ ] CI全チェック通過
+- [ ] Geminiレビュー指摘対応完了
+- [ ] Codexレビュー指摘対応完了
+- [ ] ドキュメント・テスト・実装の整合性確認完了
