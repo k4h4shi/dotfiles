@@ -1,0 +1,54 @@
+{
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(/bin/bash *)",
+      "Bash(bash *)",
+      "Bash(cd *)",
+      "Bash(cat *)",
+      "Bash(chmod *)",
+      "Bash(cp *)",
+      "Bash(cargo *)",
+      "Bash(docker *)",
+      "Bash(docker compose:*)",
+      "Bash(find *)",
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(grep *)",
+      "Bash(head *)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(mv *)",
+      "Bash(node *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(pnpm *)",
+      "Bash(pwd)",
+      "Bash(ps *)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(rg *)",
+      "Bash(rustc:*)",
+      "Bash(shellcheck:*)",
+      "Bash(sort *)",
+      "Bash(tail *)",
+      "Bash(touch *)",
+      "Bash(tmux *)",
+      "Bash(uniq *)",
+      "Bash(wc *)",
+      "Bash(xargs:*)",
+      "Bash(yarn *)",
+      "Skill(doc-update)",
+      "Skill(doc-updater)",
+      "Skill(environment-setup)",
+      "Skill(fix)",
+      "Skill(subagent-review)",
+      "Skill(worktree-manager)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
+

@@ -27,6 +27,7 @@ link_dir() {
 link_dir "$ROOT_DIR/.config/claude/agents"   "$HOME/.claude/agents"
 link_dir "$ROOT_DIR/.config/claude/commands" "$HOME/.claude/commands"
 link_dir "$ROOT_DIR/.config/claude/skills"   "$HOME/.claude/skills"
+link_dir "$ROOT_DIR/.config/claude/settings.json" "$HOME/.claude/settings.json"
 
 # Cursor (global commands)
 link_dir "$ROOT_DIR/.config/cursor/commands" "$HOME/.cursor/commands"
