@@ -37,4 +37,7 @@ link_dir "$ROOT_DIR/.config/cursor/rules" "$HOME/.cursor/rules"
 # Gemini CLI (global commands)
 link_dir "$ROOT_DIR/.config/gemini/commands" "$HOME/.gemini/commands"
 
+# Codex CLI (global skills)
+link_dir "$ROOT_DIR/.config/codex/skills" "$HOME/.codex/skills/custom"
+
 echo "done"
