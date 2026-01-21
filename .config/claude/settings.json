@@ -1,7 +1,4 @@
 {
-  "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true
-  },
   "permissions": {
     "allow": [
       "Bash(/bin/bash *)",
@@ -45,10 +42,14 @@
       "Skill(environment-setup)",
       "Skill(fix)",
       "Skill(subagent-review)",
+      "Skill(permissions-sync)",
       "Skill(worktree-manager)",
       "WebSearch",
       "WebFetch(domain:github.com)"
     ]
+  },
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "example-skills@anthropic-agent-skills": true
   }
 }
-
