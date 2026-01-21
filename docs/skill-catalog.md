@@ -1,0 +1,56 @@
+# 推奨スキル一覧 (New Project Bootstrap)
+
+新規プロジェクト参加時に作成すべきスキルの一覧。  
+ここでは **共通エージェント/コマンドが要求するスキル**と、**あると良いスキル**を整理する。
+
+## 1. 現状のエージェント/コマンドが要求するスキル（必須）
+
+### Worker（Claude Code /fix）
+
+- `environment-setup`
+  - リポジトリ初期化（依存関係・DB・.env）
+- `doc-update`
+  - ドキュメント更新マッピング/チェック
+- `tdd-guide`
+  - TDD の具体的なテスト場所/コマンド
+- `ci-debug`
+  - CI 構成とローカル再現コマンド
+
+### Manager（Cursor）
+
+- `plan-guide`
+  - 計画時に参照すべきドキュメント/出力形式
+
+### Reviewer（Gemini CLI /review）
+
+- `review-guidelines`（または `project-guidelines`）
+  - レビュー観点、参照ドキュメント、出力テンプレ
+
+### Worktree 周り
+
+- `worktree-management`
+  - worktree が存在しない場合の作成手順
+
+## 2. あると良いスキル（推奨）
+
+- `build-fix`
+  - ビルド/型エラーの再現と最小修正
+- `e2e-run`
+  - E2E 実行フローとテスト資産の作成規約
+- `refactor-guide`
+  - 安全な削除/整理の手順
+- `architecture`
+  - アーキテクチャの制約・判断基準
+
+## 3. 命名規約
+
+- **スキルは非 `-er` 名**（例: `doc-update`, `ci-debug`, `tdd-guide`）
+- **エージェントは `-er` 名**（例: `doc-updater`, `ci-debugger`, `tdd-runner`）
+
+## 4. 具体化の指針
+
+スキルは **具体性**に寄せる。最低限以下を記載する。
+
+- 参照すべきドキュメント
+- 実行すべきコマンド
+- 失敗時の復旧手順

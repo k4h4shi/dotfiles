@@ -1,0 +1,64 @@
+description = "Review code against project guidelines using worktree. Usage: /review [PR_NUMBER]"
+prompt = """
+# Code Review (Static Analysis)
+
+Perform a static code review for a specific Pull Request using a dedicated worktree.
+**DO NOT delete the worktree or modify code during this command execution.**
+
+## 1. Worktree Setup
+
+1.  **Get PR Info**:
+    ```bash
+    gh pr view <{args} or PR_NUMBER> --json headRefName,baseRefName
+    ```
+    - `headRefName`: The source branch
+    - `baseRefName`: The target branch
+
+2.  **Check Existing Worktree**:
+    - Run `git worktree list` to check if a worktree for `headRefName` already exists.
+    - **If it exists**: Use the existing worktree to continue the review.
+    - **If it does not exist**: Proceed to create a new worktree.
+
+3.  **Create Worktree (Only if needed)**:
+    - Use `worktree-manager` agent.
+    - **Branch**: Use the `headRefName` obtained above.
+    - **Base**: Use the `baseRefName` (usually `origin/main`).
+    - **Note**: Since this is for static review only, you can skip environment setup unless deep analysis is required (use `environment-setup` skill if needed).
+
+4.  **Switch Context**:
+    ```bash
+    cd .worktrees/<branch-name>
+    ```
+
+## 2. Review Process
+
+Analyze the code based on project guidelines.
+
+- First read `AGENTS.md`, `docs/`, and `.cursor/rules/` (if present).
+- If `.gemini/skills/` includes review guidance, follow it.
+
+### Analysis Commands
+
+```bash
+# Get the list of changed files
+git diff --name-only origin/main...HEAD
+```
+
+## 3. Reporting
+
+Post your review comments to the PR. To avoid shell escaping issues, write the review content to a temporary file first.
+
+1.  **Write Review to File**:
+    ```bash
+    # Use `write_file` tool
+    # content: Review content in Markdown
+    # file_path: ./.tmp/review_body.md (Create .tmp directory if missing)
+    ```
+
+2.  **Post Comment**:
+    ```bash
+    gh pr review <{args} or PR_NUMBER> --comment --body-file ./.tmp/review_body.md
+    ```
+
+**Write the review comments in JAPANESE.**
+"""
