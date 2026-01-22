@@ -23,7 +23,7 @@
           modules = [ ./modules/home.nix ];
           extraSpecialArgs = {
             username = "takahashikotaro";
-            homeDirectory = "$HOME";
+            homeDirectory = "/Users/takahashikotaro";
           };
         };
 
