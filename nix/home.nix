@@ -38,9 +38,11 @@ in
   # Git
   programs.git = {
     enable = true;
-    userName = "Kotaro Takahashi";
-    userEmail = "kotaro.t@k4h4shi.com";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Kotaro Takahashi";
+        email = "kotaro.t@k4h4shi.com";
+      };
       init.defaultBranch = "main";
       pull.rebase = false;
     };
@@ -63,7 +65,7 @@ in
       gp = "git push";
     };
 
-    initExtra = ''
+    initContent = ''
       # Homebrew (macOS)
       if [[ -f /opt/homebrew/bin/brew ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
