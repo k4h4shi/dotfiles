@@ -46,31 +46,47 @@ git diff --name-only origin/main...HEAD
 
 ## 3. Reporting
 
-Post your review to the PR using GitHub's review feature (NOT `gh pr comment`).
+**重要**: 必ず `gh pr review` を使用する。`gh pr comment` は絶対に使わない。
 
-1.  **Write Review to File**:
+### 禁止事項
+
+```bash
+# NG: これは使わない
+gh pr comment <PR_NUMBER> --body "..."
+```
+
+### 正しい投稿方法
+
+1.  **レビュー内容をファイルに書き出す**:
     ```bash
-    # Use `write_file` tool
-    # content: Review content in Markdown
-    # file_path: ./.tmp/review_body.md (Create .tmp directory if missing)
+    mkdir -p .tmp
+    # write_file ツールで .tmp/review_body.md に内容を書き出す
     ```
 
-2.  **Post Review** (重要: `gh pr comment` は使わない):
+2.  **`gh pr review` で投稿する**（判断基準に従って選択）:
 
-    - **問題なしの場合**: Approve
-      ```bash
-      gh pr review <PR_NUMBER> --approve --body-file ./.tmp/review_body.md
-      ```
+    | 判断基準 | コマンド |
+    |:---------|:---------|
+    | 問題なし、マージ可能 | `gh pr review <PR_NUMBER> --approve --body-file .tmp/review_body.md` |
+    | **修正が必要**（デフォルト） | `gh pr review <PR_NUMBER> --request-changes --body-file .tmp/review_body.md` |
+    | 参考情報のみ（任意対応） | `gh pr review <PR_NUMBER> --comment --body-file .tmp/review_body.md` |
 
-    - **軽微な指摘のみの場合**: Comment (改善提案)
-      ```bash
-      gh pr review <PR_NUMBER> --comment --body-file ./.tmp/review_body.md
-      ```
+    ### 判断基準の詳細
 
-    - **重要な問題がある場合**: Request Changes
-      ```bash
-      gh pr review <PR_NUMBER> --request-changes --body-file ./.tmp/review_body.md
-      ```
+    **`--request-changes` を使う場合（指摘があればこれがデフォルト）**:
+    - バグ、ロジックの誤り
+    - セキュリティ問題
+    - 仕様・要件との不整合
+    - テスト不足
+    - 破壊的変更
+
+    **`--comment` を使う場合（稀）**:
+    - 純粋なコードスタイルの提案（機能に影響なし）
+    - 将来の改善提案（今回のスコープ外）
+    - 質問のみ
+
+    **`--approve` を使う場合**:
+    - 上記の問題が一切ない
 
 **Write the review comments in JAPANESE.**
 """

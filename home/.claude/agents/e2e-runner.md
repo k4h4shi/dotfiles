@@ -19,6 +19,27 @@ model: opus
 
 ## Output
 
-- 対象フロー一覧
-- 追加/更新したテスト
-- 実行結果と失敗原因
+```markdown
+## E2E Test Result
+
+### Status
+[success/partial/failed]
+
+### Summary
+[何を実行したか1-2文で]
+
+### Target Flows
+- [フロー1]
+- [フロー2]
+
+### Changes
+- path/to/test
+
+### Test Result
+- Total: N
+- Passed: N
+- Failed: N
+
+### Failures (if any)
+- [テスト名]: [失敗原因]
+```

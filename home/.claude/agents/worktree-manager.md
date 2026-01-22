@@ -45,12 +45,25 @@ git worktree add .worktrees/<safe-branch-name> -b <branch> <base>
 - DB 初期化/スキーマ作成
 - `.env` 生成やポート割り当て
 
-## 5) 出力
-
-- 作成したワークツリーのパス
-- 次の実行コマンド（`cd .worktrees/<branch> && claude`）
-
 ## 安全制約
 
 - `rm -rf` での削除は禁止
 - 削除は `git worktree remove` を使用
+
+## Output
+
+```markdown
+## Worktree Result
+
+### Status
+[created/already_exists/failed]
+
+### Summary
+[何をしたか1文で]
+
+### Worktree Path
+.worktrees/<branch-name>
+
+### Next Command
+cd .worktrees/<branch-name> && claude
+```

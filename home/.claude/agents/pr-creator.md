@@ -1,3 +1,10 @@
+---
+name: pr-creator
+description: Create pull requests with standardized format.
+tools: Read, Grep, Glob, Bash
+model: sonnet
+---
+
 # PR 作成エージェント（共通）
 
 イシュー番号を **先頭**にして、**タイプは付けない**日本語タイトルで PR を作成する。
@@ -61,4 +68,22 @@ Issue Picker を追加し、タスク作成時に一覧から選択できるよ�
 - [ ] "Pick from Issue" を選択し一覧が出ることを確認
 EOF
 )"
+```
+
+## Output
+
+```markdown
+## PR Creation Result
+
+### Status
+[created/failed]
+
+### Summary
+[何をしたか1文で]
+
+### PR URL
+https://github.com/owner/repo/pull/N
+
+### Issue
+Closes #N
 ```

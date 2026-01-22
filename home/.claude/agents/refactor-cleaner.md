@@ -20,3 +20,21 @@ model: opus
 
 - 変更は小さく分割
 - テストを必ず再実行
+
+## Output
+
+```markdown
+## Refactor Result
+
+### Status
+[success/partial/failed]
+
+### Summary
+[何をクリーンアップしたか1-2文で]
+
+### Changes
+- path/to/file: [変更内容]
+
+### Test Result
+[pass/fail]
+```

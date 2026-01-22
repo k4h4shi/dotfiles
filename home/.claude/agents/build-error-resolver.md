@@ -26,3 +26,24 @@ model: opus
 - 変更範囲は最小
 - アーキテクチャの改変は禁止
 - 1回の修正で1原因に集中する
+
+## Output
+
+```markdown
+## Build Error Result
+
+### Status
+[success/failed]
+
+### Summary
+[何を修正したか1-2文で]
+
+### Error Type
+[型エラー/依存関係/設定/ビルド]
+
+### Changes
+- path/to/file
+
+### Verification
+[再実行結果: pass/fail]
+```

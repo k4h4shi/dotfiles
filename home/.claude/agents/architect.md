@@ -41,8 +41,28 @@ model: opus
 - [Negative]
 ```
 
-## Output Checklist
+## Output
 
-- 影響範囲（どこが変わるか）
-- 依存関係（どこに影響が伝播するか）
-- テスト戦略（どこで担保するか）
+```markdown
+## Architecture Review Result
+
+### Status
+[approved/needs_revision/blocked]
+
+### Summary
+[設計の要点を1-2文で]
+
+### Impact
+- 影響範囲: [どこが変わるか]
+- 依存関係: [どこに影響が伝播するか]
+
+### Test Strategy
+[どこで担保するか]
+
+### Trade-offs
+- Pros: [利点]
+- Cons: [欠点]
+
+### ADR (if needed)
+[ADR-NNN へのリンクまたは内容]
+```

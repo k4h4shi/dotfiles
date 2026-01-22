@@ -84,27 +84,34 @@ PR作成後、以下のプロセスを**全て問題なくなるまで繰り返�
 - **整合性確認**: ドキュメント・テスト・実装の整合性をチェック
 - **不整合修正**: 問題があれば修正
 
-### 6.3 ループ判定
+### 6.3 完了判定
+
+以下のコマンドで各条件をチェック:
+
+```bash
+# CI チェック
+gh pr checks --json name,state,conclusion | jq -e 'all(.conclusion == "success")'
+
+# 未解決レビューコメント
+gh api repos/{owner}/{repo}/pulls/{pr}/comments --jq '[.[] | select(.position != null)] | length' | grep -q '^0$'
+
+# 未マージのレビュー要求
+gh pr view --json reviewDecision --jq '.reviewDecision' | grep -qE '^(APPROVED|null)$'
+```
+
+### 6.4 ループ制御
 
 ```
-if (変更あり) {
-    git add -A && git commit && git push
-    → 6.1 に戻る
-} else if (全サブエージェント成功 && CI通過 && レビュー指摘なし) {
-    → 完了報告してユーザーに通知
-} else {
-    → 6.1 に戻る
-}
-```
-
-### 6.4 完了条件
-
-以下が全て満たされた時点で完了:
-
-- [ ] CI全チェック通過
-- [ ] Geminiレビュー指摘対応完了
-- [ ] Codexレビュー指摘対応完了
-- [ ] ドキュメント・テスト・実装の整合性確認完了
+1. 6.1 の並行タスクを実行
+2. 各エージェントの Output を収集
+3. 変更があれば:
+   - git add -A && git commit && git push
+   - → 1 に戻る（最大 5 回）
+4. 完了判定:
+   - CI 全通過 AND 未解決コメント 0 AND レビュー承認済み or 不要
+   - → 完了
+5. 5 回ループしても完了しない場合:
+   - 現状をユーザーに報告して判断を仰ぐ
 
 ## 7. Session Retrospective
 
