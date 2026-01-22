@@ -19,7 +19,7 @@ strategy = "spawn"
 
 # Command to run for spawn strategy
 # Use ghostty-tab script to open in new tab
-command = "$HOME/.local/bin/ghostty-tab"
+command = "ghostty-tab"
 
 # Arguments for the spawn command
 # Use {session_id} as placeholder for the target session name
