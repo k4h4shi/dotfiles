@@ -25,7 +25,9 @@ dotfiles/
 │   ├── claude/
 │   ├── cursor/
 │   └── gemini/
+├── .gitconfig
 ├── .vive/
+├── .zshenv
 ├── .zshrc
 └── bin/
 ```
