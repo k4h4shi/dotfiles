@@ -1,6 +1,6 @@
 # dotfiles
 
-個人環境の設定はこのリポジトリで管理する。
+Nix + home-manager で管理する個人環境。
 
 ## インストール
 
@@ -10,37 +10,68 @@ cd dotfiles
 ./install.sh
 ```
 
-## 方針
-
-- プロジェクト固有の設定は各リポジトリ内で管理する
-- 個人レベルの設定は `dotfiles` に集約する
-- Claude/Cursor/Gemini などの AI 支援設定も個人環境の一部として管理する
-- コマンドは共通化し、エージェント/スキルで差分を吸収する
-
-## ドキュメント
-
-- [共通開発プロセス](docs/development-process.md)
-- [推奨スキル一覧](docs/skill-catalog.md)
+初回実行時にNixがインストールされる。シェルを再起動後、再度 `./install.sh` を実行。
 
 ## 構成
 
 ```
 dotfiles/
 ├── .claude/          # このリポジトリ用（展開しない）
-├── home/             # ~ に展開
+├── nix/
+│   ├── flake.nix     # エントリーポイント
+│   └── home.nix      # home-manager設定
+├── home/             # AI設定ファイル（Nixから参照）
 │   ├── .claude/
 │   ├── .codex/
 │   ├── .cursor/
 │   ├── .gemini/
-│   ├── .gitconfig
-│   ├── .vive/
-│   ├── .zshenv
-│   └── .zshrc
+│   └── .vive/
 ├── docs/
 ├── install.sh
 └── README.md
 ```
 
+## 管理対象
+
+### Nixで管理（パッケージ + 設定）
+
+- Git（設定含む）
+- Zsh（エイリアス、PATH設定含む）
+- 開発ツール（gh, jq, ripgrep, fzf, tmux, etc.）
+- 言語ランタイム（Node.js, Rust, Python, Ruby）
+
+### ファイルで管理（home/）
+
+- Claude Code（agents, commands, skills, settings.json）
+- Cursor（commands, rules）
+- Gemini CLI（commands）
+- Codex CLI（skills）
+- Vive（config.toml, favorites.toml）
+
+## 手動更新
+
+設定を変更した後:
+
+```bash
+cd dotfiles/nix
+nix run home-manager -- switch --flake .#takahashikotaro
+```
+
+## 新しいマシンで使う場合
+
+1. リポジトリをクローン
+2. `./install.sh` 実行（Nixがインストールされる）
+3. シェル再起動
+4. `./install.sh` 再実行（home-managerが適用される）
+
+## 方針
+
+- 宣言的に環境を管理（Nix）
+- AI支援ツールの設定は `home/` に集約
+- プロジェクト固有の設定は各リポジトリで管理
+
 ## 参考
 
+- [Nix](https://nixos.org/)
+- [home-manager](https://github.com/nix-community/home-manager)
 - [AIコーディングエージェント時代になぜ私は dotfiles を育てるのか](https://i9wa4.github.io/blog/2026-01-08-why-dotfiles-still-matters-to-me.html)
