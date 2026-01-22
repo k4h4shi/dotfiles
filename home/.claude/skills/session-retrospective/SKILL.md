@@ -148,21 +148,24 @@ cat ~/.claude/debug/${SESSION_ID}.txt 2>/dev/null
 
 ### Step 4: レポートを作成・保存
 
-**重要**: レポートは**メインリポジトリ**の `.claude/retrospectives/<SESSION_ID>.md` に保存する。
+**重要**: レポートは**メインリポジトリ**の `.claude/retrospectives/<BRANCH_NAME>.md` に保存する。
 worktree で作業している場合も、メインリポジトリに保存することで、worktree 削除後もレポートが残る。
 
 ```bash
 # メインリポジトリのルートを取得（worktree対応）
 MAIN_REPO=$(dirname "$(git rev-parse --git-common-dir)")
 mkdir -p "${MAIN_REPO}/.claude/retrospectives"
-# レポートは ${MAIN_REPO}/.claude/retrospectives/<SESSION_ID>.md に保存
+
+# ブランチ名を取得（スラッシュはハイフンに変換）
+BRANCH_NAME=$(git branch --show-current | tr '/' '-')
+# レポートは ${MAIN_REPO}/.claude/retrospectives/${BRANCH_NAME}.md に保存
 ```
 
 ```markdown
-# Session Retrospective: <SESSION_ID>
+# Session Retrospective: <BRANCH_NAME>
 
 **Date**: YYYY-MM-DD HH:mm
-**Project**: `/path/to/project`
+**Branch**: `<BRANCH_NAME>`
 
 ## Session Summary
 
