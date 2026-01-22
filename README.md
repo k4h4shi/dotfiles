@@ -17,8 +17,9 @@ cd dotfiles
 ```
 dotfiles/
 ├── .claude/          # このリポジトリ用（展開しない）
-├── nix/
-│   ├── flake.nix     # エントリーポイント
+├── flake.nix         # Nixエントリーポイント
+├── flake.lock
+├── modules/
 │   └── home.nix      # home-manager設定
 ├── home/             # AI設定ファイル（Nixから参照）
 │   ├── .claude/
@@ -53,7 +54,7 @@ dotfiles/
 設定を変更した後:
 
 ```bash
-cd dotfiles/nix
+cd dotfiles
 nix run home-manager -- switch --flake .#takahashikotaro
 ```
 

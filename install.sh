@@ -36,7 +36,7 @@ fi
 
 # 3. home-managerでセットアップ
 echo "==> Running home-manager switch..."
-cd "$DOTFILES/nix"
+cd "$DOTFILES"
 
 # 設定名を決定
 CONFIG_NAME="${USER:-default}"

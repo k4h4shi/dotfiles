@@ -20,7 +20,7 @@
         # macOS (Apple Silicon)
         "takahashikotaro" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-          modules = [ ./home.nix ];
+          modules = [ ./modules/home.nix ];
           extraSpecialArgs = {
             username = "takahashikotaro";
             homeDirectory = "$HOME";
@@ -30,7 +30,7 @@
         # 汎用設定（新しいマシン用）
         "default" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-          modules = [ ./home.nix ];
+          modules = [ ./modules/home.nix ];
           extraSpecialArgs = {
             username = builtins.getEnv "USER";
             homeDirectory = builtins.getEnv "HOME";
