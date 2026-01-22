@@ -11,8 +11,9 @@ This command defines a **common interface**. Project-specific behavior is provid
 1.  **Understand the Requirement**: Read the issue and the project's docs.
 2.  **Worktree is created by Vive** for the task.
     - If it does not exist, refer to the `worktree-management` skill and create it.
-3.  **Project Initialization** (if needed):
-    - Use the `environment-setup` skill for project-specific setup (deps/DB/env).
+3.  **Project Initialization**:
+    - **New worktree**: Run `environment-setup` skill (deps/DB/env).
+    - **Existing worktree**: Skip if `.env` exists and deps are installed.
 
 4.  **Switch Context**:
     - Change directory to the task's worktree.
