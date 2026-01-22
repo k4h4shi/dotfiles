@@ -27,13 +27,13 @@
           };
         };
 
-        # 汎用設定（新しいマシン用）
+        # デフォルト設定（takahashikotaro と同じ）
         "default" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin;
           modules = [ ./modules/home.nix ];
           extraSpecialArgs = {
-            username = builtins.getEnv "USER";
-            homeDirectory = builtins.getEnv "HOME";
+            username = "takahashikotaro";
+            homeDirectory = "/Users/takahashikotaro";
           };
         };
       };
