@@ -2,7 +2,7 @@
 # See https://github.com/k4h4shi/vive for documentation
 
 # Directory to scan for projects (defaults to ~/src if not set)
-# projects_root = "/path/to/your/projects"
+# projects_root = "./src/github"
 
 # Directories to exclude from scanning
 ignored_dirs = [".git", "node_modules", ".worktrees", "target", "dist"]

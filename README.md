@@ -2,6 +2,14 @@
 
 個人環境の設定はこのリポジトリで管理する。
 
+## インストール
+
+```bash
+git clone https://github.com/k4h4shi/dotfiles.git
+cd dotfiles
+./install.sh
+```
+
 ## 方針
 
 - プロジェクト固有の設定は各リポジトリ内で管理する
@@ -12,24 +20,25 @@
 ## ドキュメント
 
 - [共通開発プロセス](docs/development-process.md)
-- [mechanix 並行作業手順](docs/mechanix-parallel-worktree-setup.md)
 - [推奨スキル一覧](docs/skill-catalog.md)
 
-## 管理対象 (個人設定)
-
-例:
+## 構成
 
 ```
 dotfiles/
-├── .config/
-│   ├── claude/
-│   ├── cursor/
-│   └── gemini/
-├── .gitconfig
-├── .vive/
-├── .zshenv
-├── .zshrc
-└── bin/
+├── .claude/          # このリポジトリ用（展開しない）
+├── home/             # ~ に展開
+│   ├── .claude/
+│   ├── .codex/
+│   ├── .cursor/
+│   ├── .gemini/
+│   ├── .gitconfig
+│   ├── .vive/
+│   ├── .zshenv
+│   └── .zshrc
+├── docs/
+├── install.sh
+└── README.md
 ```
 
 ## 参考
