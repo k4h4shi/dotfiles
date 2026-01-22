@@ -1,0 +1,5 @@
+projects = [
+    "dotfiles",
+    "vive",
+    "mechanix",
+]
