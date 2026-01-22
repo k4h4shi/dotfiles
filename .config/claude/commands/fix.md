@@ -109,11 +109,12 @@ if (変更あり) {
 
 **全ての作業が完了したら**、セッションの振り返りを実行する。
 
-`/subagent-retrospective` スキルを呼び出し、Gemini にこのセッションを分析させる:
+`/session-retrospective` スキルを呼び出し、このセッションを分析する:
 
 - 許可待ちの削減提案
 - Memory / Rules の改善提案
 - Skills / Agents の作成提案
 - Hooks の追加提案
 
+レポートは `.claude/retrospectives/` に保存される（リポジトリローカル）。
 改善提案があれば、ユーザーに報告して次回以降の効率化につなげる。

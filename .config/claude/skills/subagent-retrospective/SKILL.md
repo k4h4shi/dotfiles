@@ -27,17 +27,21 @@ codex exec "/session-retrospective ${CLAUDE_SESSION_ID}"
 
 ### Step 2: レポートを移動
 
-Codex のサンドボックス制限により `/tmp` に保存されるため、正しい場所に移動する:
+Codex のサンドボックス制限により `/tmp` に保存されるため、**メインリポジトリ**の正しい場所に移動する。
+worktree で作業している場合も、メインリポジトリに保存することで、worktree 削除後もレポートが残る。
 
 ```bash
-mkdir -p ~/.claude/retrospectives
-mv /tmp/${CLAUDE_SESSION_ID}.md ~/.claude/retrospectives/
+# メインリポジトリのルートを取得（worktree対応）
+MAIN_REPO=$(dirname "$(git rev-parse --git-common-dir)")
+mkdir -p "${MAIN_REPO}/.claude/retrospectives"
+mv /tmp/${CLAUDE_SESSION_ID}.md "${MAIN_REPO}/.claude/retrospectives/"
 ```
 
 ### Step 3: 結果を確認
 
 ```bash
-cat ~/.claude/retrospectives/${CLAUDE_SESSION_ID}.md
+MAIN_REPO=$(dirname "$(git rev-parse --git-common-dir)")
+cat "${MAIN_REPO}/.claude/retrospectives/${CLAUDE_SESSION_ID}.md"
 ```
 
 ### Step 4: ユーザーに報告
