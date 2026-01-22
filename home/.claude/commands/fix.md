@@ -50,6 +50,7 @@ When implementation is complete, **BEFORE** attempting to finish:
 
 2.  **Run Project Standard Verification**:
     - Follow the project's standard verification steps (pre-commit hooks, lint/test/build).
+    - **IMPORTANT**: Run E2E tests locally and ensure they pass before creating a PR.
 
 3.  **AI Quality Gate**:
     - Now you can safely finish. The system will check:
