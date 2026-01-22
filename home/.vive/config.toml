@@ -24,3 +24,8 @@ command = "ghostty-tab"
 # Arguments for the spawn command
 # Use {session_id} as placeholder for the target session name
 args = ["{session_id}"]
+
+[auto_kickstart]
+# claude "/fix {issue_number}" で起動する
+# {issue_number} はイシュー番号に置換されます
+issue_command = "/fix {issue_number}"
