@@ -27,7 +27,6 @@ dotfiles/
 │   ├── .cursor/
 │   ├── .gemini/
 │   └── .vive/
-├── docs/
 ├── install.sh
 └── README.md
 ```
@@ -40,6 +39,8 @@ dotfiles/
 - Zsh（エイリアス、PATH設定含む）
 - 開発ツール（gh, jq, ripgrep, fzf, tmux, etc.）
 - 言語ランタイム（Node.js, Rust, Python, Ruby）
+- direnv（プロジェクトごとの環境自動切り替え）
+- starship（モダンなプロンプト）
 
 ### ファイルで管理（home/）
 
@@ -58,6 +59,16 @@ cd dotfiles
 nix run home-manager -- switch --flake .#takahashikotaro
 ```
 
+## 開発
+
+このリポジトリを編集する際:
+
+```bash
+nix develop  # または direnv allow
+```
+
+Nix LSP（nil）とフォーマッタ（nixpkgs-fmt）が使える。
+
 ## 新しいマシンで使う場合
 
 1. リポジトリをクローン
@@ -75,4 +86,3 @@ nix run home-manager -- switch --flake .#takahashikotaro
 
 - [Nix](https://nixos.org/)
 - [home-manager](https://github.com/nix-community/home-manager)
-- [AIコーディングエージェント時代になぜ私は dotfiles を育てるのか](https://i9wa4.github.io/blog/2026-01-08-why-dotfiles-still-matters-to-me.html)

@@ -91,6 +91,24 @@ in
   # home-manager自身を管理
   programs.home-manager.enable = true;
 
+  # direnv（プロジェクトごとの環境自動切り替え）
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  # starship（モダンなプロンプト）
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = false;
+      character = {
+        success_symbol = "[›](bold green)";
+        error_symbol = "[›](bold red)";
+      };
+    };
+  };
+
   # AI設定ファイル（シンボリックリンク）
   home.file = {
     # Claude Code

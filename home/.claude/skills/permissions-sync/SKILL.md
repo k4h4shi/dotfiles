@@ -11,7 +11,7 @@ Claude Code の実行ログ（`~/.claude/debug/*.txt`）を解析し、過去に
 ## ゴール
 
 - **目的**: worktree / リポジトリを跨いでも許可待ちを減らす
-- **正本**: `dotfiles/.config/claude/settings.json`（`~/.claude/settings.json` は symlink 前提）
+- **正本**: `$DOTFILES/home/.claude/settings.json`（home-managerでシンボリックリンク）
 
 ## 手順
 
@@ -35,8 +35,14 @@ PY
 python3 - <<'PY'
 import json, os, glob, re
 
-DOTFILES=os.path.expanduser("~/src/github/k4h4shi/dotfiles")
-TARGET=os.path.join(DOTFILES, ".config/claude/settings.json")
+# dotfilesディレクトリを動的に取得
+settings_link = os.path.expanduser("~/.claude/settings.json")
+if os.path.islink(settings_link):
+    TARGET = os.path.realpath(settings_link)
+else:
+    print("Error: ~/.claude/settings.json is not a symlink")
+    print("Run home-manager switch first")
+    exit(1)
 
 cfg=json.load(open(TARGET))
 cfg.setdefault("permissions", {})
@@ -93,18 +99,20 @@ PY
 ```bash
 python3 - <<'PY'
 import json, os
-TARGET=os.path.expanduser("~/src/github/k4h4shi/dotfiles/.config/claude/settings.json")
+p=os.path.expanduser("~/.claude/settings.json")
+TARGET=os.path.realpath(p)
 json.load(open(TARGET))
 print("OK:", TARGET)
 PY
 ```
 
-### 4. 設定反映（任意）
+### 4. 設定反映
 
-必要なら dotfiles のインストールスクリプトを実行:
+home-manager で再適用:
 
 ```bash
-bash ~/src/github/k4h4shi/dotfiles/bin/install-ai-config.sh
+cd ~/src/github/k4h4shi/dotfiles  # または $DOTFILES
+nix run home-manager -- switch --flake .
 ```
 
 ## 運用メモ

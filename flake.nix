@@ -37,5 +37,27 @@
           };
         };
       };
+
+      # 開発シェル（このリポジトリの編集用）
+      devShells = forAllSystems (system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              nil              # Nix LSP
+              nixpkgs-fmt      # Nixフォーマッタ
+              home-manager     # home-manager CLI
+            ];
+            shellHook = ''
+              echo "dotfiles dev shell"
+              echo "  - nil: Nix LSP"
+              echo "  - nixpkgs-fmt: formatter"
+              echo "  - home-manager: CLI"
+            '';
+          };
+        }
+      );
     };
 }
