@@ -1,5 +1,8 @@
-description = "ローカルでコードレビューを実行し、結果をファイルに出力する。PRへの投稿はしない。Usage: /review [PR_NUMBER]"
-prompt = """
+---
+name: review
+description: PRのコードを静的レビューし、結果をローカルファイルに出力する。Usage: /review [PR_NUMBER]
+---
+
 # ローカルコードレビュー
 
 Pull Requestのコードを静的レビューし、結果を **ローカルファイル** に出力する。
@@ -9,12 +12,8 @@ Pull Requestのコードを静的レビューし、結果を **ローカルフ�
 
 ```bash
 # PR番号が引数で渡されている場合はそれを使用
-PR_NUMBER={args}
-
 # なければ現在のブランチのPRを取得
-if [ -z "$PR_NUMBER" ]; then
-  PR_NUMBER=$(gh pr view --json number -q .number 2>/dev/null)
-fi
+PR_NUMBER=${1:-$(gh pr view --json number -q .number 2>/dev/null)}
 
 # PR情報を取得
 gh pr view $PR_NUMBER --json headRefName,baseRefName,title,body
@@ -62,7 +61,7 @@ git diff --name-only origin/<baseRefName>...HEAD
 - `CLAUDE.md`
 - `docs/` ディレクトリ
 - `.cursor/rules/`
-- `.gemini/instructions.md`
+- `.codex/instructions.md`
 
 ## 5. コードをレビュー
 
@@ -89,7 +88,6 @@ git diff --name-only origin/<baseRefName>...HEAD
 
 ```bash
 mkdir -p .tmp
-# ファイル書き込みツールで .tmp/review_body.md に内容を書き出す
 ```
 
 ### 出力フォーマット
@@ -99,7 +97,7 @@ mkdir -p .tmp
 
 **タイトル**: <PR_TITLE>
 **レビュー日**: <DATE>
-**レビュワー**: Gemini CLI
+**レビュワー**: Codex CLI
 
 ## サマリー
 
@@ -148,12 +146,3 @@ mkdir -p .tmp
 - 指摘数のサマリー
 
 **注意**: このレビュー結果を PR に投稿するかどうかはユーザーの判断に委ねる。
-必要であれば以下のコマンドで投稿可能:
-
-```bash
-# 投稿例（ユーザーが手動で実行する場合）
-gh pr review <PR_NUMBER> --approve --body-file .tmp/review_body.md
-gh pr review <PR_NUMBER> --request-changes --body-file .tmp/review_body.md
-gh pr review <PR_NUMBER> --comment --body-file .tmp/review_body.md
-```
-"""

@@ -82,6 +82,29 @@ Nix LSP（nil）とフォーマッタ（nixpkgs-fmt）が使える。
 - AI支援ツールの設定は `home/` に集約
 - プロジェクト固有の設定は各リポジトリで管理
 
+## AIレビュー運用
+
+Claude/Codex/Gemini によるコードレビューは **ローカル実行** を基本とする。
+
+### 使い方
+
+```bash
+# Codex（デフォルト）
+codex "/review <PR_NUMBER>"
+
+# Gemini
+gemini "/review <PR_NUMBER>"
+
+# Claude 経由（サブエージェントにCodexを呼ぶ）
+claude "/review <PR_NUMBER>"
+```
+
+### 出力
+
+- レビュー結果は `.tmp/review_body.md` に保存
+- PR への自動投稿は行わない（CIを無駄に走らせない）
+- 必要なら手動で `gh pr review` を使って投稿
+
 ## 参考
 
 - [Nix](https://nixos.org/)

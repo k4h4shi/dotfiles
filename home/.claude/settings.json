@@ -14,6 +14,7 @@
       "Bash(echo *)",
       "Bash(find *)",
       "Bash(git *)",
+      "Bash(codex *)",
       "Bash(gemini *)",
       "Bash(gh *)",
       "Bash(grep *)",
