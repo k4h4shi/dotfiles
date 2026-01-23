@@ -4,7 +4,7 @@ description: Fetch all issues, prioritize them, and identify the critical path. 
 
 # Plan & Prioritize Tasks
 
-Use this command to analyze the current project state, prioritize open issues, and determine the critical path for development.
+Use this command to analyze the current project state, prioritize open issues, and design a **parallel sprint plan** (Sprint Goal + Lanes + Critical Path) with a **Sprint Parent Issue**.
 
 ## 1. Fetch Issues
 
@@ -14,9 +14,71 @@ First, fetch all open issues from GitHub to understand the current workload.
 gh issue list --limit 100 --state open --json number,title,labels,updatedAt,assignees
 ```
 
-## 2. Analyze & Prioritize
+## 2. Analyze & Prioritize（スプリントゴール前提）
 
-Based on the fetched issues and the project goals (refer to `docs/` if needed), analyze the tasks.
+Based on the fetched issues and the project goals (refer to repo `AGENTS.md` and SSOT in `docs/` if needed), analyze the tasks.
+
+### 2.1 Sprint Goal（最重要）
+並行開発は迷子になりやすいので、**最初にスプリントゴールを1文で固定**する。
+
+- 例: 「見積の主ラインを前進させる（回帰止血→一覧UX→採番基盤）」
+- ゴールに含めない（Not in sprint）も明記する（“やらないこと”が迷子防止になる）
+
+## 3. Create Sprint Parent Issue（コンテキストの集約点）
+並行実行では「どこに向かっているか」を見失いやすい。
+そのため、スプリント開始時に **スプリント親Issue** を1つ作り、以後の共有コンテキストはそこに集約する。
+
+- 親Issueには以下を含める:
+  - Sprint Goal / Not in sprint / DoD
+  - レーン図（Mermaid）
+  - 進捗更新ログ（完了/追加観点/ブロッカー/方針変更）
+  - レトロの要点（改善1〜3件）
+
+### 作成例
+```bash
+gh issue create --title \"sprint: <プロジェクト名> / <期間 or 連番>\" --body \"$(cat <<'EOF'
+## Sprint Goal
+- Goal: <1文>
+- Not in sprint:
+  - <やらないこと>
+- DoD:
+  - <観測可能な条件>
+
+## Lanes
+```mermaid
+graph LR
+  subgraph \"Lane A: Migration（直列）\"
+    A1[\"#169 ...\"] --> A2[\"#170 ...\"]
+  end
+  subgraph \"Lane B: Regression（並行OK）\"
+    B1[\"#190 ...\"]
+  end
+  subgraph \"Lane C: Feature/UX（並行OK）\"
+    C1[\"#174 ...\"]
+  end
+  subgraph \"Lane D: Enablement（改善）\"
+    D1[\"#194 ...\"]
+    D2[\"#195 ...\"]
+  end
+```
+
+## Updates（随時追記）
+- YYYY-MM-DD: kickoff
+
+## Retro（スプリント末に追記）
+- TBD
+EOF
+)\"
+```
+
+## 4. Design Lanes（並行実行の設計）
+Issueをレーンに割り当てる。特に **Migration系は直列（1本）** を徹底する。
+
+推奨レーン:
+- Lane A: Migration（直列）
+- Lane B: Regression / Follow-ups（並行OK）
+- Lane C: Feature / UX（並行OK）
+- Lane D: Enablement（改善・並行OK、1〜3件に絞る）
 
 ### Output Format
 
@@ -25,39 +87,42 @@ Output the analysis in the following markdown format:
 ```markdown
 # Project Plan Analysis
 
+## 0. Sprint Goal
+- **Goal**: <1文>
+- **Not in sprint**:
+  - <やらないこと>
+- **Definition of Done (DoD)**:
+  - <観測可能な完了条件（PR/テスト/画面/仕様更新）>
+
 ## 1. Parallel Execution Map
 
-依存関係を分析し、並行実装可能なタスクを Mermaid 図で示す。
+依存関係を分析し、レーン（Lane）で Mermaid 図を示す。
 
 \`\`\`mermaid
 graph LR
-    subgraph "Phase 1 (並行実装可能)"
-        A["#101 Feature A"]
-        B["#102 Feature B"]
-        C["#103 Refactor C"]
-    end
-
-    subgraph "Phase 2 (Phase 1 完了後)"
-        D["#104 Integration"]
-    end
-
-    subgraph "Phase 3"
-        E["#105 E2E Tests"]
-    end
-
-    A --> D
-    B --> D
-    C --> D
-    D --> E
+  subgraph "Lane A: Migration（直列）"
+    A1["#169 ..."] --> A2["#170 ..."]
+  end
+  subgraph "Lane B: Regression（並行OK）"
+    B1["#190 ..."]
+  end
+  subgraph "Lane C: Feature/UX（並行OK）"
+    C1["#174 ..."]
+  end
+  subgraph "Lane D: Enablement（改善）"
+    D1["#194 ..."]
+    D2["#195 ..."]
+  end
 \`\`\`
 
 **並行実装の判断基準**:
 - 同一ファイルを編集しない
 - 依存する機能がない
 - 独立してテスト可能
+- Migration/採番/DBなど“波及する基盤”は同時に走らせない
 
 ## 2. Critical Path
-- **Goal**: [Current Milestone/Goal]
+- **Goal**: [Sprint Goal]
 - **Blocking**: [List of blocking issues]
 - **Path**: [Issue A] -> [Issue B] -> [Goal]
 
@@ -72,9 +137,32 @@ graph LR
 - **Parallel Tasks**: [List issues that can be implemented in parallel using worktrees]
 - **Next Action**: [What to do next]
 - **Missing Tasks**: [Any necessary tasks not yet tracked as issues]
+
+## 5. Context Sharing Policy（Issueコメントで残すべき最小情報）
+並行実行の迷子防止のため、次を徹底する。
+
+1) **共有すべきコンテキストは親Issueに集約**して随時コメントする（/status 相当）。  
+2) 各子Issueは「親Issueへの紐付け」だけを必ず残す（最小）。
+
+### 子Issueの最小コメント（紐付け）
+```bash
+gh issue comment <CHILD_ISSUE_NUMBER> --body \"Parent sprint: #<PARENT_ISSUE_NUMBER>\"
 ```
 
-## 3. Action
+### 親Issueへの状況更新（例）
+```bash
+gh issue comment <PARENT_ISSUE_NUMBER> --body \"$(cat <<'EOF'
+## Update YYYY-MM-DD
+- Done: #190（選択UIの欠落防止）PR #...
+- New context: <追加で分かった仕様/衝突>
+- Blockers: <詰まり>
+- Next: <次の一手>
+EOF
+)\"
+```
+```
+
+## 6. Action
 
 Ask the user if they want to:
 1. Create new issues for missing tasks (using `gh issue create`).

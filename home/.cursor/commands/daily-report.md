@@ -6,6 +6,11 @@ description: Generate a daily report based on GitHub activity (Closed Issues & M
 
 Generate a daily report file in `docs/research/YYYYMMDD_daily_report.md` summarizing today's GitHub activities.
 
+In parallel sprint mode, also summarize:
+- Sprint Goal (current)
+- Lane status (what moved / what is blocked)
+- Enablement progress (improvements shipped)
+
 ## Steps
 
 1.  **Fetch Activity Data**:
@@ -55,4 +60,5 @@ Generate a daily report file in `docs/research/YYYYMMDD_daily_report.md` summari
     - Read the drafted `$REPORT_FILE`.
     - Based on the titles of issues and PRs, and recent context, **rewrite the "Highlights" section** to provide a meaningful summary.
     - Categorize the tasks if possible (e.g., Features, Fixes, Docs).
+    - Add a short section: **Sprint Goal / Lane progress / Blockers** (1-3 bullets each).
     - **Display the path of the generated file** to the user.
