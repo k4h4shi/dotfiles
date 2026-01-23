@@ -11,13 +11,26 @@ This command defines a **common interface**. Project-specific behavior is provid
 1.  **Understand the Requirement**: Read the issue and the project's docs.
 2.  **Worktree is created by Vive** for the task.
     - If it does not exist, refer to the `worktree-management` skill and create it.
-3.  **Project Initialization**:
+3.  **Switch Context**:
+    - Change directory to the task's worktree.
+    - **IMPORTANT**: All subsequent commands must be run INSIDE this worktree directory.
+4.  **Project Initialization** (if needed):
     - **New worktree**: Run `environment-setup` skill (deps/DB/env).
     - **Existing worktree**: Skip if `.env` exists and deps are installed.
 
-4.  **Switch Context**:
-    - Change directory to the task's worktree.
-    - **IMPORTANT**: All subsequent commands must be run INSIDE this worktree directory.
+### 1.1 環境構築後の確認（アイドリング防止）
+
+`environment-setup` 完了後、**必ず以下を確認してから次に進む**:
+
+| 確認項目 | コマンド例 | 問題時の対処 |
+|----------|-----------|-------------|
+| 開発サーバー起動 | `npm run dev` / `pnpm dev` | ログを確認、依存関係を再インストール |
+| ポート競合 | `lsof -i :3000` | `kill -9 <PID>` または `.env` でポート変更 |
+| DB接続 | `docker compose ps` / `pg_isready` | コンテナ起動、認証情報確認 |
+| スキーマ適用 | `npx prisma migrate status` | `npx prisma migrate dev` |
+| テスト実行 | `npm test` | エラーログを確認 |
+
+**確認完了後、即座に Section 2 (Planning & Design) に進むこと。**
 
 ## 2. Planning & Design (Self-Correction)
 
