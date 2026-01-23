@@ -21,10 +21,10 @@ allowed-tools: Bash
     - **コマンド**:
       ```bash
       # セッションID指定あり
-      gemini "/session-retrospective <SESSION_ID>" --yolo
+      gemini --include-directories "$HOME/.claude/projects" --include-directories "$HOME/.claude/debug" "/session-retrospective <SESSION_ID>" --yolo
 
       # セッションID指定なし（最新セッションを自動検出）
-      gemini "/session-retrospective" --yolo
+      gemini --include-directories "$HOME/.claude/projects" --include-directories "$HOME/.claude/debug" "/session-retrospective" --yolo
       ```
 
 3.  **報告**:

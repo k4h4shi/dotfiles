@@ -1,4 +1,4 @@
-description = "【詳細版】セッション分析＆設定改善提案。軽量版は /retro。Usage: /session-retrospective [SESSION_ID]"
+description = "【詳細版】セッション分析＆設定改善提案。Usage: /session-retrospective [SESSION_ID]"
 prompt = """
 # Session Retrospective（詳細版）
 
@@ -30,14 +30,14 @@ prompt = """
 
 ### Step 1: 対象セッションを特定
 
-**引数**: `{{args}}` にセッション ID が渡される（例: `/session-retrospective abc-123-def`）
+**引数**: `{args}` にセッション ID が渡される（例: `/session-retrospective abc-123-def`）
 
 1. 引数でセッション ID が指定されていればそれを使用
 2. 指定がなければ、カレントプロジェクトの最新セッションを使用
 
 ```bash
 # 引数からセッション ID を取得（なければ最新を探す）
-SESSION_ID="{{args}}"
+SESSION_ID="{args}"
 
 if [ -z "$SESSION_ID" ]; then
   PROJECT_DIR_NAME=$(pwd | sed 's|/|-|g')
