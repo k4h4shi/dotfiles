@@ -1,6 +1,6 @@
 ---
 name: session-retrospective
-description: Claude Codeのセッションを分析し、設定改善案（permissions/memory/rules/skills/agents/hooks）を提案する。完了セッションの振り返り時に使用する。トリガー例: retrospective / session analysis / improve Claude config / セッションID指定。
+description: "Claude Codeのセッションを分析し、設定改善案（permissions/memory/rules/skills/agents/hooks）を提案する。完了セッションの振り返り時に使用する。トリガー例: retrospective / session analysis / improve Claude config / セッションID指定。"
 ---
 
 # Session Retrospective

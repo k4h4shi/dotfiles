@@ -30,34 +30,59 @@ prompt = """
 
 ### Step 1: 対象セッションを特定
 
-**引数**: `{args}` にセッション ID が渡される（例: `/session-retrospective abc-123-def`）
+**引数**: `{{args}}` にセッション ID が渡される（例: `/session-retrospective abc-123-def`）
 
-1. 引数でセッション ID が指定されていればそれを使用
-2. 指定がなければ、カレントプロジェクトの最新セッションを使用
+- `{{args}}` が空なら **最新セッション** を自動選択
+- `{{args}}` があれば **該当セッション** を検索
 
-```bash
-# 引数からセッション ID を取得（なければ最新を探す）
-SESSION_ID="{args}"
-
-if [ -z "$SESSION_ID" ]; then
-  PROJECT_DIR_NAME=$(pwd | sed 's|/|-|g')
-  SESSION_FILE=$(ls -t ~/.claude/projects/${PROJECT_DIR_NAME}*/*.jsonl 2>/dev/null | head -1)
-  SESSION_ID=$(basename "$SESSION_FILE" .jsonl)
-fi
-
-# セッションファイルを探す
-SESSION_FILE=$(find ~/.claude/projects -name "${SESSION_ID}.jsonl" 2>/dev/null | head -1)
-```
+> Gemini CLI では、プロンプト中の `!{...}` がローカルで実行され、その出力がこのプロンプトに注入されます。
+> ここでは `~/.claude/projects` と `~/.claude/debug` を直接読んで分析対象のログを注入します。
 
 ### Step 2: セッションログを読み込む
 
-```bash
-# セッションファイル（JSONL形式）
-cat "$SESSION_FILE"
+以下はローカルから注入したセッションログです（この内容を根拠に分析してください）:
 
-# デバッグログ（あれば）
-cat ~/.claude/debug/${SESSION_ID}.txt 2>/dev/null
-```
+!{python3 - {{args}} <<'PY'
+import glob
+import os
+import sys
+
+sid = sys.argv[1].strip() if len(sys.argv) > 1 else ""
+projects_dir = os.path.expanduser("~/.claude/projects")
+debug_dir = os.path.expanduser("~/.claude/debug")
+
+session_file = ""
+if sid:
+    matches = glob.glob(os.path.join(projects_dir, "**", f"{sid}.jsonl"), recursive=True)
+    session_file = matches[0] if matches else ""
+else:
+    matches = glob.glob(os.path.join(projects_dir, "*", "*.jsonl"))
+    matches.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+    session_file = matches[0] if matches else ""
+
+print("SESSION_FILE:", session_file)
+if not session_file:
+    print("ERROR: session file not found")
+    raise SystemExit(0)
+
+session_id = os.path.splitext(os.path.basename(session_file))[0]
+print("SESSION_ID:", session_id)
+print("")
+print("---- SESSION_JSONL_BEGIN ----")
+with open(session_file, "r", encoding="utf-8", errors="ignore") as f:
+    print(f.read())
+print("---- SESSION_JSONL_END ----")
+
+debug_file = os.path.join(debug_dir, f"{session_id}.txt")
+print("")
+print("---- DEBUG_LOG_BEGIN ----")
+if os.path.exists(debug_file):
+    with open(debug_file, "r", encoding="utf-8", errors="ignore") as f:
+        print(f.read())
+else:
+    print("(debug log not found)")
+print("---- DEBUG_LOG_END ----")
+PY}
 
 ### Step 3: 分析と改善提案
 
@@ -134,7 +159,7 @@ cat ~/.claude/debug/${SESSION_ID}.txt 2>/dev/null
 
 ### Step 4: レポートを作成・保存
 
-`~/.claude/retrospectives/<SESSION_ID>.md` に保存:
+このコマンドは **標準出力に Markdown レポートとして出力**してください（ファイル保存は呼び出し側でリダイレクトして行う想定）。
 
 ```markdown
 # Session Retrospective: <SESSION_ID>

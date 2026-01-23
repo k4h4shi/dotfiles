@@ -1,6 +1,6 @@
 ---
 name: review
-description: PRのコードを静的レビューし、結果をローカルファイルに出力する。Usage: /review [PR_NUMBER]
+description: "PRのコードを静的レビューし、結果をローカルファイルに出力する。Usage: /review [PR_NUMBER]"
 ---
 
 # ローカルコードレビュー

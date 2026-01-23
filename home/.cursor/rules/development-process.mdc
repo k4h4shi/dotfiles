@@ -88,3 +88,37 @@ alwaysApply: true
 - **Claude Code の承認負荷**: 設定と運用で承認頻度を減らす
 - **Vive の状態検知精度**: 監視ロジックを継続的に改善する
 - **並行実行の安定化**: 作業単位を小さく保ち、衝突を避ける
+
+## AIエージェント間の委譲（CLI）デフォルト
+
+エージェント間委譲（例: Claude → Codex/Gemini）は「**結果を返す**」ことをデフォルトにする。
+単にCLIを起動して待機/保存先だけ案内する運用にしない。
+
+### 基本方針
+
+- **stdout で返す**: 原則として「結果は標準出力に返す」形にする（ファイル経由 + `cat` を避ける）
+- **非対話で実行**: TTY 依存の呼び出しを避け、headless/exec モードを使う
+- **権限は最小化**: `danger-full-access` は原則使わず、必要最小限の read 権限だけを追加する
+
+### Codex CLI（推奨）
+
+委譲は `codex exec` を使い、`--output-last-message -` で **最終メッセージを stdout に返す**:
+
+```bash
+codex exec -s workspace-write -c 'sandbox_permissions=["disk-full-read-access"]' \
+  --output-last-message - \
+  "<PROMPT>"
+```
+
+例:
+
+```bash
+codex exec -s workspace-write -c 'sandbox_permissions=["disk-full-read-access"]' \
+  --output-last-message - \
+  "/review 123"
+```
+
+### Gemini CLI（注意）
+
+Gemini の `~/.gemini/commands/*.toml` のような「コマンド解釈」は挙動が環境依存になりやすい。
+委譲タスクでは「結果が stdout で返る」ことを最優先にし、必要なら明示的に headless モードを使う。

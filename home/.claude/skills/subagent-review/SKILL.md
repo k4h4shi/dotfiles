@@ -28,7 +28,10 @@ allowed-tools: Bash
     ### Codex（デフォルト）
 
     ```bash
-    codex "/review <PR_NUMBER>" --full-auto
+    # 結果は stdout に返す（ファイル経由にしない）
+    codex exec -s workspace-write -c 'sandbox_permissions=["disk-full-read-access"]' \
+      --output-last-message - \
+      "/review <PR_NUMBER>"
     ```
 
     ### Gemini（ユーザー指定時）
