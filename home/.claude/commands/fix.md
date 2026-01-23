@@ -72,6 +72,37 @@ When implementation is complete, **BEFORE** attempting to finish:
 
 ## 5. Push & PR
 
+### 5.1 コンフリクトチェック（必須）
+
+push前に必ずmainブランチとの差分を確認する:
+
+```bash
+git fetch origin
+git merge-base --is-ancestor origin/main HEAD
+```
+
+- **成功（exit 0）**: mainの内容がHEADに含まれている → そのままpush可能
+- **失敗（exit 1）**: mainが先に進んでいる → rebaseが必要
+
+### 5.2 コンフリクト解消
+
+上記チェックが失敗した場合、**`rebase-resolver` エージェントを呼び出す**:
+
+```
+rebase-resolver エージェントを使って、origin/main とのコンフリクトを解消してください。
+```
+
+エージェントが以下を実行:
+1. `git rebase origin/main`
+2. コンフリクト解消
+3. 再生成（prisma generate等）
+4. ローカル検証（lint/test/build）
+5. `git push --force-with-lease`
+
+### 5.3 PR作成
+
+コンフリクトがない、または解消後にPRを作成:
+
 ```bash
 git push origin HEAD
 gh pr create --title "feat: Title" --body "Closes #<ISSUE_NUMBER>"
