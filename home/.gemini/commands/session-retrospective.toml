@@ -1,8 +1,10 @@
-description = "Analyze a single Claude Code session and suggest configuration improvements. Usage: /session-retrospective [SESSION_ID]"
+description = "【詳細版】セッション分析＆設定改善提案。軽量版は /retro。Usage: /session-retrospective [SESSION_ID]"
 prompt = """
-# Session Retrospective
+# Session Retrospective（詳細版）
 
 特定の Claude Code セッションを分析し、設定改善を提案するコマンド。
+
+> **Note**: 軽量版は `/retro` を使用してください。詳細な分析が必要な場合のみこちらを使用。
 
 ## 参考ドキュメント
 
@@ -28,14 +30,14 @@ prompt = """
 
 ### Step 1: 対象セッションを特定
 
-**引数**: `$ARGUMENTS` にセッション ID が渡される（例: `/session-retrospective abc-123-def`）
+**引数**: `{{args}}` にセッション ID が渡される（例: `/session-retrospective abc-123-def`）
 
 1. 引数でセッション ID が指定されていればそれを使用
 2. 指定がなければ、カレントプロジェクトの最新セッションを使用
 
 ```bash
 # 引数からセッション ID を取得（なければ最新を探す）
-SESSION_ID="$ARGUMENTS"
+SESSION_ID="{{args}}"
 
 if [ -z "$SESSION_ID" ]; then
   PROJECT_DIR_NAME=$(pwd | sed 's|/|-|g')
