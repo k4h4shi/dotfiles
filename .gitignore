@@ -12,3 +12,6 @@ result-*
 *.swp
 *.swo
 *~
+
+# Temporary files (review output, etc.)
+.tmp/
