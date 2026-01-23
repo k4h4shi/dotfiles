@@ -15,3 +15,6 @@ result-*
 
 # Temporary files (review output, etc.)
 .tmp/
+
+# Worktrees
+.worktrees/
