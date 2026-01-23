@@ -1,5 +1,5 @@
 ---
-description: スプリント親Issueに「状況（status）」を追記する（完了/追加観点/ブロッカー/次の一手）。Usage: /status #PARENT
+description: "スプリント親Issueに「状況（status）」を追記する（完了/追加観点/ブロッカー/次の一手）。Usage: /status #PARENT"
 ---
 
 # 状況共有（親Issueコメント）

@@ -1,5 +1,5 @@
 ---
-description: プロジェクトルールに沿ってPull Requestをレビューする。Usage: /review [PR_NUMBER]
+description: "プロジェクトルールに沿ってPull Requestをレビューする。Usage: /review [PR_NUMBER]"
 ---
 
 # コードレビュー（共通コマンド）

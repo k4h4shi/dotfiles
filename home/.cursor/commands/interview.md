@@ -1,5 +1,5 @@
 ---
-description: 要件をインタビューで明確化してから成果物を作る。Usage: /interview [TOPIC]
+description: "要件をインタビューで明確化してから成果物を作る。Usage: /interview [TOPIC]"
 ---
 
 # インタビュー（要件の明確化）

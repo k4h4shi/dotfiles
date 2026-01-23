@@ -1,6 +1,6 @@
 ---
 name: subagent-retrospective
-description: セッションのレトロスペクティブをCodexサブエージェントに依頼する。Usage: /subagent-retrospective [SESSION_ID]
+description: "セッションのレトロスペクティブをCodexサブエージェントに依頼する。Usage: /subagent-retrospective [SESSION_ID]"
 allowed-tools: Bash
 ---
 

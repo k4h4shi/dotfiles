@@ -1,5 +1,5 @@
 ---
-description: GitHub Issueを作成・確認する。Usage: /issue [ISSUE_NUMBER]
+description: "GitHub Issueを作成・確認する。Usage: /issue [ISSUE_NUMBER]"
 ---
 
 # イシュー管理

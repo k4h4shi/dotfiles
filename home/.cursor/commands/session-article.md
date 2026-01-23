@@ -1,5 +1,5 @@
 ---
-description: セッションの作業内容を対外向け技術記事に整理する。Usage: /session-article
+description: "セッションの作業内容を対外向け技術記事に整理する。Usage: /session-article"
 ---
 
 # セッション内容を技術記事化

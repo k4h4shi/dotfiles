@@ -1,5 +1,5 @@
 ---
-description: レトロスペクティブを回収し、改善を1〜3件に峻別してIssue化する。Usage: /retro
+description: "レトロスペクティブを回収し、改善を1〜3件に峻別してIssue化する。Usage: /retro"
 ---
 
 # レトロ（収集→峻別→改善Issue化）

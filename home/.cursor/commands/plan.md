@@ -1,5 +1,5 @@
 ---
-description: Issueを収集し、スプリントゴール/親Issue/レーン/クリティカルパスを設計する。Usage: /plan
+description: "Issueを収集し、スプリントゴール/親Issue/レーン/クリティカルパスを設計する。Usage: /plan"
 ---
 
 # 計画（プラン）と優先順位付け

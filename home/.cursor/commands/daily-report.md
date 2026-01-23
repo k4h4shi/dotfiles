@@ -1,5 +1,5 @@
 ---
-description: GitHubの活動（クローズIssue/マージPR）から日報を生成する。Usage: /daily-report
+description: "GitHubの活動（クローズIssue/マージPR）から日報を生成する。Usage: /daily-report"
 ---
 
 # 開発日報の生成

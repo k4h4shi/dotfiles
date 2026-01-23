@@ -1,5 +1,5 @@
 ---
-description: 新規プロジェクト参加時に、既存資産を調査してスキルを整備する。Usage: /skill-bootstrap
+description: "新規プロジェクト参加時に、既存資産を調査してスキルを整備する。Usage: /skill-bootstrap"
 ---
 
 # スキル作成（新規プロジェクト調査）

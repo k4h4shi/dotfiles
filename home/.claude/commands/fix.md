@@ -1,5 +1,5 @@
 ---
-description: Implement a feature or fix a bug following TDD in a dedicated worktree. Usage: /fix [ISSUE_NUMBER]
+description: "Implement a feature or fix a bug following TDD in a dedicated worktree. Usage: /fix [ISSUE_NUMBER]"
 ---
 
 # Implement Issue (Common Command)
