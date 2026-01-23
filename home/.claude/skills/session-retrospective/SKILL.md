@@ -3,7 +3,7 @@
 特定の Claude Code セッションを分析し、設定改善を提案するスキル。
 
 ---
-description: Analyze a Claude Code session and suggest configuration improvements. Usage: /session-retrospective [SESSION_ID]
+description: Claude Codeのセッションを分析し、設定改善案を提案する。Usage: /session-retrospective [SESSION_ID]
 ---
 
 ## 参考ドキュメント

@@ -1,33 +1,33 @@
 ---
 name: worktree-management
-description: Create and manage git worktrees for parallel tasks when a worktree does not exist.
+description: 並行タスク用にgit worktreeを作成・管理する（worktreeが無い場合のみ使う）。
 allowed-tools: Bash, Read, Grep, Glob
 ---
 
-# Worktree Management (Common)
+# Worktree管理（共通）
 
-Use this skill only when a task's worktree does not exist.
+このスキルは、対象タスクのworktreeが存在しない場合にのみ使用する。
 
-## Procedure
+## 手順
 
-1) Preflight
+1) 事前確認（preflight）
 - Run: `git status --porcelain`
 - If uncommitted changes exist, ask user to commit/stash.
 - Run: `git fetch --all --prune`
 
-2) Decide branch + base
+2) ブランチとbaseを決める
 - Branch: `feature/issue-<NUMBER>` or `fix/issue-<NUMBER>`
 - Base: `origin/main`
 
-3) Ensure ignore rules
+3) ignore設定を確認
 - Ensure `.worktrees/` is in `.gitignore`
 
-4) Create worktree
+4) worktreeを作成
 ```
 mkdir -p .worktrees
 git worktree add .worktrees/<safe-branch-name> -b <branch> <base>
 ```
 
-## Safety constraints
+## 安全制約
 - Never delete with `rm -rf`
 - Remove via `git worktree remove` only when explicitly asked

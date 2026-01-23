@@ -1,39 +1,39 @@
 ---
-description: Create or manage GitHub issues. Usage: /issue [ISSUE_NUMBER]
+description: GitHub Issueを作成・確認する。Usage: /issue [ISSUE_NUMBER]
 ---
 
-# Manage Issues (Common Command)
+# Issue管理（共通コマンド）
 
-## 1. View Issue
+## 1. Issueを確認
 
-To view details of an issue:
+Issueの詳細を確認する:
 
 ```bash
 gh issue view <ISSUE_NUMBER>
 ```
 
-## 2. Create Issue
+## 2. Issueを作成
 
-1.  **Draft Content**: Create a temporary file with the issue description.
+1.  **下書き作成**: Issue本文を一時ファイルに書く
 
     ```markdown
-    ## Summary
-    What needs to be done.
+    ## 概要
+    何をやるか。
 
-    ## Context
-    Why it is needed.
+    ## 背景
+    なぜ必要か。
 
-    ## Acceptance Criteria
-    - [ ] Criterion 1
+    ## 完了条件
+    - [ ] 条件1
     ```
 
-2.  **Create**:
+2.  **作成**:
 
     ```bash
     gh issue create --title "Title" --body-file <PATH_TO_FILE>
     ```
 
-## 3. List Issues
+## 3. Issue一覧
 
 ```bash
 gh issue list

@@ -1,19 +1,19 @@
 ---
 name: session-retrospective
-description: Analyze a Claude Code session and suggest configuration improvements. Use when reviewing a completed session to identify opportunities for permissions, memory/rules, skills, agents, or hooks improvements. Triggers on requests like "retrospective", "session analysis", "improve Claude config", or when given a Claude session ID.
+description: Claude Codeのセッションを分析し、設定改善案（permissions/memory/rules/skills/agents/hooks）を提案する。完了セッションの振り返り時に使用する。トリガー例: retrospective / session analysis / improve Claude config / セッションID指定。
 ---
 
 # Session Retrospective
 
-Analyze a Claude Code session log and suggest configuration improvements.
+Claude Codeのセッションログを分析し、設定改善案を提案する。
 
-## Input
+## 入力
 
-- **Session ID**: Provided as argument (e.g., `/session-retrospective abc-123-def`)
+- **Session ID**: 引数で渡される（例: `/session-retrospective abc-123-def`）
 - **Session File**: `~/.claude/projects/*/<SESSION_ID>.jsonl`
-- **Debug Log**: `~/.claude/debug/<SESSION_ID>.txt` (optional)
+- **Debug Log**: `~/.claude/debug/<SESSION_ID>.txt`（任意）
 
-## Session Log Format
+## セッションログ形式
 
 JSONL with records like:
 ```json
@@ -21,49 +21,49 @@ JSONL with records like:
 {"type": "assistant", "message": {"role": "assistant", "content": [{"type": "tool_use", "name": "...", "input": {...}}]}}
 ```
 
-## Analysis Process
+## 分析手順
 
-### 1. Read Session Files
+### 1. セッションファイルを読む
 
 ```bash
-# Find session file
+# セッションファイルを探す
 find ~/.claude/projects -name "<SESSION_ID>.jsonl" 2>/dev/null
 
-# Read session log
+# セッションログを読む
 cat <SESSION_FILE>
 
-# Read debug log if exists
+# デバッグログがあれば読む
 cat ~/.claude/debug/<SESSION_ID>.txt 2>/dev/null
 ```
 
-### 2. Analyze and Suggest Improvements
+### 2. 分析して改善案を出す
 
-#### Permissions (`settings.json`)
+#### Permissions（`settings.json`）
 - Look for `Permission suggestions for` in debug log
 - Identify commands that required manual approval
 - Suggest `permissions.allow` rules
 
-#### Memory / Rules (`CLAUDE.md`, `.claude/rules/`)
+#### Memory / Rules（`CLAUDE.md`, `.claude/rules/`）
 - Find repeated explanations from user
 - Find `AskUserQuestion` tool calls with similar questions
 - Suggest content for CLAUDE.md or path-specific rules
 
-#### Skills (`.claude/skills/<name>/SKILL.md`)
+#### Skills（`.claude/skills/<name>/SKILL.md`）
 - Identify repeated multi-step workflows
 - Find manual instructions given multiple times
 - Suggest skill definitions with frontmatter
 
-#### Agents (`.claude/agents/<name>.md`)
+#### Agents（`.claude/agents/<name>.md`）
 - Find repeated `Task` tool delegations with same patterns
 - Identify common subagent_type + description combinations
 - Suggest custom agent definitions
 
-#### Hooks (`settings.json`)
+#### Hooks（`settings.json`）
 - Find repeated pre/post processing steps
 - Identify manual formatting or validation tasks
 - Suggest hook configurations
 
-### 3. Create Report
+### 3. レポートを作成する
 
 Save to `~/.claude/retrospectives/<SESSION_ID>.md`:
 
@@ -122,7 +122,7 @@ tools: Read, Grep
 - [ ] Specific action 2
 ```
 
-## Reference Documentation
+## 参照ドキュメント
 
 - Memory: https://code.claude.com/docs/en/memory
 - Skills: https://code.claude.com/docs/en/skills

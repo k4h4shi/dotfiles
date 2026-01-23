@@ -1,44 +1,44 @@
 ---
 name: video-splitter
-description: Split video files into smaller chunks under a specified size limit (default 200MB). Use when users need to split large videos for upload limits, sharing, or storage constraints. Supports any video format that ffmpeg can handle. Requires ffmpeg installed.
+description: 動画ファイルを指定サイズ以下（デフォルト200MB）に分割する。アップロード制限や共有・保管の都合で大きい動画を分けたいときに使う。ffmpegが扱える形式に対応。ffmpegのインストールが必要。
 ---
 
-# Video Splitter
+# 動画分割（Video Splitter）
 
-Split large video files into chunks under a target file size.
+大きい動画ファイルを、指定したサイズ以下のチャンクに分割する。
 
-## Requirements
+## 必要要件
 
-- ffmpeg and ffprobe must be installed
+- ffmpeg / ffprobe がインストールされていること
 
-## Usage
+## 使い方
 
-Run the split script:
+分割スクリプトを実行する:
 
 ```bash
 python3 scripts/split_video.py <input_video> -s <max_size_mb> -o <output_dir>
 ```
 
-### Arguments
+### 引数
 
-- `input`: Input video file path (required)
-- `-s, --max-size`: Maximum size per chunk in MB (default: 200)
-- `-o, --output-dir`: Output directory (default: same as input)
-- `-p, --prefix`: Output filename prefix (default: input filename)
+- `input`: 入力動画ファイルパス（必須）
+- `-s, --max-size`: 1分割あたりの最大サイズ（MB、デフォルト: 200）
+- `-o, --output-dir`: 出力ディレクトリ（デフォルト: 入力と同じ場所）
+- `-p, --prefix`: 出力ファイル名プレフィックス（デフォルト: 入力ファイル名）
 
-### Example
+### 例
 
 ```bash
-# Split video into 200MB chunks
+# 200MBごとに分割
 python3 scripts/split_video.py "/path/to/video.mp4" -s 200
 
-# Split with custom output directory and prefix
+# 出力先とプレフィックスを指定して分割
 python3 scripts/split_video.py "/path/to/video.mp4" -s 100 -o /output/dir -p "meeting"
 ```
 
-## How It Works
+## 仕組み（概要）
 
-1. Analyzes video to get duration and file size
-2. Calculates optimal number of parts based on target size
-3. Uses ffmpeg with stream copy (no re-encoding) for fast splitting
-4. Names output files as `{prefix}_part01.mp4`, `{prefix}_part02.mp4`, etc.
+1. 動画の長さとファイルサイズを取得
+2. 目標サイズから分割数を計算
+3. ffmpegのstream copy（再エンコード無し）で高速に分割
+4. 出力ファイル名は `{prefix}_part01.mp4`, `{prefix}_part02.mp4` … の形式

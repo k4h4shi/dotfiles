@@ -1,5 +1,5 @@
 ---
-description: Create or manage GitHub issues. Usage: /issue [ISSUE_NUMBER]
+description: GitHub Issueを作成・確認する。Usage: /issue [ISSUE_NUMBER]
 ---
 
 # イシュー管理
@@ -28,7 +28,7 @@ GitHub イシューの作成・確認を行います。
    ```bash
    cd "$(git rev-parse --show-toplevel)"
    cat > /tmp/issue.md << 'EOF'
-   ## Parent Sprint Issue
+   ## スプリント親Issue
    <!-- Parent sprint: #123 -->
 
    ## 概要
@@ -38,9 +38,9 @@ GitHub イシューの作成・確認を行います。
    <!-- なぜ必要か -->
 
    ## 影響範囲（変更の当たり）
-   - Layer: <!-- Presentation/Service/Domain/Repository/DB -->
-   - Screen: <!-- 画面/ルート -->
-   - Data: <!-- 触るテーブル/採番/enum 等 -->
+   - レイヤ: <!-- Presentation/Service/Domain/Repository/DB -->
+   - 画面: <!-- 画面/ルート -->
+   - データ: <!-- 触るテーブル/採番/enum 等 -->
 
    ## 完了条件
    - [ ] 条件1

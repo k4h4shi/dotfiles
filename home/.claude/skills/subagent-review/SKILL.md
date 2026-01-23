@@ -1,30 +1,30 @@
 ---
 name: subagent-review
-description: Request a code review from the Gemini sub-agent for a Pull Request. Use when the user asks to review a PR, check the code, or mentions "review".
+description: PRのコードレビューをGeminiサブエージェントに依頼する。ユーザーがレビュー依頼/コード確認/「review」と言及したときに使う。
 allowed-tools: Bash
 ---
 
-# Sub-agent Review (Gemini)
+# サブエージェントレビュー（Gemini）
 
-This skill offloads the code review task to an external Gemini agent running via the `gemini` CLI.
+このスキルは、`gemini` CLI 経由で外部のGeminiエージェントにコードレビューを委譲する。
 
-## Instructions
+## 手順
 
-When the user asks for a review (e.g., "Review PR #123", "Review this"), follow these steps:
+ユーザーがレビューを依頼した場合（例:「PR #123レビューして」「これレビューして」）は次の手順で進める。
 
-1.  **Identify the PR Number**:
+1.  **PR番号を特定**:
 
-    - If the user provided a number, use it.
-    - If not, try to find the current PR number using `gh pr view --json number -q .number`.
+    - ユーザーが番号を指定していればそれを使う
+    - 指定がなければ `gh pr view --json number -q .number` で現在のPR番号を取得する
 
-2.  **Invoke Gemini**:
+2.  **Geminiを呼び出す**:
 
-    - Execute the `gemini` command with the review instruction.
-    - Use the `--yolo` flag (if available/safe) or interactive mode to ensure it runs.
-    - **Command**:
+    - `gemini` コマンドでレビュー指示を実行する
+    - 可能なら `--yolo`（安全に使える前提）または対話モードで確実に実行する
+    - **コマンド**:
       ```bash
       gemini "/review <PR_NUMBER>" --yolo
       ```
 
-3.  **Report**:
-    - Inform the user that the review request has been sent to Gemini.
+3.  **報告**:
+    - Geminiにレビュー依頼を送ったことをユーザーに伝える

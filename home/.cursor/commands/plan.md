@@ -1,22 +1,22 @@
 ---
-description: Fetch all issues, prioritize them, and identify the critical path. Usage: /plan
+description: Issueを収集し、スプリントゴール/親Issue/レーン/クリティカルパスを設計する。Usage: /plan
 ---
 
-# Plan & Prioritize Tasks
+# 計画（プラン）と優先順位付け
 
-Use this command to analyze the current project state, prioritize open issues, and design a **parallel sprint plan** (Sprint Goal + Lanes + Critical Path) with a **Sprint Parent Issue**.
+このコマンドは、オープンIssueを収集して優先順位付けし、**並行スプリント計画**（スプリントゴール＋親Issue＋レーン＋クリティカルパス）を設計する。
 
-## 1. Fetch Issues
+## 1. Issueを取得
 
-First, fetch all open issues from GitHub to understand the current workload.
+まず GitHub からオープンIssueを取得し、現状の作業量を把握する。
 
 ```bash
 gh issue list --limit 100 --state open --json number,title,labels,updatedAt,assignees
 ```
 
-## 2. Analyze & Prioritize（スプリントゴール前提）
+## 2. 分析と優先順位付け（スプリントゴール前提）
 
-Based on the fetched issues and the project goals (refer to repo `AGENTS.md` and SSOT in `docs/` if needed), analyze the tasks.
+取得したIssueとプロジェクトゴール（必要なら repo の `AGENTS.md` と SSOT の `docs/`）を根拠に、タスクを分析する。
 
 ### 2.1 Sprint Goal（最重要）
 並行開発は迷子になりやすいので、**最初にスプリントゴールを1文で固定**する。
@@ -24,7 +24,7 @@ Based on the fetched issues and the project goals (refer to repo `AGENTS.md` and
 - 例: 「見積の主ラインを前進させる（回帰止血→一覧UX→採番基盤）」
 - ゴールに含めない（Not in sprint）も明記する（“やらないこと”が迷子防止になる）
 
-## 3. Create Sprint Parent Issue（コンテキストの集約点）
+## 3. スプリント親Issueを作成（コンテキストの集約点）
 並行実行では「どこに向かっているか」を見失いやすい。
 そのため、スプリント開始時に **スプリント親Issue** を1つ作り、以後の共有コンテキストはそこに集約する。
 
@@ -71,7 +71,7 @@ EOF
 )\"
 ```
 
-## 4. Design Lanes（並行実行の設計）
+## 4. レーン設計（並行実行の設計）
 Issueをレーンに割り当てる。特に **Migration系は直列（1本）** を徹底する。
 
 推奨レーン:
@@ -80,9 +80,9 @@ Issueをレーンに割り当てる。特に **Migration系は直列（1本）**
 - Lane C: Feature / UX（並行OK）
 - Lane D: Enablement（改善・並行OK、1〜3件に絞る）
 
-### Output Format
+### 出力フォーマット
 
-Output the analysis in the following markdown format:
+分析結果は以下のマークダウン形式で出力する:
 
 ```markdown
 # Project Plan Analysis
@@ -138,7 +138,7 @@ graph LR
 - **Next Action**: [What to do next]
 - **Missing Tasks**: [Any necessary tasks not yet tracked as issues]
 
-## 5. Context Sharing Policy（Issueコメントで残すべき最小情報）
+## 5. コンテキスト共有ポリシー（Issueコメントで残すべき最小情報）
 並行実行の迷子防止のため、次を徹底する。
 
 1) **共有すべきコンテキストは親Issueに集約**して随時コメントする（/status 相当）。  
@@ -162,8 +162,8 @@ EOF
 ```
 ```
 
-## 6. Action
+## 6. 次アクション
 
-Ask the user if they want to:
-1. Create new issues for missing tasks (using `gh issue create`).
-2. Start working on the highest priority issue (using `/fix <issue_number>`).
+ユーザーに次のどちらを行うか確認する:
+1. 足りないタスクをIssue化する（`gh issue create`）
+2. 最優先Issueの作業を開始する（`/fix <issue_number>`）

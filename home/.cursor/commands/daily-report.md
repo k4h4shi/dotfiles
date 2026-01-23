@@ -1,39 +1,39 @@
 ---
-description: Generate a daily report based on GitHub activity (Closed Issues & Merged PRs). Usage: /daily-report
+description: GitHubの活動（クローズIssue/マージPR）から日報を生成する。Usage: /daily-report
 ---
 
-# Generate Daily Report
+# 開発日報の生成
 
-Generate a daily report file in `docs/research/YYYYMMDD_daily_report.md` summarizing today's GitHub activities.
+`docs/research/YYYYMMDD_daily_report.md` に、今日のGitHub活動を要約した日報を出力する。
 
-In parallel sprint mode, also summarize:
-- Sprint Goal (current)
-- Lane status (what moved / what is blocked)
-- Enablement progress (improvements shipped)
+並行スプリント運用の場合は、以下も簡潔にまとめる:
+- スプリントゴール（現在）
+- レーン状況（何が進んだ / 何が詰まっている）
+- Enablement（改善）がどこまで入ったか
 
-## Steps
+## 手順
 
-1.  **Fetch Activity Data**:
+1.  **活動データの取得**:
 
-    - Get today's date (YYYY-MM-DD).
-    - Fetch closed issues and merged PRs using `gh`.
-    - **Note**: Use `jq` to filter by date because `gh` search syntax might be unstable.
+    - 今日の日付（YYYY-MM-DD）を取得する
+    - `gh` でクローズIssue / マージPRを取得する
+    - **注意**: `gh` の検索式が不安定な場合があるので、日付フィルタは `jq` で行う
 
     ```bash
     TODAY=$(date +%Y-%m-%d)
     REPORT_FILE="docs/research/$(date +%Y%m%d)_daily_report.md"
     mkdir -p .tmp
 
-    # Fetch Closed Issues (limit 50 to cover the day)
+    # クローズIssue（当日分を拾うため上限50）
     gh issue list --state closed --limit 50 --json number,title,closedAt | jq -r --arg DATE "$TODAY" '.[] | select(.closedAt >= $DATE)' > .tmp/closed_today.json
 
-    # Fetch Merged PRs
+    # マージPR（当日分を拾うため上限50）
     gh pr list --state merged --limit 50 --json number,title,mergedAt | jq -r --arg DATE "$TODAY" '.[] | select(.mergedAt >= $DATE)' > .tmp/merged_today.json
     ```
 
-2.  **Generate Draft Report**:
+2.  **日報の下書きを生成**:
 
-    - Create the report file with the fetched data.
+    - 取得したデータから日報ファイルを作る
 
     ```bash
     echo "# 開発日報 ($TODAY)" > "$REPORT_FILE"
@@ -56,9 +56,9 @@ In parallel sprint mode, also summarize:
     echo "- [ ] " >> "$REPORT_FILE"
     ```
 
-3.  **Refine Content**:
-    - Read the drafted `$REPORT_FILE`.
-    - Based on the titles of issues and PRs, and recent context, **rewrite the "Highlights" section** to provide a meaningful summary.
-    - Categorize the tasks if possible (e.g., Features, Fixes, Docs).
-    - Add a short section: **Sprint Goal / Lane progress / Blockers** (1-3 bullets each).
-    - **Display the path of the generated file** to the user.
+3.  **内容の整形**:
+    - 下書きの `$REPORT_FILE` を読む
+    - Issue/PRタイトルと直近文脈をもとに、「本日のハイライト」を**意味が通る文章**に書き直す
+    - 可能なら分類する（例: Feature / Fix / Docs）
+    - 追記: **Sprint Goal / Lane progress / Blockers** を各1〜3点で短く書く
+    - **生成したファイルパス**をユーザーに提示する

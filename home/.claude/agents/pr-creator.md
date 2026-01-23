@@ -1,6 +1,6 @@
 ---
 name: pr-creator
-description: Create pull requests with standardized format.
+description: 定型フォーマットでPull Requestを作成する。
 tools: Read, Grep, Glob, Bash
 model: sonnet
 ---

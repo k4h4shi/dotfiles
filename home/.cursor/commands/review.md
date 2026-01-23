@@ -1,5 +1,5 @@
 ---
-description: Review a Pull Request using project guidelines. Usage: /review [PR_NUMBER]
+description: プロジェクトのガイドラインに沿ってPRをレビューする。Usage: /review [PR_NUMBER]
 ---
 
 # コードレビュー（静的解析）

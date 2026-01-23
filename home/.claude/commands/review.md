@@ -1,26 +1,26 @@
 ---
-description: Review a Pull Request using project rules. Usage: /review [PR_NUMBER]
+description: プロジェクトルールに沿ってPull Requestをレビューする。Usage: /review [PR_NUMBER]
 ---
 
-# Code Review (Common Command)
+# コードレビュー（共通コマンド）
 
-This command is a common interface. Prefer project-specific review rules when available.
+このコマンドは共通インターフェース。可能ならプロジェクト固有のレビュールールを優先する。
 
-## 1. Identify the PR
+## 1. PRを特定
 
-If a PR number is not provided, find it:
+PR番号が指定されていない場合は、現在のPR番号を探す:
 
 ```bash
 gh pr view --json number -q .number
 ```
 
-## 2. Review Process
+## 2. レビュー手順
 
-Use the project-specific review guidance if it exists:
+プロジェクト固有のレビューガイダンスがあればそれに従う:
 
-- **If `review-guidelines` skill exists**: use it and follow the project's rule set.
-- **Otherwise**: use the `subagent-review` skill to request a Gemini review.
+- **`review-guidelines` スキルがある場合**: それを使い、プロジェクトのルールセットに従う
+- **無い場合**: `subagent-review` スキルでGeminiレビューを依頼する
 
-## 3. Reporting
+## 3. 報告
 
-Post your review comments to the PR following the project's conventions.
+プロジェクトの慣習に従って、PRにレビューコメントを投稿する。
