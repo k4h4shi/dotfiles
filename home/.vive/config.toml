@@ -25,7 +25,11 @@ command = "ghostty-tab"
 # Use {session_id} as placeholder for the target session name
 args = ["{session_id}"]
 
+# タスク作成時の自動キックスタート設定
 [auto_kickstart]
-# claude "/fix {issue_number}" で起動する
-# {issue_number} はイシュー番号に置換されます
-issue_command = "/fix {issue_number}"
+# 手動タスク作成時に実行するコマンド
+# 利用可能なプレースホルダー: {session_id}, {branch_name}, {project_name}, {worktree_path}
+manual_command = "claude"
+# Issue選択でタスク作成時に実行するコマンド（ワンライナー形式）
+# 利用可能なプレースホルダー: {issue_number}, {session_id}, {branch_name}, {project_name}, {worktree_path}
+issue_command = "claude \"/fix {issue_number}\""
