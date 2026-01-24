@@ -18,6 +18,8 @@ in
     fd
     fzf
     tmux
+    awscli2
+    dnsutils
 
     # 言語・ランタイム
     nodejs_22
