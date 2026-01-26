@@ -45,6 +45,7 @@ dotfiles/
 ### ファイルで管理（home/）
 
 - Claude Code（agents, commands, skills, settings.json）
+- Claude Code（グローバル指示: `~/.claude/CLAUDE.md`）
 - Cursor（commands, rules）
 - Gemini CLI（commands）
 - Codex CLI（skills）
@@ -92,6 +93,9 @@ Claude/Codex/Gemini によるコードレビューは **ローカル実行** を
 # Codex（デフォルト）
 codex "/review <PR_NUMBER>"
 
+# 実装（TDDフローの入口）
+codex "/fix <ISSUE_NUMBER>"
+
 # Gemini
 gemini "/review <PR_NUMBER>"
 
@@ -104,6 +108,11 @@ claude "/review <PR_NUMBER>"
 - レビュー結果は `.tmp/review_body.md` に保存
 - PR への自動投稿は行わない（CIを無駄に走らせない）
 - 必要なら手動で `gh pr review` を使って投稿
+
+### Codex の共通設定
+
+- `~/.codex/instructions.md`: 返答言語（日本語）や、dotfiles配布のカスタムskills一覧を記載
+- `~/.codex/skills/custom/*`: dotfilesが配布するカスタムskills（`/fix`, `/issue`, `/planner`, `/tdd-runner` など）
 
 ## 参考
 

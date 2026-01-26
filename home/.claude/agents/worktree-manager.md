@@ -65,5 +65,5 @@ git worktree add .worktrees/<safe-branch-name> -b <branch> <base>
 .worktrees/<branch-name>
 
 ### Next Command
-cd .worktrees/<branch-name> && claude
+cd .worktrees/<branch-name>
 ```

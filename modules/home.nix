@@ -117,6 +117,7 @@ in
     ".claude/agents".source = "${dotfilesDir}/home/.claude/agents";
     ".claude/commands".source = "${dotfilesDir}/home/.claude/commands";
     ".claude/skills".source = "${dotfilesDir}/home/.claude/skills";
+    ".claude/CLAUDE.md".source = "${dotfilesDir}/home/.claude/CLAUDE.md";
     ".claude/settings.json".source = "${dotfilesDir}/home/.claude/settings.json";
 
     # Cursor
@@ -128,6 +129,7 @@ in
 
     # Codex CLI
     ".codex/skills/custom".source = "${dotfilesDir}/home/.codex/skills";
+    ".codex/instructions.md".source = "${dotfilesDir}/home/.codex/instructions.md";
 
     # Vive
     ".vive".source = "${dotfilesDir}/home/.vive";

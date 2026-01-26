@@ -29,7 +29,9 @@ args = ["{session_id}"]
 [auto_kickstart]
 # 手動タスク作成時に実行するコマンド
 # 利用可能なプレースホルダー: {session_id}, {branch_name}, {project_name}, {worktree_path}
-manual_command = "claude"
+# manual_command = "claude"
+manual_command = "codex"
 # Issue選択でタスク作成時に実行するコマンド（ワンライナー形式）
 # 利用可能なプレースホルダー: {issue_number}, {session_id}, {branch_name}, {project_name}, {worktree_path}
-issue_command = "claude \"/fix {issue_number}\""
+# issue_command = "claude \"/fix {issue_number}\""
+issue_command = "codex \"/fix {issue_number}\""
