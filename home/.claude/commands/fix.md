@@ -49,6 +49,10 @@ Follow the TDD cycle with the `tdd-runner` agent.
 ### Step 1-4: Red -> Green -> Refactor
 
 - **Note**: Use the `tdd-runner` agent to guide this process.
+- **Testing Policy（原則）**: 変更に対応するテストを **単体テスト / 結合（Integration）テスト / E2E** のレイヤーで適切に追加・更新し、網羅性を上げる。
+  - 基本はTDD（Red/Green/Refactor）で充足するはずだが、実装のステップごとに「この変更はどのレイヤーのテストで担保するのが最適か」を見直し、必要なら追加する（例: ユニットだけでは不安→結合/E2Eを足す）。
+  - 例外（docsのみ/純粋リファクタ/自動テストで再現困難 等）は限定し、**追加しない理由をPRに明記**する。
+  - フリーキーなテストは、発見した担当の責務として **必ず直す**（放置しない）。
 - **Build Errors**: If you encounter build or type errors:
   - **Use the `ci-debugger` agent**.
   - Let it fix the compilation issues with minimal changes.
@@ -63,7 +67,8 @@ When implementation is complete, **BEFORE** attempting to finish:
 
 2.  **Run Project Standard Verification**:
     - Follow the project's standard verification steps (pre-commit hooks, lint/test/build).
-    - **IMPORTANT**: Run E2E tests locally and ensure they pass before creating a PR.
+    - **IMPORTANT**: PR作成前に、変更に関係するテスト（単体/結合/E2E）をローカルで実行してパスを担保する。
+      - 特に E2E があるプロジェクトでは、当該変更に関係して追加した主要シナリオ＋リグレッションがパスしていること。
 
 3.  **AI Quality Gate**:
     - Now you can safely finish. The system will check:
