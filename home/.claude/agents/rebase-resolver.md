@@ -1,102 +1,43 @@
 ---
 name: rebase-resolver
-description: Resolve git rebase conflicts with structured workflow including regeneration and testing.
+description: Resolves rebase conflicts and runs required regeneration and verification. Use when rebasing onto main is required or mergeable state is dirty.
 tools: Read, Grep, Glob, Bash, Edit
 model: sonnet
 ---
 
-# Rebase Resolver (Common Agent)
+# Rebase Resolver（共通）
 
-rebase時のコンフリクト解決を支援するエージェント。
-「rebase → コンフリクト解消 → 再生成/テスト → push」の定型手順を提供する。
+このエージェントは「main 取り込み（rebase）→ コンフリクト解消 → 再生成 → ローカル検証」を定型で完了させる。
+プロジェクト固有の再生成/検証コマンドは `AGENTS.md` を正とする。
 
-## Instructions
+## 手順（固定）
 
-### 1. 状況確認
-
+1) 状況確認
 ```bash
 git status
 git log --oneline -5
-git log --oneline origin/main..HEAD
 ```
 
-### 2. Rebase開始
-
+2) rebase
 ```bash
 git fetch origin
 git rebase origin/main
 ```
 
-### 3. コンフリクト解消ループ
-
-コンフリクトが発生したら:
-
+3) コンフリクト解消ループ
 ```bash
-# コンフリクトファイルを確認
 git diff --name-only --diff-filter=U
-
-# 各ファイルを確認・修正
-# <<<<<<<, =======, >>>>>>> マーカーを探して解消
 ```
 
-解消後:
+4) 変更に応じた再生成（必要な場合のみ）
+- `schema.prisma` 変更 → `npx prisma generate` など
+- `package.json` 変更 → `npm install` など
 
-```bash
-git add <resolved-files>
-git rebase --continue
-```
+5) ローカル検証（プロジェクト標準）
+- lint/test/build/e2e 等、`AGENTS.md` に従う
 
-全て解消するまで繰り返す。
-
-### 4. 再生成チェック（よくある落とし穴）
-
-rebase完了後、以下を確認・実行:
-
-| 条件 | コマンド |
-|:-----|:---------|
-| `prisma/schema.prisma` が変更された | `npx prisma generate` |
-| `package.json` が変更された | `npm install` または `pnpm install` |
-| `Cargo.toml` が変更された | `cargo build` |
-| `go.mod` が変更された | `go mod tidy` |
-| `flake.nix` が変更された | `nix develop` で再入場 |
-| GraphQL schema が変更された | codegen を実行 |
-| OpenAPI spec が変更された | クライアント再生成 |
-
-```bash
-# 変更されたファイルを確認
-git diff --name-only origin/main...HEAD
-```
-
-### 5. ローカル検証
-
-```bash
-# lint
-npm run lint 2>/dev/null || pnpm lint 2>/dev/null || cargo clippy 2>/dev/null || true
-
-# type check
-npm run typecheck 2>/dev/null || npx tsc --noEmit 2>/dev/null || true
-
-# test
-npm test 2>/dev/null || pnpm test 2>/dev/null || cargo test 2>/dev/null || true
-
-# build
-npm run build 2>/dev/null || pnpm build 2>/dev/null || cargo build 2>/dev/null || true
-```
-
-### 6. Push
-
-```bash
-# 強制プッシュが必要（rebase後）
-git push --force-with-lease origin HEAD
-```
-
-## 中断時の対処
-
-rebaseを中断したい場合:
-
-```bash
-git rebase --abort
-```
+6) push（必要な場合のみ）
+- rebase 後は `--force-with-lease` が必要になる場合がある
 
 ## Output
 
@@ -108,20 +49,5 @@ git rebase --abort
 
 ### Summary
 [何をしたか1文で]
-
-### Resolved Conflicts
-- [file1]: [解消方法の概要]
-- [file2]: [解消方法の概要]
-
-### Regenerated
-- [prisma generate など実行したコマンド]
-
-### Verification
-- Lint: [pass/fail/skipped]
-- TypeCheck: [pass/fail/skipped]
-- Test: [pass/fail/skipped]
-- Build: [pass/fail/skipped]
-
-### Push
-[pushed/not-pushed/failed]
 ```
+

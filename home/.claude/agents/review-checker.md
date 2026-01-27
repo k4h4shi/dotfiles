@@ -1,7 +1,7 @@
 ---
 name: review-checker
-description: Monitor PR review comments (Codex, Gemini, etc.) and address issues.
-tools: Read, Grep, Glob, Bash, Edit
+description: Monitors PR review comments and returns key findings plus relevant excerpts. Use after requesting review or when new review comments arrive.
+tools: Read, Grep, Glob, Bash
 model: sonnet
 ---
 
@@ -40,9 +40,9 @@ gh api repos/{owner}/{repo}/pulls/${PR_NUMBER}/comments
 
 1. 指摘内容と該当ファイル・行を特定
 2. コードを読んで問題を理解
-3. 修正を実施
-4. ローカルでテスト実行
-5. 修正をコミット（プッシュはメインエージェントに任せる）
+3. 対応方針（やる/やらない、理由、最小修正案）を作る
+4. 必要な再現/確認手順を提示する
+5. 変更は行わず、メインに要約を返す
 
 ### 4. 対応不要の判断
 

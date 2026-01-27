@@ -38,13 +38,13 @@
       "Bash(wc *)",
       "Bash(yarn *)",
       "Skill(doc-update)",
-      "Skill(doc-updater)",
+      "Skill(tdd-guide)",
+      "Skill(push-pr)",
       "Skill(environment-setup)",
       "Skill(fix)",
       "Skill(subagent-review)",
       "Skill(permissions-sync)",
       "Skill(session-retrospective)",
-      "Skill(worktree-manager)",
       "WebSearch",
       "WebFetch(domain:github.com)"
     ]

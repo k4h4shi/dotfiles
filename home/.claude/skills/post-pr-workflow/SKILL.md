@@ -1,6 +1,6 @@
 ---
 name: post-pr-workflow
-description: PR作成後の品質ゲート（レビュー/CI監視/指摘対応）をループで回す。PR作成後に使う。
+description: Deprecated. Post-PR checks are defined in /fix. Keep for reference only.
 allowed-tools: Bash
 ---
 
@@ -14,9 +14,24 @@ PR作成後、以下のプロセスを **全て問題なくなるまで繰り返
 
 | タスク | 使用するスキル/エージェント | 内容 |
 |:-------|:---------------------------|:-----|
-| **Geminiレビュー** | `/subagent-review` → `review-checker` | 依頼送信 → 監視 → 指摘対応 |
-| **CI監視** | `ci-debugger` エージェント | `gh pr checks --watch` → 失敗時は修正 |
-| **Codexレビュー** | `review-checker` エージェント | 自動レビュー監視(10分以内) → 指摘対応 |
+| **Geminiレビュー** | `/subagent-review` → `review-checker` | 依頼送信 → 監視 → **要約/対応方針** を返す |
+| **CI監視** | `ci-debugger` エージェント | `gh pr checks --watch` → **失敗ログの要約/次の一手** を返す |
+| **Codexレビュー** | `review-checker` エージェント | 自動レビュー監視(10分以内) → **要約/対応方針** を返す |
+
+## 1.5 PR が “進まない” 場合の一次対応（重要）
+
+CI チェックが出ない/進まない/止まる場合は、まず以下を確認する（sleepで待たない）。
+
+```bash
+# mergeable / mergeableState を確認（dirty なら main 取り込みが必要になりがち）
+gh pr view --json mergeable,mergeableState --jq '.'
+
+# checks を watch（標準）
+gh pr checks --watch
+```
+
+`mergeableState` が `DIRTY` 等の場合は、main 取り込み（rebase）と再検証を優先する。
+（具体手順はプロジェクトのルールに従い、必要ならメインで rebase して解消する）
 
 ## 2. メインエージェント（並行で実行）
 
@@ -24,6 +39,7 @@ PR作成後、以下のプロセスを **全て問題なくなるまで繰り返
 
 - **整合性確認**: ドキュメント・テスト・実装の整合性をチェック
 - **不整合修正**: 問題があれば修正
+  - ※ 修正作業（コード編集/コミット）は **メイン**で行う（subagentは要約のみ）
 
 ## 3. 完了判定
 
