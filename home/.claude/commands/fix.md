@@ -51,7 +51,7 @@ This command defines a **common interface**. Project-specific behavior is provid
 
 ### 8) Post-PR Check
 - [ ] PR後の確認は **並行で subagent に委譲**し、「要点＋抜粋ログ」だけ受け取り、メインで修正する
-  - `ci-debugger`（PR checks 監視 / 失敗ログの要点と抜粋）
+  - `ci-checker`（PR checks 監視 / 失敗ログの要点と抜粋）
   - `review-checker`（レビューコメント監視 / 要点と抜粋）
 - [ ] 失敗や指摘があり次第、修正してコミット&プッシュ後、再度Post-PR Checkをする
 - [ ] “CIが進まない” 場合は `mergeableState` を確認し、必要なら main 取り込み（rebase）を優先する
