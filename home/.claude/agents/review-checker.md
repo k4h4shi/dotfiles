@@ -20,70 +20,11 @@ Codex（自動レビュー）やGeminiからの指摘を検出し、**要点＋�
 
 ### 1. PRコメント監視 (最大15分)
 
-30秒間隔で最大30回（最大15分）、以下を実行。
-**新しい指摘（要対応）を検知したら、その時点で即座に打ち切ってメインへ返す**（擬似watch）。
+擬似watch（ポーリング）だが、**新しい指摘を検知した時点で即座に打ち切って返す**。
+実装はスキル側のスクリプトに委譲する。
 
 ```bash
-# repo情報を取得（owner/repo）
-REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
-OWNER=${REPO%/*}
-NAME=${REPO#*/}
-
-# PR番号を取得
-PR_NUMBER=$(gh pr view --json number -q .number)
-
-# 監視開始時刻（これ以降の新規だけ拾う）
-START_TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-
-# GraphQLでレビュー（本文/inline）とPRコメントをまとめて取得（毎回同じクエリ）
-QUERY='
-query($owner:String!,$name:String!,$pr:Int!){
-  repository(owner:$owner,name:$name){
-    pullRequest(number:$pr){
-      reviews(last:20){
-        nodes{author{login} state submittedAt body}
-      }
-      reviewThreads(last:50){
-        nodes{
-          isResolved
-          comments(last:50){
-            nodes{author{login} createdAt body path originalLine}
-          }
-        }
-      }
-      comments(last:50){
-        nodes{author{login} createdAt body}
-      }
-    }
-  }
-}'
-
-# 擬似watch（新しいレビュー/コメントが来たら即終了）
-for i in $(seq 1 30); do
-  data=$(gh api graphql -F owner="$OWNER" -F name="$NAME" -F pr="$PR_NUMBER" -f query="$QUERY")
-
-  # 可能なら jq で「START_TS以降の新規」を判定して、検知したら即返す
-  if command -v jq >/dev/null 2>&1; then
-    if echo "$data" | jq -e --arg ts "$START_TS" '
-      [
-        (.data.repository.pullRequest.reviews.nodes[]? | {t: .submittedAt, body: .body}),
-        (.data.repository.pullRequest.reviewThreads.nodes[]?.comments.nodes[]? | {t: .createdAt, body: .body}),
-        (.data.repository.pullRequest.comments.nodes[]? | {t: .createdAt, body: .body})
-      ]
-      | map(select(.t != null and .t > $ts and (.body // "" | length) > 0))
-      | length > 0
-    ' >/dev/null; then
-      echo "$data"
-      break
-    fi
-  else
-    # jq が無い場合は、dataを読んで「START_TS以降の新規」があるかを判断し、あれば即返す
-    echo "$data"
-    break
-  fi
-
-  sleep 30
-done
+bash ~/.claude/skills/review-checker/scripts/watch-pr-reviews.sh
 ```
 
 ### 2. 指摘の検出
