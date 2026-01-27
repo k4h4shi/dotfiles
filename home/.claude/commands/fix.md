@@ -28,6 +28,7 @@ This command defines a **common interface**. Project-specific behavior is provid
 - [ ] （補助）長い作業は Tasks を使って分割・追跡し、SSOT はプロジェクト側（`AGENTS.md`/skills）に置く
 
 ### 3) Implement（TDD）
+- [ ] 前提として、`setup-checker`が完了していることを確認する
 - [ ] TDDの手順に従うことで、E2E, 結合, 単体のテストにより実装が十分にテストされた状態で開発を進める
 - [ ] TDD の際のテスト実行に関しては **プロジェクト固有のテスト実行方法、スキル**（例:　`test-guide`）に従う
 - [ ] build/type エラーは、まずプロジェクト固有の `build-fix` 等を優先する（ローカルのビルド/型エラー修正）
