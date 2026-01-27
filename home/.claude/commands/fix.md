@@ -15,23 +15,21 @@ This command defines a **common interface**. Project-specific behavior is provid
 ## チェックリスト
 
 ### 0) Setup（まず走らせる）
-- [ ] `setup-checker` に委譲し、「要求される環境が整う」まで完了させる（メインは要約だけ受け取る）
+- [ ] `setup-checker` に委譲し、「要求される環境が整う」まで完了させる
 - [ ] 可能ならバックグラウンドで走らせ、並行で 1) Understand / 2) Plan を進める
 
 ### 1) Understand
 - [ ] `gh issue view <ISSUE_NUMBER>` で Issue を読む
 - [ ] `AGENTS.md` を読み、プロジェクトの構造を把握する
-- [ ] 一般的な技術調査（公式ドキュメント/公式Issue/Release等）が必要なら `official-researcher` に委譲し、要約だけ受け取る
+- [ ] 一般的な技術調査（公式ドキュメント/公式Issue/Release等）が必要なら `official-researcher` に委譲し、結果を受け取る
 
 ### 2) Plan（複雑な場合のみ）
-- [ ] 必要に応じて**プロジェクト固有の計画スキル**（例: `plan-guide`）に従って計画を作る
-- [ ] （補助）長い作業は Tasks を使って分割・追跡し、SSOT はプロジェクト側（`AGENTS.md`/skills）に置く
+- [ ] 必要に応じて**プロジェクト固有の計画スキル**（例: `plan-guide`）に従って計画を作ります
 
 ### 3) Implement（TDD）
 - [ ] 前提として、`setup-checker`が完了していることを確認する
-- [ ] TDDの手順に従うことで、E2E, 結合, 単体のテストにより実装が十分にテストされた状態で開発を進める
+- [ ] TDDの手順に従うことで、E2E, 結合, 単体のテストにより実装が十分にテストされた状態を維持しながら開発を進める
 - [ ] TDD の際のテスト実行に関しては **プロジェクト固有のテスト実行方法、スキル**（例:　`test-guide`）に従う
-- [ ] build/type エラーは、まずプロジェクト固有の `build-fix` 等を優先する（ローカルのビルド/型エラー修正）
 
 ### 5) Docs（必須）
 - [ ] docs更新は ** プロジェクト固有のドキュメント更新方針やスキル ** (例: `doc-update`)を使う
