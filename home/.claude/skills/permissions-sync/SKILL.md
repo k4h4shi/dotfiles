@@ -60,6 +60,16 @@ def is_good(rule: str) -> bool:
     return False
   if rule.startswith("Bash(PORT=") or "PRISMA_USER_CONSENT" in rule:
     return False
+  # Avoid “permission creep” into high-risk shell primitives / unbounded traversal.
+  # These tend to expand the blast radius and bypass safer built-ins (Read/Grep).
+  bad_prefixes = (
+      "Bash(source ",
+      "Bash(xargs:",
+      "Bash(find ",
+      "Bash(grep ",
+  )
+  if rule.startswith(bad_prefixes):
+    return False
   return True
 
 new=set()

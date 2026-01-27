@@ -23,7 +23,7 @@ GitHub イシューの作成・確認を行います。
 
 1. **下書き作成**
 
-   簡潔なタイトル形式を使用してください。
+   簡潔なタイトル形式を使用してください（タイトルの命名ルールは後述）。
 
    ```bash
    cd "$(git rev-parse --show-toplevel)"
@@ -56,10 +56,18 @@ GitHub イシューの作成・確認を行います。
 
 3. **イシュー作成**
 
-   タイトルは簡潔に記述してください（例: `ログイン機能の実装`）。
+   #### タイトル命名ルール（重要）
+
+   - **タイトルは日本語で読みやすく**（例: `ログイン機能の実装`）
+   - **`feat:` / `fix:` / `chore:` / `spec:` のような接頭辞は付けない**
+     - 種別は **ラベル**で表現する
+
+   #### ラベル運用（推奨）
+
+   - 例: `enhancement`, `bug`, `docs`, `question`, `meeting`, `sprint`
 
    ```bash
-   gh issue create --title "タイトル" --body-file /tmp/issue.md
+   gh issue create --title "タイトル" --body-file /tmp/issue.md --label "docs"
    rm /tmp/issue.md
    ```
 

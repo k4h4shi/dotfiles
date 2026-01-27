@@ -102,7 +102,7 @@ rebase-resolver エージェントを使って、origin/main とのコンフリ�
 2. コンフリクト解消
 3. 再生成（prisma generate等）
 4. ローカル検証（lint/test/build）
-5. `git push --force-with-lease`
+5. `git push --force-with-lease`（**必要な場合のみ**。安全のため、実行前に「force push が必要な理由」と「対象が作業ブランチ（mainではない）であること」を明記してユーザーに確認する）
 
 ### 5.3 PR作成
 
