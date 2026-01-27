@@ -43,8 +43,8 @@ This command defines a **common interface**. Project-specific behavior is provid
   - `tester-runner`（unit/integration）
   - `builder-runner`（typecheck/build）
   - `e2e-tester`（E2E）
-- [ ] 失敗があれば、重要な失敗から順にメインで修正して再実行する
-- [ ] `/subagent-review` スキルでレビューを行い、レビュー指摘に対応する
+  - `/subagent-review` スキルでレビューを行い、レビュー指摘に対応する
+- [ ] 失敗や指摘があり次第、修正して再チェックする
 
 ### 7) Push & PR
 - [ ] Push〜PR作成は `push-pr` スキルで行う
@@ -53,7 +53,7 @@ This command defines a **common interface**. Project-specific behavior is provid
 - [ ] PR後の確認は **並行で subagent に委譲**し、「要点＋抜粋ログ」だけ受け取り、メインで修正する
   - `ci-debugger`（PR checks 監視 / 失敗ログの要点と抜粋）
   - `review-checker`（レビューコメント監視 / 要点と抜粋）
-- [ ] 失敗/指摘があれば、重要なものから順にメインで修正して push する
+- [ ] 失敗や指摘があり次第、修正して再PRする
 - [ ] “CIが進まない” 場合は `mergeableState` を確認し、必要なら main 取り込み（rebase）を優先する
 
 ### 9) Session Retrospective
