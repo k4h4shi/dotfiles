@@ -43,7 +43,6 @@
       "Skill(environment-setup)",
       "Skill(fix)",
       "Skill(subagent-review)",
-      "Skill(permissions-sync)",
       "Skill(session-retrospective)",
       "WebSearch",
       "WebFetch(domain:github.com)"

@@ -11,6 +11,12 @@ CI チェックを監視し、失敗時の情報を収集して要約するエ�
 
 ## Instructions
 
+## 行動原則（重要）
+
+- **失敗を検知したら即座に監視を打ち切り、メインへ返す**（待ち続けない）
+- この subagent は **変更しない**（修正はメインが行う）
+- 返すのは **要点＋問題解決に必要な抜粋ログ**のみ（ノイズは捨てる）
+
 ### 1. CI監視 (最大15分)
 
 ```bash
@@ -32,7 +38,7 @@ gh run list --limit 1 --json databaseId,status,conclusion,headBranch
 gh run view <RUN_ID> --log-failed
 ```
 
-### 3. ローカル再現・修正
+### 3. 再現コマンド・修正方針（提案のみ）
 
 1. エラーログから原因候補を特定
 2. 失敗カテゴリ（lint/test/build/e2e/migrate 等）を分類
