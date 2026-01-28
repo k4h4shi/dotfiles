@@ -12,6 +12,7 @@ in
   home.packages = with pkgs; [
     # 開発ツール
     git
+    git-lfs
     gh
     jq
     ripgrep
@@ -40,6 +41,11 @@ in
   # Git
   programs.git = {
     enable = true;
+    ignores = [
+      ".vscode/"
+      ".worktree/"
+      ".claude/settings.local.json"
+    ];
     settings = {
       user = {
         name = "Kotaro Takahashi";
@@ -123,6 +129,10 @@ in
     # Cursor
     ".cursor/commands".source = "${dotfilesDir}/home/.cursor/commands";
     ".cursor/rules".source = "${dotfilesDir}/home/.cursor/rules";
+
+    # Cursor (User settings)
+    "Library/Application Support/Cursor/User/settings.json".source =
+      "${dotfilesDir}/home/Library/Application Support/Cursor/User/settings.json";
 
     # Gemini CLI
     ".gemini/commands".source = "${dotfilesDir}/home/.gemini/commands";

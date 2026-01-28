@@ -1,0 +1,35 @@
+{
+  "window.commandCenter": true,
+  "editor.formatOnSave": true,
+  "notebook.formatOnSave.enabled": true,
+  "window.newWindowProfile": "Default",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "cursor.cpp.enablePartialAccepts": true,
+  "update.releaseTrack": "prerelease",
+  "cursor.composer.shouldChimeAfterChatFinishes": true,
+  "cursor.composer.shouldAllowCustomModes": true,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.env": {
+    "PATH": "${env:HOME}/.nix-profile/bin:/opt/homebrew/bin:/usr/local/bin:${env:PATH}"
+  },
+  "git.openRepositoryInParentFolders": "never",
+  "markdown-preview-enhanced.enablePreviewZenMode": false,
+  "githubPullRequests.pullBranch": "never",
+  "githubPullRequests.fileListLayout": "flat",
+
+  "git.autoRepositoryDetection": "subFolders",
+  "git.repositoryScanMaxDepth": 2,
+  "git.repositoryScanIgnoredFolders": [".worktree"],
+  "git.ignoredRepositories": ["**/.worktree/**"],
+  "files.watcherExclude": {
+    "**/.worktree/**": true
+  },
+  "search.exclude": {
+    "**/.worktree/**": true
+  }
+}
