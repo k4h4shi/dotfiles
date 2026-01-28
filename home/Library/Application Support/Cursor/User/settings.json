@@ -31,5 +31,8 @@
   },
   "search.exclude": {
     "**/.worktree/**": true
-  }
+  },
+  "githubPullRequests.ignoredPullRequestBranches": [
+    "issue-"
+  ]
 }
