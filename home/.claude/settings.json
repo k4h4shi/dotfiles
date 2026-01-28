@@ -49,18 +49,7 @@
       "WebFetch(domain:github.com)"
     ]
   },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "あなたは Claude Code の Stop hook 判定者です。/fix コマンドが完了していないのに Stop することを防ぎます。\n\n制約:\n- 出力はJSONのみ（余計な文章は禁止）\n- 返却スキーマは {\"ok\": true|false, \"reason\"?: string}\n- ok=false のとき reason は1文だけ\n\n/ fix の完了要件（0〜9）:\n0) Setup\n1) Understand\n2) Plan（必要時）\n3) Implement（TDD）\n4) Docs\n5) Pre-PR Check\n6) Push & PR\n7) Post-PR Check\n8) Session Retrospective\n9) Report\n\n判定（曖昧禁止）:\n- このセッションが /fix 文脈ではない → {\"ok\":true}\n- /fix 文脈で Stop を許可してよいのは、直近の assistant メッセージに「0〜9の完了要件をすべて満たした」ことが明示され、各項目(0〜9)がチェック済みとして列挙され、かつユーザー向けの最終サマリー(9)が含まれている場合のみ → {\"ok\":true}\n- 上記を満たさない → {\"ok\":false,\"reason\":\"/fix が未完了です。完了要件0〜9のチェック結果を全て記載した最終報告を書いてから Stop してください。\"}\n\n入力JSONは $ARGUMENTS。会話内容を参照して厳密に判定してください。"
-          }
-        ]
-      }
-    ]
-  },
+  "hooks": {},
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
     "example-skills@anthropic-agent-skills": true
