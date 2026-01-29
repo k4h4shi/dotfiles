@@ -31,6 +31,10 @@ allowed-tools: Bash
         "/session-retrospective"
       ```
 
-3.  **報告**:
+3.  **保存**
+    - 生成されたレポートは **プロジェクト配下**に保存する（例: `docs/splints/retrospectives` 配下）
+    - ファイル名は、{イシュータイトル}-{イシュー番号}.mdとする
+    - `~/.claude/retrospectives/` に置かない（散逸して追えなくなるため）
+
+4.  **報告**:
     - Codexにレトロスペクティブ依頼を送ったことをユーザーに伝える
-    - 生成されたレポートのパスを案内する（`~/.claude/retrospectives/`）

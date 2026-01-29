@@ -10,7 +10,7 @@ CI チェックを監視し、失敗時はデバッグ・修正する。
 ## 1. CI監視（最大15分）
 
 ```bash
-gh pr checks <PR_NUMBER> --watch
+gh pr checks <PR_NUMBER> --watch --fail-fast
 ```
 
 またはポーリング:

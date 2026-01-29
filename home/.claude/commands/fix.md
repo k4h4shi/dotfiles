@@ -43,6 +43,8 @@ This command defines a **common interface**. Project-specific behavior is provid
   - `tester-runner`（unit/integration）
   - `builder-runner`（typecheck/build）
   - `e2e-tester`（E2E）
+  - `/subagent-coverage`（coverage→不足テスト観点の翻訳）
+  - `/subagent-duplication`（重複/類似コード→責務分離/共通化の候補）
   - `/subagent-review local`（lint等と並行でローカル差分レビュー）
 - [ ] 失敗や指摘があり次第、修正して再度Pre-PR Checkする
 

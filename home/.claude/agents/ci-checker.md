@@ -21,7 +21,7 @@ CI チェックを監視し、失敗時の情報を収集して要約するエ�
 ### 1. CI監視 (最大15分)
 
 ```bash
-gh pr checks <PR_NUMBER> --watch
+gh pr checks <PR_NUMBER> --watch --fail-fast
 ```
 
 または30秒間隔でポーリング:
