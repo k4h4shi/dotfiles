@@ -4,6 +4,7 @@ set -euo pipefail
 pr=""
 interval="30"
 max="30"
+only_new="false"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -13,6 +14,8 @@ while [[ $# -gt 0 ]]; do
       interval="${2:-}"; shift 2 ;;
     --max)
       max="${2:-}"; shift 2 ;;
+    --only-new)
+      only_new="true"; shift ;;
     -*)
       echo "unknown flag: $1" >&2; exit 2 ;;
     *)
@@ -27,8 +30,6 @@ name="${repo#*/}"
 if [[ -z "${pr}" ]]; then
   pr="$(gh pr view --json number -q .number)"
 fi
-
-start_ts="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
 query='
 query($owner:String!,$name:String!,$pr:Int!){
@@ -51,6 +52,22 @@ query($owner:String!,$name:String!,$pr:Int!){
     }
   }
 }'
+
+# 初回取得: 既に「未解決スレッド」や「Changes requested」があるなら即返す
+data="$(gh api graphql -F owner="$owner" -F name="$name" -F pr="$pr" -f query="$query")"
+if [[ "$only_new" != "true" ]] && command -v jq >/dev/null 2>&1; then
+  if echo "$data" | jq -e '
+    (.data.repository.pullRequest.reviewThreads.nodes[]? | select(.isResolved == false) | .comments.nodes[]? | select((.body // "" | length) > 0))
+    or
+    (.data.repository.pullRequest.reviews.nodes[]? | select(.state == "CHANGES_REQUESTED"))
+  ' >/dev/null; then
+    echo "$data"
+    exit 0
+  fi
+fi
+
+# ここから先は「新規」を監視する（初回取得の直後を基準にする）
+start_ts="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
 for _ in $(seq 1 "$max"); do
   data="$(gh api graphql -F owner="$owner" -F name="$name" -F pr="$pr" -f query="$query")"
