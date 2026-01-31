@@ -26,6 +26,9 @@ dotfiles は Codex のカスタム skills を `~/.codex/skills/custom/` に展�
 - `/rebase-resolver`: rebaseコンフリクト解消
 - `/review-checker`: PRレビューコメント監視と指摘対応
 - `/refactor-cleaner`: 安全なリファクタ/掃除
+- `/deadcode`: デッドコード（未使用コード）検出
+- `/duplication`: 重複/類似コード検出
+- `/coverage`: コードカバレッジ分析
 - `/worktree-management`: worktree作成（必要時）
 - `/e2e-runner`: E2E設計/実行
 - `/video-splitter`: 動画分割（200MB等）
