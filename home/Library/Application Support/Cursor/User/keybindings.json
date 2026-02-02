@@ -1,0 +1,25 @@
+// Place your key bindings in this file to override the defaults
+[
+  {
+    "key": "cmd+i",
+    "command": "composerMode.agent"
+  },
+  {
+    "key": "shift+enter",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "\\\r\n"
+    },
+    "when": "terminalFocus"
+  },
+  {
+    "key": "shift+cmd+escape",
+    "command": "claude-code.runClaude.keyboard",
+    "when": "claude-code.hasClaudeInPath"
+  },
+  {
+    "key": "cmd+escape",
+    "command": "-claude-code.runClaude.keyboard",
+    "when": "claude-code.hasClaudeInPath"
+  }
+]

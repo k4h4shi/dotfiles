@@ -164,6 +164,10 @@ in
     # Cursor (User settings)
     "Library/Application Support/Cursor/User/settings.json".source =
       "${dotfilesDir}/home/Library/Application Support/Cursor/User/settings.json";
+    "Library/Application Support/Cursor/User/keybindings.json".source =
+      "${dotfilesDir}/home/Library/Application Support/Cursor/User/keybindings.json";
+    "Library/Application Support/Cursor/User/extensions.json".source =
+      "${dotfilesDir}/home/Library/Application Support/Cursor/User/extensions.json";
 
     # Gemini CLI
     ".gemini/commands".source = "${dotfilesDir}/home/.gemini/commands";
