@@ -20,6 +20,7 @@ in
     fzf
     tmux
     awscli2
+    railway
     dnsutils
 
     # 言語・ランタイム
