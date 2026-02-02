@@ -70,6 +70,16 @@ in
   # Nix設定
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # Unfree packages
+  # Claude Code CLI (`claude-code`) is marked as unfree in nixpkgs.
+  # Allow only the minimum set we need.
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "claude-code"
+    "claude-code-bin"
+    "claude-code-acp"
+    "claude-code-router"
+  ];
+
   # Homebrew管理
   homebrew = {
     enable = true;
