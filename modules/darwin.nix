@@ -47,7 +47,7 @@ let
     "sonic-visualiser"
 
     # その他
-    "kindle"
+    # kindle - App Store からインストール（Caskなし）
     # SIGMA_PhotoPro6 - 手動インストール（Caskなし）
   ];
 
