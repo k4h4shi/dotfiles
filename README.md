@@ -45,6 +45,25 @@ dotfiles/
 | home-manager | Git, Zsh, 開発ツール, 言語ランタイム, direnv, starship |
 | home/ | Claude, Cursor, Gemini, Codex, Vive の設定ファイル |
 
+### Cursor 設定
+
+以下が管理されています：
+
+- `settings.json` - エディタ設定
+- `keybindings.json` - キーバインド
+- `extensions.json` - 推奨拡張機能リスト（17個）
+- `.cursor/commands/` - カスタムコマンド
+- `.cursor/rules/` - プロジェクトルール
+
+#### 推奨拡張機能（カテゴリ別）
+
+- **AI**: Claude Code, ChatGPT
+- **Web開発**: Biome, Tailwind, ESLint, Prettier, Prisma, Jest, Playwright
+- **Git/GitHub**: GitHub Actions, PR管理, Worktree
+- **データベース**: PostgreSQL
+- **Markdown**: Mermaid, Preview Enhanced, PDF出力
+- **インフラ**: Docker
+
 ## 更新
 
 ```bash

@@ -1,0 +1,32 @@
+{
+  "recommendations": [
+    // AI関連
+    "anthropic.claude-code",
+    "openai.chatgpt",
+
+    // Web開発（mechanix）
+    "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "prisma.prisma",
+    "orta.vscode-jest",
+    "ms-playwright.playwright",
+
+    // Git/GitHub
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+    "philstainer.git-worktree",
+
+    // データベース
+    "ckolkman.vscode-postgres",
+
+    // Markdown/ドキュメント（k4h4shi.com）
+    "bierner.markdown-mermaid",
+    "shd101wyy.markdown-preview-enhanced",
+    "yzane.markdown-pdf",
+
+    // Docker
+    "ms-azuretools.vscode-docker"
+  ]
+}
