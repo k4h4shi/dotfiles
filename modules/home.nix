@@ -14,6 +14,7 @@ in
     git
     git-lfs
     gh
+    glab
     jq
     ripgrep
     fd
@@ -28,6 +29,10 @@ in
     rustup
     python3
     ruby
+
+    # AI
+    claude-code
+    codex
 
     # ビルドツール
     gnumake
