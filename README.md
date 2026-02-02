@@ -7,8 +7,8 @@ Nix + nix-darwin + home-manager で管理する個人環境。
 ```bash
 git clone https://github.com/k4h4shi/dotfiles.git
 cd dotfiles
-./install.sh           # personal（デフォルト）
-./install.sh common    # common
+./install.sh           # common（デフォルト）
+./install.sh personal  # personal（音楽制作アプリ追加）
 ```
 
 初回は Nix がインストールされる。シェル再起動後、再度実行。

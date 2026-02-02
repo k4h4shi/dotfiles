@@ -3,8 +3,8 @@ set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# プロファイル選択（引数で指定、デフォルトは personal）
-PROFILE="${1:-personal}"
+# プロファイル選択（引数で指定、デフォルトは common）
+PROFILE="${1:-common}"
 
 echo "==> dotfiles installer"
 echo "    Location: $DOTFILES"
@@ -16,9 +16,9 @@ echo ""
 # プロファイルの検証
 if [[ "$PROFILE" != "personal" && "$PROFILE" != "common" ]]; then
   echo "Error: Unknown profile '$PROFILE'"
-  echo "Usage: $0 [personal|common]"
-  echo "  personal - 共通アプリ + 音楽制作アプリ（デフォルト）"
-  echo "  common   - 共通アプリのみ"
+  echo "Usage: $0 [common|personal]"
+  echo "  common   - 共通アプリのみ（デフォルト）"
+  echo "  personal - 共通アプリ + 音楽制作アプリ"
   exit 1
 fi
 
