@@ -10,6 +10,17 @@ ignored_dirs = [".git", "node_modules", ".worktrees", "target", "dist"]
 # Optional tmux prefix key override (e.g., "C-a" for Ctrl+a)
 # tmux_prefix = "C-a"
 
+# Base branch for worktree creation (defaults to current HEAD if not set)
+# GitHub Flow: use main as the base branch
+base_branch = "main"
+
+# Project-specific base branch overrides
+# Project name = directory name under projects_root
+[projects.mechanix]
+base_branch = "develop"
+[projects.vive]
+base_branch = "main"
+
 # Terminal launch configuration
 [terminal]
 # Launch strategy: "inline" (default) or "spawn"
