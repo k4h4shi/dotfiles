@@ -4,8 +4,7 @@ let
   # 共通のCaskアプリ
   commonCasks = [
     # 開発ツール
-    "docker"
-    "docker-desktop"
+    "docker-desktop"  # docker は docker-desktop に統合
     "ghostty"
     "ngrok"
     "cursor"
@@ -31,7 +30,7 @@ let
     "slack"
     "spotify"
     "zoom"
-    "line"
+    # line - App Store からインストール（Caskなし）
     "readdle-spark"
   ];
 
