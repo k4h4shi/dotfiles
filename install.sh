@@ -5,6 +5,8 @@ DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "==> dotfiles installer"
 echo "    Location: $DOTFILES"
+echo "    User: $USER"
+echo "    Home: $HOME"
 echo ""
 
 # 1. Nixのインストール
@@ -38,16 +40,13 @@ fi
 echo "==> Running home-manager switch..."
 cd "$DOTFILES"
 
-# 設定名を決定
+# 設定名（現在のユーザー名を使用）
 CONFIG_NAME="${USER:-default}"
-if ! nix flake show --json 2>/dev/null | grep -q "\"$CONFIG_NAME\""; then
-  CONFIG_NAME="default"
-fi
-
 echo "    Using configuration: $CONFIG_NAME"
 
 # home-manager switch実行
-nix run home-manager -- switch --flake ".#${CONFIG_NAME}" -b backup
+# --impure: 環境変数（USER, HOME）を読み取るために必要
+nix run home-manager -- switch --flake ".#${CONFIG_NAME}" --impure -b backup
 
 echo ""
 echo "==> Done!"

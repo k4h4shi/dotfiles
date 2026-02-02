@@ -57,8 +57,10 @@ dotfiles/
 
 ```bash
 cd dotfiles
-nix run home-manager -- switch --flake .#takahashikotaro
+nix run home-manager -- switch --flake ".#${USER}" --impure -b backup
 ```
+
+`--impure` フラグは環境変数（`USER`, `HOME`）を読み取るために必要。
 
 ## 開発
 
@@ -76,6 +78,8 @@ Nix LSP（nil）とフォーマッタ（nixpkgs-fmt）が使える。
 2. `./install.sh` 実行（Nixがインストールされる）
 3. シェル再起動
 4. `./install.sh` 再実行（home-managerが適用される）
+
+ユーザー名やホームディレクトリは環境変数から自動取得されるため、異なるユーザー名のマシンでもそのまま動作する。
 
 ## 方針
 

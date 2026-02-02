@@ -14,27 +14,41 @@
       # サポートするシステム
       systems = [ "aarch64-darwin" "x86_64-darwin" "x86_64-linux" "aarch64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
+
+      # 環境変数から動的に取得（--impure フラグが必要）
+      currentUser = builtins.getEnv "USER";
+      currentHome = builtins.getEnv "HOME";
+      currentSystem = builtins.currentSystem;
+
+      # ユーザー名が取得できない場合のフォールバック
+      username = if currentUser != "" then currentUser else "default";
+      homeDirectory = if currentHome != "" then currentHome else "/home/${username}";
+
+      # home-manager設定を生成する関数
+      mkHomeConfig = { system, user, home }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          modules = [ ./modules/home.nix ];
+          extraSpecialArgs = {
+            username = user;
+            homeDirectory = home;
+          };
+        };
     in
     {
       homeConfigurations = {
-        # macOS (Apple Silicon)
-        "takahashikotaro" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-          modules = [ ./modules/home.nix ];
-          extraSpecialArgs = {
-            username = "takahashikotaro";
-            homeDirectory = "/Users/takahashikotaro";
-          };
+        # 動的設定（現在のユーザー用）
+        "${username}" = mkHomeConfig {
+          system = currentSystem;
+          user = username;
+          home = homeDirectory;
         };
 
-        # デフォルト設定（takahashikotaro と同じ）
-        "default" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-          modules = [ ./modules/home.nix ];
-          extraSpecialArgs = {
-            username = "takahashikotaro";
-            homeDirectory = "/Users/takahashikotaro";
-          };
+        # デフォルト設定（動的設定と同じ）
+        "default" = mkHomeConfig {
+          system = currentSystem;
+          user = username;
+          home = homeDirectory;
         };
       };
 
