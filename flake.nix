@@ -20,14 +20,26 @@
       darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
 
-      # 環境変数から動的に取得（--impure フラグが必要）
-      currentUser = builtins.getEnv "USER";
-      currentHome = builtins.getEnv "HOME";
       currentSystem = builtins.currentSystem;
+
+      # 現在のシステムがmacOSかどうか
+      isDarwin = builtins.elem currentSystem darwinSystems;
+
+      # 環境変数から動的に取得（--impure フラグが必要）
+      # NOTE: sudo で実行する場合、HOME/USER を偽装すると nix が警告するため、
+      #       インストーラから明示的に渡す DOTFILES_* を優先して使う。
+      envUser = builtins.getEnv "DOTFILES_USERNAME";
+      envHome = builtins.getEnv "DOTFILES_HOME";
+      currentUser = if envUser != "" then envUser else builtins.getEnv "USER";
+      currentHome = if envHome != "" then envHome else builtins.getEnv "HOME";
 
       # ユーザー名が取得できない場合のフォールバック
       username = if currentUser != "" then currentUser else "default";
-      homeDirectory = if currentHome != "" then currentHome else "/home/${username}";
+      defaultHomeDirectory =
+        if isDarwin
+        then "/Users/${username}"
+        else "/home/${username}";
+      homeDirectory = if currentHome != "" then currentHome else defaultHomeDirectory;
 
       # macOS用: nix-darwin + home-manager 統合設定を生成
       mkDarwinConfig = { system, user, home, profile ? "personal" }:
@@ -44,6 +56,9 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              # 既存ファイルを home-manager 管理ファイルで置き換える際に自動バックアップする
+              # 例: settings.json -> settings.json.backup
+              home-manager.backupFileExtension = "backup";
               home-manager.extraSpecialArgs = {
                 username = user;
                 homeDirectory = home;
@@ -64,9 +79,6 @@
             homeDirectory = home;
           };
         };
-
-      # 現在のシステムがmacOSかどうか
-      isDarwin = builtins.elem currentSystem darwinSystems;
     in
     {
       # macOS用: nix-darwin設定

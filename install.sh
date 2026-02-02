@@ -68,10 +68,11 @@ if [[ "$(uname)" == "Darwin" ]]; then
   echo "    Using profile: $PROFILE"
 
   # nix-darwin switch実行
-  # --impure: 環境変数（USER, HOME）を読み取るために必要
+  # --impure: 環境変数を読み取るために必要
   # sudo: システム設定の変更に必要
-  # HOME/USER を明示的に渡す（sudoで失われるため）
-  sudo HOME="$HOME" USER="$USER" nix run nix-darwin \
+  # sudo 実行時に HOME/USER を偽装すると nix が警告するため、
+  # DOTFILES_* でターゲットユーザー情報だけを明示的に渡す。
+  sudo -H env DOTFILES_USERNAME="$USER" DOTFILES_HOME="$HOME" nix run nix-darwin \
     --extra-experimental-features "nix-command flakes" \
     -- switch --flake ".#${PROFILE}" --impure
 
