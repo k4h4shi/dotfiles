@@ -1,4 +1,4 @@
-{ pkgs, username, homeDirectory, profile ? "personal", ... }:
+{ pkgs, lib, username, homeDirectory, profile ? "personal", ... }:
 
 let
   # 共通のCaskアプリ
@@ -76,7 +76,9 @@ in
     enable = true;
     onActivation = {
       autoUpdate = true;
-      cleanup = "zap";  # 管理外のアプリを削除
+      # cleanup = "zap";  # 管理外のアプリを削除（危険なので無効化）
+      # cleanup = "uninstall";  # Caskリストから削除されたアプリのみ削除
+      cleanup = "none";  # 何も削除しない（安全）
     };
     casks = casks;
   };
@@ -121,7 +123,10 @@ in
   };
 
   # セキュリティ設定
-  security.pam.enableSudoTouchIdAuth = true;  # Touch ID で sudo
+  security.pam.services.sudo_local.touchIdAuth = true;  # Touch ID で sudo
+
+  # プライマリユーザー（nix-darwin がユーザー固有の設定に使用）
+  system.primaryUser = username;
 
   # システムバージョン（nix-darwin用）
   system.stateVersion = 5;
