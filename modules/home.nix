@@ -1,7 +1,10 @@
-{ pkgs, username, homeDirectory, ... }:
+{ config, pkgs, username, homeDirectory, ... }:
 
 let
-  dotfilesDir = builtins.toString ./..;
+  dotfilesDir =
+    let env = builtins.getEnv "DOTFILES_DIR";
+    in if env != "" then env else builtins.toString ./..;
+  outOfStore = config.lib.file.mkOutOfStoreSymlink;
 in
 {
   home.username = username;
@@ -65,6 +68,7 @@ in
   # Zsh
   programs.zsh = {
     enable = true;
+    dotDir = ".config/zsh";
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
@@ -155,38 +159,43 @@ in
 
   # AI設定ファイル（シンボリックリンク）
   home.file = {
+    # zshrc entrypoint (keep writable for installers)
+    ".zshrc".source = outOfStore "${dotfilesDir}/home/.zshrc";
+
     # Claude Code
-    ".claude/agents".source = "${dotfilesDir}/home/.claude/agents";
-    ".claude/commands".source = "${dotfilesDir}/home/.claude/commands";
-    ".claude/skills".source = "${dotfilesDir}/home/.claude/skills";
-    ".claude/CLAUDE.md".source = "${dotfilesDir}/home/.claude/CLAUDE.md";
-    ".claude/settings.json".source = "${dotfilesDir}/home/.claude/settings.json";
+    ".claude/agents".source = outOfStore "${dotfilesDir}/home/.claude/agents";
+    ".claude/commands".source = outOfStore "${dotfilesDir}/home/.claude/commands";
+    ".claude/skills".source = outOfStore "${dotfilesDir}/home/.claude/skills";
+    ".claude/CLAUDE.md".source = outOfStore "${dotfilesDir}/home/.claude/CLAUDE.md";
+    ".claude/settings.json".source =
+      outOfStore "${dotfilesDir}/home/.claude/settings.json";
 
     # Cursor
-    ".cursor/commands".source = "${dotfilesDir}/home/.cursor/commands";
-    ".cursor/rules".source = "${dotfilesDir}/home/.cursor/rules";
+    ".cursor/commands".source = outOfStore "${dotfilesDir}/home/.cursor/commands";
+    ".cursor/rules".source = outOfStore "${dotfilesDir}/home/.cursor/rules";
 
     # Cursor (User settings)
     "Library/Application Support/Cursor/User/settings.json".source =
-      "${dotfilesDir}/home/Library/Application Support/Cursor/User/settings.json";
+      outOfStore "${dotfilesDir}/home/Library/Application Support/Cursor/User/settings.json";
     "Library/Application Support/Cursor/User/keybindings.json".source =
-      "${dotfilesDir}/home/Library/Application Support/Cursor/User/keybindings.json";
+      outOfStore "${dotfilesDir}/home/Library/Application Support/Cursor/User/keybindings.json";
     "Library/Application Support/Cursor/User/extensions.json".source =
-      "${dotfilesDir}/home/Library/Application Support/Cursor/User/extensions.json";
+      outOfStore "${dotfilesDir}/home/Library/Application Support/Cursor/User/extensions.json";
 
     # Gemini CLI
-    ".gemini/commands".source = "${dotfilesDir}/home/.gemini/commands";
+    ".gemini/commands".source = outOfStore "${dotfilesDir}/home/.gemini/commands";
 
     # Codex CLI
-    ".codex/skills/custom".source = "${dotfilesDir}/home/.codex/skills";
-    ".codex/instructions.md".source = "${dotfilesDir}/home/.codex/instructions.md";
+    ".codex/skills/custom".source = outOfStore "${dotfilesDir}/home/.codex/skills";
+    ".codex/instructions.md".source =
+      outOfStore "${dotfilesDir}/home/.codex/instructions.md";
 
     # Vive
-    ".vive".source = "${dotfilesDir}/home/.vive";
+    ".vive".source = outOfStore "${dotfilesDir}/home/.vive";
 
     # Local bin
     ".local/bin/ghostty-tab" = {
-      source = "${dotfilesDir}/home/.local/bin/ghostty-tab";
+      source = outOfStore "${dotfilesDir}/home/.local/bin/ghostty-tab";
       executable = true;
     };
   };
