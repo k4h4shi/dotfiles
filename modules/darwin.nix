@@ -25,6 +25,7 @@ let
     "cmd-eikana"
     "scroll-reverser"
     "displaylink"
+    "notion"
     "obsidian"
 
     # コミュニケーション・エンタメ
