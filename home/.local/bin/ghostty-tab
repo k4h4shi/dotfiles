@@ -1,0 +1,25 @@
+#!/bin/bash
+# Open a new Ghostty tab and run tmux attach in it.
+# Usage: ghostty-tab <session_id>
+
+SESSION_ID="$1"
+
+if [[ -z "$SESSION_ID" ]]; then
+    echo "Usage: ghostty-tab <session_id>" >&2
+    exit 1
+fi
+
+osascript <<EOF
+tell application "Ghostty" to activate
+delay 0.2
+tell application "System Events"
+    tell process "Ghostty"
+        click menu item "New Tab" of menu "File" of menu bar item "File" of menu bar 1
+    end tell
+end tell
+delay 0.2
+tell application "System Events"
+    keystroke "tmux attach -t $SESSION_ID"
+    keystroke return
+end tell
+EOF

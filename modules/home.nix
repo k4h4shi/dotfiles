@@ -183,5 +183,11 @@ in
 
     # Vive
     ".vive".source = "${dotfilesDir}/home/.vive";
+
+    # Local bin
+    ".local/bin/ghostty-tab" = {
+      source = "${dotfilesDir}/home/.local/bin/ghostty-tab";
+      executable = true;
+    };
   };
 }
