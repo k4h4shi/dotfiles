@@ -21,6 +21,7 @@ let
     # ユーティリティ
     "1password"
     "alfred"
+    "blackhole-2ch"
     "cmd-eikana"
     "scroll-reverser"
     "displaylink"
