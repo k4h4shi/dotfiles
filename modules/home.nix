@@ -135,6 +135,9 @@ in
       [[ -n ''${key[End]} ]] && bindkey "''${key[End]}" end-of-line
       [[ -n ''${key[Up]} ]] && bindkey "''${key[Up]}" up-line-or-search
       [[ -n ''${key[Down]} ]] && bindkey "''${key[Down]}" down-line-or-search
+
+      # マシンローカル設定（dotfiles管理外）
+      [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
     '';
   };
 
@@ -203,5 +206,12 @@ in
       source = ../home/.local/bin/ghostty-tab;
       executable = true;
     };
+
+    # Machine-local environment (template, not symlink)
+    # 端末ローカルのパッケージ管理用テンプレート
+    ".config/local-env/flake.nix.template".source =
+      "${dotfilesDir}/home/.config/local-env/flake.nix.template";
+    ".config/local-env/README.md".source =
+      "${dotfilesDir}/home/.config/local-env/README.md";
   };
 }

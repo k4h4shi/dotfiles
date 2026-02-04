@@ -1,0 +1,33 @@
+{
+  description = "Machine-local packages (not managed by dotfiles)";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  };
+
+  outputs = { nixpkgs, ... }:
+    let
+      systems = [ "aarch64-darwin" "x86_64-darwin" "x86_64-linux" "aarch64-linux" ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+    in
+    {
+      devShells = forAllSystems (system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              # この端末専用のパッケージをここに追加
+              # 例:
+              # volta      # 特定プロジェクト用
+              # awscli2    # 業務用（個人端末では不要）
+            ];
+            shellHook = ''
+              # 端末固有の環境変数など
+            '';
+          };
+        }
+      );
+    };
+}
