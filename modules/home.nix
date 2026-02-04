@@ -68,7 +68,9 @@ in
   # Zsh
   programs.zsh = {
     enable = true;
-    dotDir = ".config/zsh";
+    # NOTE: relative paths are deprecated in Home Manager.
+    # Use an absolute path derived from XDG base dirs.
+    dotDir = "${config.xdg.configHome}/zsh";
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
@@ -195,7 +197,10 @@ in
 
     # Local bin
     ".local/bin/ghostty-tab" = {
-      source = outOfStore "${dotfilesDir}/home/.local/bin/ghostty-tab";
+      # NOTE: `outOfStore` becomes a symlink to /Users/... which the Nix builder
+      # (sandbox) cannot read, causing `cp: ... Permission denied`.
+      # Import into the Nix store instead.
+      source = ../home/.local/bin/ghostty-tab;
       executable = true;
     };
   };
