@@ -25,7 +25,6 @@ let
     "cmd-eikana"
     "scroll-reverser"
     "displaylink"
-    "notion"
     "obsidian"
 
     # コミュニケーション・エンタメ
@@ -91,6 +90,9 @@ in
       # cleanup = "uninstall";  # Caskリストから削除されたアプリのみ削除
       cleanup = "none";  # 何も削除しない（安全）
     };
+    brews = [
+      "ffmpeg"  # 動画処理
+    ];
     casks = casks;
   };
 
