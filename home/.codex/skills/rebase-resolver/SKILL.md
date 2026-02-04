@@ -7,19 +7,26 @@ description: "rebaseコンフリクトを定型手順で解消する。Usage: /r
 
 rebase時のコンフリクト解決を支援する。
 
+## 0. 事前決定（重要）: rebase 対象（base ブランチ）
+
+rebase 対象の base は **対象リポジトリの `AGENTS.md`（ルート）**のブランチ運用（PR）に従う。
+
+- `develop` 集約のリポジトリ: `origin/develop`
+- `main` 集約のリポジトリ: `origin/main`
+
 ## 1. 状況確認
 
 ```bash
 git status
 git log --oneline -5
-git log --oneline origin/main..HEAD
+git log --oneline <BASE>..HEAD
 ```
 
 ## 2. Rebase開始
 
 ```bash
 git fetch origin
-git rebase origin/main
+git rebase <BASE>
 ```
 
 ## 3. コンフリクト解消ループ
@@ -51,7 +58,7 @@ git rebase --continue
 | OpenAPI spec が変更された | クライアント再生成 |
 
 ```bash
-git diff --name-only origin/main...HEAD
+git diff --name-only <BASE>...HEAD
 ```
 
 ## 5. ローカル検証

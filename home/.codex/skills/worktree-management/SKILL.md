@@ -18,7 +18,10 @@ description: "並行タスク用にgit worktreeを作成・管理する（worktr
 2) ブランチとbaseを決める
 
 - Branch: `feature/issue-<NUMBER>` or `fix/issue-<NUMBER>`
-- Base: `origin/main`
+- Base: **対象リポジトリの `AGENTS.md`（ルート）のブランチ運用（PR）に従う**
+  - `develop` 集約のリポジトリ: `origin/develop`
+  - `main` 集約のリポジトリ: `origin/main`
+  - 迷った場合: `AGENTS.md` を SSOT とし、無い場合のみ `origin/main` を仮定する
 
 3) ignore設定を確認
 

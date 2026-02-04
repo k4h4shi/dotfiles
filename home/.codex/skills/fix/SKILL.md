@@ -55,15 +55,20 @@ TDDで進める。E2Eと単体がある場合は Nested TDD を優先する。
 
 ## 5. Push & PR（必要なら）
 
+### 5.0 base ブランチ（重要）
+
+PR の base は **対象リポジトリの `AGENTS.md`（ルート）のブランチ運用（PR）に従う**。
+（例: `develop` 集約なら `origin/develop`、`main` 集約なら `origin/main`）
+
 ### 5.1 コンフリクトチェック（必須）
 
 ```bash
 git fetch origin
-git merge-base --is-ancestor origin/main HEAD
+git merge-base --is-ancestor <BASE> HEAD
 ```
 
 - exit 0: そのまま push 可能
-- exit 1: main が先に進んでいる → `/rebase-resolver`
+- exit 1: base が先に進んでいる → `/rebase-resolver`
 
 ### 5.2 PR作成
 

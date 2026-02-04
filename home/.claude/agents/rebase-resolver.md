@@ -7,8 +7,15 @@ model: sonnet
 
 # Rebase Resolver（共通）
 
-このエージェントは「main 取り込み（rebase）→ コンフリクト解消 → 再生成 → ローカル検証」を定型で完了させる。
+このエージェントは「PR の base 取り込み（rebase）→ コンフリクト解消 → 再生成 → ローカル検証」を定型で完了させる。
 プロジェクト固有の再生成/検証コマンドは `AGENTS.md` を正とする。
+
+## 事前決定（重要）: rebase 対象（base ブランチ）
+
+rebase 対象の base は **対象リポジトリの `AGENTS.md`（ルート）**のブランチ運用（PR）に従う。
+
+- `develop` 集約のリポジトリ: `origin/develop`
+- `main` 集約のリポジトリ: `origin/main`
 
 ## 手順（固定）
 
@@ -21,7 +28,7 @@ git log --oneline -5
 2) rebase
 ```bash
 git fetch origin
-git rebase origin/main
+git rebase <BASE>
 ```
 
 3) コンフリクト解消ループ

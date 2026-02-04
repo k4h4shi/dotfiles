@@ -56,7 +56,8 @@ This command defines a **common interface**. Project-specific behavior is provid
   - `ci-checker`（PR checks 監視 / 失敗ログの要点と抜粋）
   - `review-checker`（レビューコメント監視 / 要点と抜粋）
 - [ ] 失敗や指摘があり次第、修正してコミット&プッシュ後、再度Post-PR Checkをする
-- [ ] “CIが進まない” 場合は `mergeableState` を確認し、必要なら main 取り込み（rebase）を優先する
+- [ ] “CIが進まない” 場合は `mergeableState` を確認し、必要なら **PR の base 取り込み（rebase）** を優先する
+  - base は **対象リポジトリの `AGENTS.md`**（ルート → 最も近い scoped）に従う（例: `develop` 集約 or `main` 集約）
 
 ### 8) Session Retrospective: セッションのレポートが作成され、配置されること
 

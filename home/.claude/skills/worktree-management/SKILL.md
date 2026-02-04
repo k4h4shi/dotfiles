@@ -15,9 +15,12 @@ allowed-tools: Bash, Read, Grep, Glob
 - If uncommitted changes exist, ask user to commit/stash.
 - Run: `git fetch --all --prune`
 
-2) ブランチとbaseを決める
+2) ブランチと base を決める
 - Branch: `feature/issue-<NUMBER>` or `fix/issue-<NUMBER>`
-- Base: `origin/main`
+- Base: **対象リポジトリの `AGENTS.md`（ルート）のブランチ運用（PR）に従う**
+  - `develop` 集約のリポジトリ: `origin/develop`
+  - `main` 集約のリポジトリ: `origin/main`
+- 迷った場合: `AGENTS.md` を SSOT とし、無い場合のみ `origin/main` を仮定する
 
 3) ignore設定を確認
 - Ensure `.worktrees/` is in `.gitignore`

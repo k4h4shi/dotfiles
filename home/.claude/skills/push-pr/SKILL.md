@@ -13,12 +13,21 @@ description: Pushes the current branch and opens a Pull Request following projec
 - Pre-PR Check が通っている（lint/test/build/e2e の失敗がない）
 - 作業ブランチ上にいる
 
+## 事前決定（重要）: PR の base ブランチ
+
+このスキルは **base ブランチを固定しない**。
+必ず対象リポジトリの `AGENTS.md`（ルート）にある **ブランチ運用（PR）** を読み、PR の base を決める。
+
+- 例: `develop` 集約のリポジトリ → base は `origin/develop`
+- 例: `main` 集約のリポジトリ → base は `origin/main`
+
 ## チェックリスト（結果整合性の担保）
 
 ### 1) main 取り込み状況の確認
-- `origin/main` が取り込み済みか確認する
-  - 例: `git fetch origin && git merge-base --is-ancestor origin/main HEAD`
+- PR の base ブランチ（例: `origin/develop` または `origin/main`）が取り込み済みか確認する
+  - 例: `git fetch origin && git merge-base --is-ancestor <BASE> HEAD`
 - 取り込み不足なら **自分で rebase** してコンフリクトを解消する（意図の判断が必要なため）
+  - 例: `git rebase <BASE>`
 - rebase 後は **Pre-PR Check に戻る**
 
 ### 2) push
@@ -27,6 +36,11 @@ description: Pushes the current branch and opens a Pull Request following projec
 ### 3) PR 作成
 - `AGENTS.md` の PR 規約に従って、`gh pr create` で PR を作成する
 - 必ず `Closes #<ISSUE_NUMBER>` を本文に含める
+
+## 安全制約
+
+- **禁止**: `develop` / `main` への直接 push（ブランチ保護前提）
+- **許可**: topic ブランチの rebase 後の push は `--force-with-lease` を使う（必要な場合のみ）
 
 ## Output（メインへの報告用）
 

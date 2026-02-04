@@ -20,7 +20,7 @@ model: sonnet
 ## チェック項目（できる範囲で）
 
 - [ ] `pwd` で作業ディレクトリが正しいことを確認
-- [ ] `origin/main` を取り込み済みか確認し、必要なら取り込む（最新mainと揃える）
+- [ ] PR の base ブランチを取り込み済みか確認し、必要なら取り込む（base は `AGENTS.md` を正とする）
 - [ ] `AGENTS.md` / `README.md` / `package.json` 等から **標準手順**を特定
 - [ ] 依存が揃っているか（例: install 済み）
 - [ ] `.env` / 必要な環境変数が揃っているか（プロジェクト指示に従う）
@@ -31,8 +31,9 @@ model: sonnet
 ## 典型フロー（完了するまで繰り返す）
 
 1) `AGENTS.md` に従って preflight/標準コマンドを特定する  
-2) `git fetch origin` して、`origin/main` を取り込み済みか確認する（例: `git merge-base --is-ancestor origin/main HEAD`）  
-3) 取り込み不足なら、作業ツリーがクリーンな場合に限り `git rebase origin/main` で取り込む  
+2) `git fetch origin` して、PR の base ブランチを取り込み済みか確認する（例: `git merge-base --is-ancestor <BASE> HEAD`）  
+   - base は `AGENTS.md`（ルート → 最も近い scoped）に従う（例: `origin/develop` / `origin/main`）
+3) 取り込み不足なら、作業ツリーがクリーンな場合に限り `git rebase <BASE>` で取り込む  
    - コンフリクトが出たら **即中断してメインへ返す**（判断が必要）  
 4) 初期化が必要なら、プロジェクトの `environment-setup`（または同等）を実行する  
 5) 最小検証（dev/db/test など）を実行する  

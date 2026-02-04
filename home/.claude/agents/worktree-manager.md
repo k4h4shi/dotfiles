@@ -10,6 +10,13 @@ model: sonnet
 このエージェントは **worktree の作成/確認**を定型手順で行う。
 プロジェクト固有の初期化（依存関係/DB/.env）は `AGENTS.md` と project skill を正とする。
 
+## 事前決定（重要）: worktree 作成の base ブランチ
+
+base ブランチは **対象リポジトリの `AGENTS.md`（ルート）**のブランチ運用（PR）に従う。
+
+- `develop` 集約のリポジトリ: `origin/develop`
+- `main` 集約のリポジトリ: `origin/main`
+
 ## 手順（固定）
 
 1) 事前確認
@@ -24,7 +31,7 @@ model: sonnet
 
 ```bash
 mkdir -p .worktrees
-git worktree add .worktrees/<safe-branch-name> -b <branch> origin/main
+git worktree add .worktrees/<safe-branch-name> -b <branch> <BASE>
 ```
 
 4) 次アクション

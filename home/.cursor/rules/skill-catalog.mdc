@@ -20,6 +20,8 @@ alwaysApply: true
   - TDD の具体的なテスト場所/コマンド
 - `ci-debug`
   - CI 構成とローカル再現コマンド
+- `push-pr`
+ - push〜PR作成の定型手順（base ブランチは各 repo の `AGENTS.md` を正とする）
 
 ### Manager（Cursor）
 
