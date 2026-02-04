@@ -14,20 +14,41 @@
       devShells = forAllSystems (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
+          localPackages = with pkgs; [
+            # ev:packages:start
+            # この端末専用のパッケージをここに追加
+            # 例:
+            # volta      # 特定プロジェクト用
+            # awscli2    # 業務用（個人端末では不要）
+            # ev:packages:end
+          ];
         in
         {
           default = pkgs.mkShell {
-            packages = with pkgs; [
-              # ev:packages:start
-              # この端末専用のパッケージをここに追加
-              # 例:
-              # volta      # 特定プロジェクト用
-              # awscli2    # 業務用（個人端末では不要）
-              # ev:packages:end
-            ];
+            packages = localPackages;
             shellHook = ''
               # 端末固有の環境変数など
             '';
+          };
+        }
+      );
+
+      packages = forAllSystems (system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          localPackages = with pkgs; [
+            # ev:packages:start
+            # この端末専用のパッケージをここに追加
+            # 例:
+            # volta      # 特定プロジェクト用
+            # awscli2    # 業務用（個人端末では不要）
+            # ev:packages:end
+          ];
+        in
+        {
+          local-env = pkgs.buildEnv {
+            name = "local-env";
+            paths = localPackages;
           };
         }
       );

@@ -4,15 +4,18 @@ set -euo pipefail
 usage() {
   cat <<'EOF'
 Usage:
-  ev g <query>         # Global (dotfiles) install
-  ev l <query>         # Local (machine-only) install
-  ev p <query>         # Project (cwd) install
-  ev apply g|l|p       # Apply changes for each scope
+  ev s <query>         # Shared (dotfiles across devices)
+  ev m <query>         # Machine (this device, shared across dirs)
+  ev d <query>         # Dir (current directory only)
+  ev apply s|m|d       # Apply changes for each scope
+  ev s apply           # Apply shared
+  ev m apply           # Apply machine
+  ev d apply           # Apply dir
 
 Scopes:
-  g = global  (dotfiles: home.nix / darwin.nix)
-  l = local   (~/.config/local-env/flake.nix)
-  p = project (./flake.nix)
+  s = shared  (dotfiles across devices)
+  m = machine (this device)
+  d = dir     (current directory)
 EOF
 }
 
@@ -121,7 +124,7 @@ choose_candidate() {
   local candidates
 
   candidates="$(search_nix "$query")"
-  if [ "$scope" = "g" ] || [ "$scope" = "l" ]; then
+  if [ "$scope" = "s" ] || [ "$scope" = "m" ]; then
     candidates="${candidates}"$'\n'"$(search_cask "$query")"
   fi
 
@@ -148,7 +151,22 @@ apply_global() {
 }
 
 apply_local() {
-  (cd "$LOCAL_ENV_DIR" && direnv reload) || die "direnv reload failed"
+  local profile="$HOME/.local-env/profile"
+  mkdir -p "$HOME/.local-env"
+  if ! nix profile list --profile "$profile" >/dev/null 2>&1; then
+    nix profile add --profile "$profile" "$LOCAL_ENV_DIR#local-env" || die "profile install failed"
+  else
+    if nix profile list --profile "$profile" 2>/dev/null | grep -q "local-env"; then
+      nix profile remove --profile "$profile" local-env >/dev/null 2>&1 || true
+      nix profile add --profile "$profile" "$LOCAL_ENV_DIR#local-env" || die "profile install failed"
+    else
+      nix profile add --profile "$profile" "$LOCAL_ENV_DIR#local-env" || die "profile install failed"
+    fi
+  fi
+
+  if command -v direnv >/dev/null 2>&1; then
+    (cd "$LOCAL_ENV_DIR" && direnv reload) || true
+  fi
 }
 
 apply_project() {
@@ -161,20 +179,30 @@ if [ -z "$scope" ]; then
   exit 1
 fi
 
+query="${2:-}"
+if [ -z "$query" ]; then
+  usage
+  exit 1
+fi
+
 if [ "$scope" = "apply" ]; then
-  case "${2:-}" in
-    g) apply_global ;;
-    l) apply_local ;;
-    p) apply_project ;;
+  case "$query" in
+    s) apply_global ;;
+    m) apply_local ;;
+    d) apply_project ;;
     *) usage; exit 1 ;;
   esac
   exit 0
 fi
 
-query="${2:-}"
-if [ -z "$query" ]; then
-  usage
-  exit 1
+if [ "$query" = "apply" ]; then
+  case "$scope" in
+    s) apply_global ;;
+    m) apply_local ;;
+    d) apply_project ;;
+    *) usage; exit 1 ;;
+  esac
+  exit 0
 fi
 
 choice="$(choose_candidate "$query" "$scope")"
@@ -182,7 +210,7 @@ kind="$(echo "$choice" | awk -F'\t' '{print $1}')"
 name="$(echo "$choice" | awk -F'\t' '{print $2}')"
 
 case "$scope" in
-  g)
+  s)
     if [ "$kind" = "nix" ]; then
       add_to_marked_list "$HOME_NIX" "ev:packages:start" "ev:packages:end" "    ${name#nixpkgs#}"
       echo "Added to home.nix: ${name#nixpkgs#}"
@@ -193,17 +221,17 @@ case "$scope" in
       echo "Run: (cd \"$DOTFILES_DIR\" && ./apply.sh)"
     fi
     ;;
-  l)
+  m)
     ensure_local_env
     if [ "$kind" = "nix" ]; then
       add_to_marked_list "$LOCAL_FLAKE" "ev:packages:start" "ev:packages:end" "              ${name#nixpkgs#}"
       echo "Added to local flake: ${name#nixpkgs#}"
-      echo "Run: (cd \"$LOCAL_ENV_DIR\" && direnv reload)"
+      echo "Run: ev m apply"
     else
       brew install --cask "$name"
     fi
     ;;
-  p)
+  d)
     ensure_project_env
     if [ "$kind" = "nix" ]; then
       add_to_marked_list "./flake.nix" "ev:packages:start" "ev:packages:end" "              ${name#nixpkgs#}"

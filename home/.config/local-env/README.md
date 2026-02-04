@@ -19,7 +19,12 @@ direnv allow
 ## 使い方
 
 1. `flake.nix` の `packages` にパッケージを追加
-2. `cd ~/.config/local-env` で環境が自動的に有効化
+2. `ev m apply` で profile を更新（どのディレクトリでも使える）
+
+## 補足
+
+- `direnv allow` で local-env の devShell も使えます
+- PATH は `~/.local-env/profile/bin` から供給されます
 
 ## dotfiles との違い
 

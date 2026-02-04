@@ -140,6 +140,11 @@ in
 
       # マシンローカル設定（dotfiles管理外）
       [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+      # マシンローカルの profile を PATH に追加
+      if [[ -d ~/.local-env/profile/bin ]]; then
+        export PATH="$HOME/.local-env/profile/bin:$PATH"
+      fi
     '';
   };
 

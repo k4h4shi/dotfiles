@@ -46,10 +46,11 @@ dotfiles/
 | home-manager | Git, Zsh, 開発ツール, 言語ランタイム, direnv, starship |
 | home/ | Claude, Cursor, Gemini, Codex, Vive の設定ファイル |
 
-## 端末ローカル設定
+## machine設定（この端末だけ）
 
 dotfilesに入れたくないパッケージは `~/.config/local-env/` で管理する。
 インストール時に `flake.nix` と `.envrc` は自動生成される（既存があれば上書きしない）。
+反映は `~/.local-env/profile` に出すため、どのディレクトリでも使える。
 
 ```bash
 # 初回のみ（direnvの許可）
@@ -58,12 +59,15 @@ direnv allow
 
 # 端末ローカルのパッケージ追加
 vim ~/.config/local-env/flake.nix
+
+# 反映（どこでも使えるPATHに入る）
+ev m apply
 ```
 
 ### 使い分けの指針
 
-- **全端末共通**: `modules/home.nix` / `modules/darwin.nix`
-- **この端末だけ**: `~/.config/local-env/flake.nix`
+- **shared**: `modules/home.nix` / `modules/darwin.nix`
+- **machine**: `~/.config/local-env/flake.nix`
 
 ## ev（環境管理CLI）
 
@@ -71,28 +75,29 @@ vim ~/.config/local-env/flake.nix
 
 | スコープ | 意味 | 対象 |
 |---------|------|------|
-| `g` | global | dotfiles（`home.nix` / `darwin.nix`） |
-| `l` | local | マシンローカル（`~/.config/local-env/flake.nix`） |
-| `p` | project | カレントの `flake.nix` |
+| `s` | shared | `home.nix` / `darwin.nix` |
+| `m` | machine | `~/.config/local-env/flake.nix` |
+| `d` | dir | カレントの `flake.nix` |
 
 ### 使い方（短いインターフェース）
 
 ```bash
 # 曖昧検索 → 候補提示 → 選択
-ev g jira
-ev l notion
-ev p volta
+ev s jira
+ev m notion
+ev d volta
 
 # 反映
-ev apply g
-ev apply l
-ev apply p
+ev s apply
+ev m apply
+ev d apply
 ```
 
 ### 補足
 
-- `g` は `home.nix` / `darwin.nix` に追記されるため、`apply` が必要。
-- `l` / `p` は `direnv allow` 後、`direnv reload` で反映。
+- `s` は `home.nix` / `darwin.nix` に追記されるため、`apply` が必要。
+- `m` は `ev m apply` で反映（profile更新）。
+- `d` は `direnv allow` 後、`direnv reload` で反映。
 
 ### Cursor 設定
 
