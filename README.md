@@ -46,6 +46,54 @@ dotfiles/
 | home-manager | Git, Zsh, 開発ツール, 言語ランタイム, direnv, starship |
 | home/ | Claude, Cursor, Gemini, Codex, Vive の設定ファイル |
 
+## 端末ローカル設定
+
+dotfilesに入れたくないパッケージは `~/.config/local-env/` で管理する。
+インストール時に `flake.nix` と `.envrc` は自動生成される（既存があれば上書きしない）。
+
+```bash
+# 初回のみ（direnvの許可）
+cd ~/.config/local-env
+direnv allow
+
+# 端末ローカルのパッケージ追加
+vim ~/.config/local-env/flake.nix
+```
+
+### 使い分けの指針
+
+- **全端末共通**: `modules/home.nix` / `modules/darwin.nix`
+- **この端末だけ**: `~/.config/local-env/flake.nix`
+
+## ev（環境管理CLI）
+
+3つのスコープを共通インターフェースで操作するためのCLI。
+
+| スコープ | 意味 | 対象 |
+|---------|------|------|
+| `g` | global | dotfiles（`home.nix` / `darwin.nix`） |
+| `l` | local | マシンローカル（`~/.config/local-env/flake.nix`） |
+| `p` | project | カレントの `flake.nix` |
+
+### 使い方（短いインターフェース）
+
+```bash
+# 曖昧検索 → 候補提示 → 選択
+ev g jira
+ev l notion
+ev p volta
+
+# 反映
+ev apply g
+ev apply l
+ev apply p
+```
+
+### 補足
+
+- `g` は `home.nix` / `darwin.nix` に追記されるため、`apply` が必要。
+- `l` / `p` は `direnv allow` 後、`direnv reload` で反映。
+
 ### Cursor 設定
 
 以下が管理されています：

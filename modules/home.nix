@@ -13,6 +13,7 @@ in
 
   # パッケージ
   home.packages = with pkgs; [
+    # ev:packages:start
     # 開発ツール
     git
     git-lfs
@@ -45,6 +46,7 @@ in
     curl
     wget
     tree
+    # ev:packages:end
   ];
 
   # Git
@@ -206,6 +208,10 @@ in
       source = ../home/.local/bin/ghostty-tab;
       executable = true;
     };
+    ".local/bin/ev" = {
+      source = ../home/.local/bin/ev;
+      executable = true;
+    };
 
     # Machine-local environment (template, not symlink)
     # 端末ローカルのパッケージ管理用テンプレート
@@ -214,4 +220,19 @@ in
     ".config/local-env/README.md".source =
       "${dotfilesDir}/home/.config/local-env/README.md";
   };
+
+  # Machine-local environment bootstrap (do not overwrite if user customized)
+  home.activation.localEnvBootstrap = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    localEnvDir="$HOME/.config/local-env"
+
+    if [ -d "$localEnvDir" ]; then
+      if [ ! -e "$localEnvDir/flake.nix" ] && [ -f "$localEnvDir/flake.nix.template" ]; then
+        cp "$localEnvDir/flake.nix.template" "$localEnvDir/flake.nix"
+      fi
+
+      if [ ! -e "$localEnvDir/.envrc" ]; then
+        printf '%s\n' "use flake" > "$localEnvDir/.envrc"
+      fi
+    fi
+  '';
 }

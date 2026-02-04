@@ -18,10 +18,12 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
+              # ev:packages:start
               # この端末専用のパッケージをここに追加
               # 例:
               # volta      # 特定プロジェクト用
               # awscli2    # 業務用（個人端末では不要）
+              # ev:packages:end
             ];
             shellHook = ''
               # 端末固有の環境変数など

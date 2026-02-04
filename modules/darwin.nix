@@ -3,6 +3,7 @@
 let
   # 共通のCaskアプリ
   commonCasks = [
+    # ev:casks:common:start
     # 開発ツール
     "docker-desktop"  # docker は docker-desktop に統合
     "ghostty"
@@ -33,6 +34,8 @@ let
     "zoom"
     # line - App Store からインストール（Caskなし）
     "readdle-spark"
+    # ev:casks:common:end
+    "codex-app"
   ];
 
   # 個人用の追加Caskアプリ
