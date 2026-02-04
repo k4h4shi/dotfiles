@@ -62,29 +62,5 @@ fi
 
 cd "$DOTFILES"
 
-# 4. macOS: nix-darwin でセットアップ
-if [[ "$(uname)" == "Darwin" ]]; then
-  echo "==> Running darwin-rebuild switch..."
-  echo "    Using profile: $PROFILE"
-
-  # nix-darwin switch実行
-  # --impure: 環境変数を読み取るために必要
-  # sudo: システム設定の変更に必要
-  # sudo 実行時に HOME/USER を偽装すると nix が警告するため、
-  # DOTFILES_* でターゲットユーザー情報だけを明示的に渡す。
-  sudo -H env DOTFILES_USERNAME="$USER" DOTFILES_HOME="$HOME" nix run nix-darwin \
-    --extra-experimental-features "nix-command flakes" \
-    -- switch --flake ".#${PROFILE}" --impure
-
-# Linux: home-manager でセットアップ
-else
-  echo "==> Running home-manager switch..."
-  CONFIG_NAME="${USER:-default}"
-  echo "    Using configuration: $CONFIG_NAME"
-
-  nix run home-manager -- switch --flake ".#${CONFIG_NAME}" --impure -b backup
-fi
-
-echo ""
-echo "==> Done!"
-echo "    Restart your shell to apply changes."
+# 4. 反映（共通処理）
+./apply.sh "$PROFILE"

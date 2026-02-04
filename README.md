@@ -8,7 +8,7 @@ Nix + nix-darwin + home-manager で管理する個人環境。
 git clone https://github.com/k4h4shi/dotfiles.git
 cd dotfiles
 ./install.sh           # common（デフォルト）
-./install.sh personal  # personal（音楽制作アプリ追加）
+./install.sh personal  # personal（プライベートアプリ追加）
 ```
 
 初回は Nix がインストールされる。シェル再起動後、再度実行。
@@ -17,7 +17,7 @@ cd dotfiles
 
 | プロファイル | 内容 |
 |--------------|------|
-| `personal` | 共通 + 音楽制作アプリ |
+| `personal` | 共通 + プライベートアプリ |
 | `common` | 共通アプリのみ |
 
 ## 構成
@@ -34,7 +34,8 @@ dotfiles/
 │   ├── .cursor/
 │   ├── .gemini/
 │   └── .vive/
-└── install.sh
+├── apply.sh            # 反映用（再適用）
+└── install.sh          # 初期環境構築用
 ```
 
 ## 管理対象
@@ -67,8 +68,19 @@ dotfiles/
 ## 更新
 
 ```bash
-./install.sh personal  # または common
+./apply.sh personal  # または common
 ```
+
+### apply.sh が必要になるタイミング
+
+- `modules/home.nix` / `modules/darwin.nix` / `flake.nix` を変更したとき
+- `home.file` に新しいファイルを追加・削除したとき
+- シンボリックリンクの張り替えが必要なとき
+
+### apply.sh が不要なタイミング
+
+- 既存のリンク先ファイルの中身を編集しただけのとき
+  - 例: `home/.zshrc`、`home/Library/Application Support/Cursor/User/settings.json`
 
 ## 参考
 
