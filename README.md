@@ -127,8 +127,12 @@ ev d apply
 ### apply.sh が必要になるタイミング
 
 - `modules/home.nix` / `modules/darwin.nix` / `flake.nix` を変更したとき
-- `home.file` に新しいファイルを追加・削除したとき
+- `home/` 配下に新しいファイルを追加・削除したとき（Home Manager が symlink を張り替えるため）
 - シンボリックリンクの張り替えが必要なとき
+
+補足:
+
+- `home/.config/local-env/` は端末ローカルで育てる領域なので、ディレクトリ自体は管理しません（テンプレのみを展開）。
 
 ### apply.sh が不要なタイミング
 
