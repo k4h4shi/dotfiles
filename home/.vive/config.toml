@@ -5,7 +5,7 @@
 # projects_root = "./src/github"
 
 # Directories to exclude from scanning
-ignored_dirs = [".git", "node_modules", ".worktrees", "target", "dist"]
+ignored_dirs = [".git", "node_modules", ".worktrees", "target", "dist", "babarot"]
 
 # Optional tmux prefix key override (e.g., "C-a" for Ctrl+a)
 # tmux_prefix = "C-a"
@@ -22,20 +22,26 @@ base_branch = "develop"
 base_branch = "main"
 
 # Terminal launch configuration
-[terminal]
+# [terminal]
 # Launch strategy: "inline" (default) or "spawn"
 # - inline: Replace current process with tmux attach
 # - spawn: Launch external terminal without suspending TUI
-strategy = "spawn"
-
+# strategy = "spawn"
+#
 # Command to run for spawn strategy
 # Use ghostty-tab script to open in new tab
-command = "ghostty-tab"
-
+# command = "ghostty-tab"
+#
 # Arguments for the spawn command
 # Use {session_id} as placeholder for the target session name
-args = ["{session_id}"]
+# args = ["{session_id}"]
 
+# Keybindings
+[keybindings]
+# Switch client to target without replacing the vive process
+enter = "tmux switch-client -t {session_id}"
+o = "tmux switch-client -t {session_id}"
+#
 # タスク作成時の自動キックスタート設定
 [auto_kickstart]
 # 手動タスク作成時に実行するコマンド

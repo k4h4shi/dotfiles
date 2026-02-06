@@ -1,5 +1,1 @@
-projects = [
-    "dotfiles",
-    "vive",
-    "mechanix",
-]
+projects = []
