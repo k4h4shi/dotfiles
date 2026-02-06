@@ -7,7 +7,12 @@ let
   outOfStore = config.lib.file.mkOutOfStoreSymlink;
   lib = pkgs.lib;
 
-  homeRoot = ../home;
+  # `home/` は「dotfiles置き場」なので、Git管理（flake source）に依存せず
+  # 実ディスク上のディレクトリをスキャンして自動展開する。
+  #
+  # - `DOTFILES_DIR` が渡されていればそれを使う（apply.sh で渡している）
+  # - 渡されていない場合は flake source 配下を使う
+  homeRoot = builtins.toPath "${dotfilesDir}/home";
   homeRootStr = "${dotfilesDir}/home";
 
   # `home/` 配下は基本的に自動で $HOME に展開する。
