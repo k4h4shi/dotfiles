@@ -198,8 +198,12 @@ in
       # Local bin
       export PATH="$HOME/.local/bin:$PATH"
 
-      # dot command: use subcommands; `dot cd` for directory jump
+      # dot command: make `dot go` change current shell directory
       dot() {
+        if [[ "''${1:-}" == "go" ]]; then
+          cd "''${DOTFILES_DIR:-$HOME/src/github/k4h4shi/dotfiles}"
+          return
+        fi
         command dot "$@"
       }
 
