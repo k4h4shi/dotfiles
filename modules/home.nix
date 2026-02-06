@@ -17,9 +17,9 @@ let
   mkOutOfStoreSource = rel: outOfStore "${homeRootStr}/${rel}";
 
   mkAutoEntry = rel: type:
-    lib.nameValuePair rel {
+    lib.nameValuePair rel ({
       source = mkOutOfStoreSource rel;
-    };
+    } // lib.optionalAttrs (type == "directory") { recursive = true; });
 
   readDirIfExists = path: if builtins.pathExists path then builtins.readDir path else { };
 
@@ -33,6 +33,12 @@ let
   # 個別に展開する（ディレクトリは symlink 化しない）。
   mkLibraryFileEntries =
     let
+      mkFileEntry = rel: {
+        "Library/${rel}" = {
+          source = mkOutOfStoreSource "Library/${rel}";
+        };
+      };
+
       walk = relPrefix: dirPath:
         let children = builtins.readDir dirPath;
         in
@@ -47,9 +53,7 @@ let
               if type == "directory" then
                 walk rel full
               else if type == "regular" || type == "symlink" then
-                lib.nameValuePair "Library/${rel}" {
-                  source = mkOutOfStoreSource "Library/${rel}";
-                }
+                mkFileEntry rel
               else
                 { }
             )
@@ -68,9 +72,7 @@ let
             if type == "directory" then
               walk name (dirPath + "/${name}")
             else if type == "regular" || type == "symlink" then
-              lib.nameValuePair "Library/${name}" {
-                source = mkOutOfStoreSource "Library/${name}";
-              }
+              mkFileEntry name
             else
               { }
           )
