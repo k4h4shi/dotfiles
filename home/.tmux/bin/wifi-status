@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+info=""
+ssid=""
+rssi=""
+
+get_from_wdutil() {
+  if ! command -v wdutil >/dev/null 2>&1; then
+    return 1
+  fi
+  # wdutil info typically requires sudo; use non-interactive sudo if available
+  if sudo -n true 2>/dev/null; then
+    info="$(sudo -n wdutil info 2>/dev/null || true)"
+  else
+    return 1
+  fi
+  [[ -z "$info" ]] && return 1
+
+  ssid="$(printf '%s\n' "$info" | awk -F': ' '/SSID/ {print $2; exit}')"
+  rssi="$(printf '%s\n' "$info" | awk -F': ' '/RSSI/ {print $2; exit}')"
+  [[ -n "$ssid" ]] && return 0
+  return 1
+}
+
+get_from_wdutil || true
+
+if [[ -x "$airport" ]]; then
+  info="$($airport -I 2>/dev/null || true)"
+  if [[ -n "$info" ]]; then
+    ssid=$(printf '%s\n' "$info" | awk -F': ' '/ SSID:/ {print $2; exit}')
+    rssi=$(printf '%s\n' "$info" | awk -F': ' '/agrCtlRSSI:/ {print $2; exit}')
+  fi
+fi
+
+if [[ -z "$ssid" ]]; then
+  info="$(system_profiler SPAirPortDataType 2>/dev/null || true)"
+  if [[ -n "$info" ]]; then
+    ssid=$(printf '%s\n' "$info" | awk '
+      /Status: Connected/ {connected = 1}
+      /Current Network Information:/ {if (connected) {getline; gsub(/^[[:space:]]+|:$/, ""); print; exit}}
+    ')
+    rssi=$(printf '%s\n' "$info" | awk '
+      /Status: Connected/ {connected = 1}
+      /RSSI:/ {if (connected) {gsub(/[^-0-9]/, ""); print; exit}}
+    ')
+  fi
+fi
+
+if [[ -z "$ssid" ]]; then
+  ssid=$(networksetup -getairportnetwork en0 2>/dev/null | sed 's/^Current Wi-Fi Network: //')
+fi
+
+if [[ -z "$ssid" || "$ssid" == "<redacted>" || "$ssid" == "You are not associated with an AirPort network." ]]; then
+  exit 0
+fi
+
+signal=0
+if [[ -n "$rssi" && "$rssi" =~ ^-?[0-9]+$ ]]; then
+  signal=$(( (rssi + 100) * 100 / 70 ))
+  (( signal > 100 )) && signal=100
+  (( signal < 0 )) && signal=0
+fi
+
+icon="󰤨"
+if [[ -n "$rssi" ]]; then
+  if (( signal <= 20 )); then
+    icon="󰤯"
+  elif (( signal <= 40 )); then
+    icon="󰤟"
+  elif (( signal <= 60 )); then
+    icon="󰤢"
+  elif (( signal <= 80 )); then
+    icon="󰤥"
+  fi
+fi
+
+printf '%s %s' "$icon" "$ssid"
