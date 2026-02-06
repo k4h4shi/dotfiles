@@ -140,6 +140,9 @@ in
         name = "Kotaro Takahashi";
         email = "kotaro.t@k4h4shi.com";
       };
+      core = {
+        editor = "vim";
+      };
       init.defaultBranch = "main";
       pull.rebase = false;
     };
@@ -170,6 +173,10 @@ in
       if [[ -f /opt/homebrew/bin/brew ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
       fi
+
+      # Default editor
+      export EDITOR=vim
+      export VISUAL=vim
 
       # Android SDK
       export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
