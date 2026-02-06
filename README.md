@@ -46,7 +46,7 @@ dotfiles/
 | home-manager | Git, Zsh, 開発ツール, 言語ランタイム, direnv, starship |
 | home/ | Claude, Cursor, Gemini, Codex, Vive の設定ファイル |
 
-## machine設定（この端末だけ）
+## machine設定 (dotfiles非管理設定)
 
 dotfilesに入れたくないパッケージは `~/.config/local-env/` で管理する。
 インストール時に `flake.nix` と `.envrc` は自動生成される（既存があれば上書きしない）。
@@ -98,25 +98,6 @@ ev d apply
 - `s` は `home.nix` / `darwin.nix` に追記されるため、`apply` が必要。
 - `m` は `ev m apply` で反映（profile更新）。
 - `d` は `direnv allow` 後、`direnv reload` で反映。
-
-### Cursor 設定
-
-以下が管理されています：
-
-- `settings.json` - エディタ設定
-- `keybindings.json` - キーバインド
-- `extensions.json` - 推奨拡張機能リスト（17個）
-- `.cursor/commands/` - カスタムコマンド
-- `.cursor/rules/` - プロジェクトルール
-
-#### 推奨拡張機能（カテゴリ別）
-
-- **AI**: Claude Code, ChatGPT
-- **Web開発**: Biome, Tailwind, ESLint, Prettier, Prisma, Jest, Playwright
-- **Git/GitHub**: GitHub Actions, PR管理, Worktree
-- **データベース**: PostgreSQL
-- **Markdown**: Mermaid, Preview Enhanced, PDF出力
-- **インフラ**: Docker
 
 ## 更新
 
