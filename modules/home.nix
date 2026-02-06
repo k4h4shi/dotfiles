@@ -96,6 +96,7 @@ in
     git
     git-lfs
     gh
+    gh-dash
     glab
     jq
     ripgrep
