@@ -170,6 +170,7 @@ in
       da = "cd ~/src/github/k4h4shi/dotfiles && ./apply.sh";
       sz = "source ~/.zshrc";
       sa = "alias | sort";
+      ez = "exec zsh";
     };
 
     initContent = ''
