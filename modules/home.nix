@@ -257,12 +257,65 @@ in
     let
       top = builtins.readDir homeRoot;
 
-      # `.config` / `.local` / `Library` は例外ルールを適用するため、ここでは除外
+      # `.config` / `.local` / `Library` / tool-managed roots は例外ルールを適用するため、ここでは除外
       topAuto =
         lib.filterAttrs
-          (name: _type: name != ".config" && name != ".local" && name != "Library")
+          (name: _type:
+            name != ".config" && name != ".local" && name != "Library"
+            && name != ".claude" && name != ".cursor" && name != ".gemini"
+            && name != ".codex" && name != ".vive")
           top;
       topAutoEntries = lib.mapAttrs' (name: type: mkAutoEntry name type) topAuto;
+
+      # tool-managed roots:
+      # `~/.claude` / `~/.cursor` などは実行時にキャッシュや state が生成されやすいので、
+      # ルートディレクトリを symlink 化せず、必要なサブパスだけを管理する。
+      managedToolEntries = {
+        # Claude Code
+        ".claude/agents" = {
+          source = mkOutOfStoreSource ".claude/agents";
+          recursive = true;
+        };
+        ".claude/commands" = {
+          source = mkOutOfStoreSource ".claude/commands";
+          recursive = true;
+        };
+        ".claude/skills" = {
+          source = mkOutOfStoreSource ".claude/skills";
+          recursive = true;
+        };
+        ".claude/CLAUDE.md".source = mkOutOfStoreSource ".claude/CLAUDE.md";
+        ".claude/settings.json".source = mkOutOfStoreSource ".claude/settings.json";
+
+        # Cursor
+        ".cursor/commands" = {
+          source = mkOutOfStoreSource ".cursor/commands";
+          recursive = true;
+        };
+        ".cursor/rules" = {
+          source = mkOutOfStoreSource ".cursor/rules";
+          recursive = true;
+        };
+
+        # Gemini CLI
+        ".gemini/commands" = {
+          source = mkOutOfStoreSource ".gemini/commands";
+          recursive = true;
+        };
+
+        # Codex CLI
+        ".codex/skills/custom" = {
+          # put repo skills under ~/.codex/skills/custom
+          source = mkOutOfStoreSource ".codex/skills";
+          recursive = true;
+        };
+        ".codex/instructions.md".source = mkOutOfStoreSource ".codex/instructions.md";
+      };
+
+      # Vive: manage files under ~/.vive without symlinking the root
+      viveDir = homeRoot + "/.vive";
+      viveChildren = readDirIfExists viveDir;
+      viveEntries = lib.mapAttrs' (name: type: mkAutoEntry ".vive/${name}" type) viveChildren;
 
       # Library (files-only)
       libraryDir = homeRoot + "/Library";
@@ -322,6 +375,8 @@ in
     in
     lib.foldl' lib.recursiveUpdate { } [
       topAutoEntries
+      managedToolEntries
+      viveEntries
       libraryEntries
       configNonLocalEnvEntries
       localEnvEntries

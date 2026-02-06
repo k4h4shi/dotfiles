@@ -20,3 +20,11 @@ result-*
 .worktrees/
 
 TODO.md
+
+# Tool-generated state under dotfiles home/
+home/.claude/cache/
+home/.claude/debug/
+home/.claude/projects/
+home/.claude/shell-snapshots/
+home/.cursor/projects/
+home/.cursor/ide_state.json
