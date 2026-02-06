@@ -26,5 +26,7 @@ home/.claude/cache/
 home/.claude/debug/
 home/.claude/projects/
 home/.claude/shell-snapshots/
+home/.claude/file-history/
+home/.claude/history.jsonl
 home/.cursor/projects/
 home/.cursor/ide_state.json

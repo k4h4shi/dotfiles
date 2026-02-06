@@ -257,15 +257,17 @@ in
     let
       top = builtins.readDir homeRoot;
 
-      # `.config` / `.local` / `Library` / tool-managed roots は例外ルールを適用するため、ここでは除外
-      topAuto =
+      # Whitelist:
+      # - `home/` 直下は “dotfiles (regular files)” のみ自動展開する
+      #   (ディレクトリは勝手に展開しない。mutable/生成物が混ざりやすいため)
+      topDotfilesRegular =
         lib.filterAttrs
-          (name: _type:
-            name != ".config" && name != ".local" && name != "Library"
-            && name != ".claude" && name != ".cursor" && name != ".gemini"
-            && name != ".codex" && name != ".vive")
+          (name: type:
+            type == "regular"
+            && lib.hasPrefix "." name
+            && name != ".DS_Store")
           top;
-      topAutoEntries = lib.mapAttrs' (name: type: mkAutoEntry name type) topAuto;
+      topDotfilesEntries = lib.mapAttrs' (name: type: mkAutoEntry name type) topDotfilesRegular;
 
       # tool-managed roots:
       # `~/.claude` / `~/.cursor` などは実行時にキャッシュや state が生成されやすいので、
@@ -374,7 +376,7 @@ in
           localBinChildren;
     in
     lib.foldl' lib.recursiveUpdate { } [
-      topAutoEntries
+      topDotfilesEntries
       managedToolEntries
       viveEntries
       libraryEntries
