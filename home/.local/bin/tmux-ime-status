@@ -16,9 +16,11 @@ fi
 
 case "$source_id" in
   *Kotoeri*|*Japanese*|*Hiragana*|*Katakana*)
-    printf '%s' 'IME:JP'
+    # Tokyo Night: warning
+    printf '%s' '#[fg=#d9b37b]IME:JP'
     ;;
   *)
-    printf '%s' 'IME:EN'
+    # Tokyo Night: success
+    printf '%s' '#[fg=#9ece6a]IME:EN'
     ;;
 esac
