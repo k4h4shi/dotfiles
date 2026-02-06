@@ -28,6 +28,10 @@ home/.claude/projects/
 home/.claude/shell-snapshots/
 home/.claude/file-history/
 home/.claude/history.jsonl
+home/.claude/plans/
+home/.claude/plugins/
+home/.claude/tasks/
+home/.claude/todos/
 home/.cursor/projects/
 home/.cursor/ide_state.json
 home/.cursor/argv.json

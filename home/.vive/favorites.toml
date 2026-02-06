@@ -1,1 +1,7 @@
-projects = []
+projects = [
+    "k4h4shi/mechanix",
+    "k4h4shi/vive",
+    "user/project-alpha",
+    "k4h4shi/k4h4shi.com",
+    "k4h4shi/dotfiles",
+]
