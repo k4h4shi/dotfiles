@@ -29,7 +29,7 @@ let
   readDirIfExists = path: if builtins.pathExists path then builtins.readDir path else { };
 
   # `.local/bin` のうち、sandbox で out-of-store が読めず失敗しやすいものは store 取り込みにする
-  localBinStoreImportNames = [ "ghostty-tab" "ev" ];
+  localBinStoreImportNames = [ "ghostty-tab" "tmux-ime-status" "tmux-ime-apply" "dot" ];
 
   # `home/Library` は macOS が内部で書き込む（例: `~/Library/Fonts`）ため、
   # ルートディレクトリ自体を symlink にすると Home Manager の安全チェックに引っかかる。
@@ -102,6 +102,7 @@ in
     fd
     fzf
     tmux
+    pkgs.macism
     awscli2
     railway
     dnsutils
@@ -166,6 +167,9 @@ in
       gd = "git diff";
       gc = "git commit";
       gp = "git push";
+      da = "cd ~/src/github/k4h4shi/dotfiles && ./apply.sh";
+      sz = "source ~/.zshrc";
+      sa = "alias | sort";
     };
 
     initContent = ''
@@ -192,6 +196,11 @@ in
 
       # Local bin
       export PATH="$HOME/.local/bin:$PATH"
+
+      # dot command: use subcommands; `dot cd` for directory jump
+      dot() {
+        command dot "$@"
+      }
 
       # UTF-8 combining characters (macOS default)
       if [[ "$(locale LC_CTYPE)" == "UTF-8" ]]; then
@@ -259,7 +268,7 @@ in
   # NOTE:
   # - `.config/local-env` は端末ローカルで編集される領域のため、ディレクトリ自体は home-manager 管理にしない。
   #   ただしテンプレは `home/` から展開する。
-  # - `.local/bin` は一部（`ghostty-tab`, `ev`）だけ store 取り込みにして sandbox 問題を回避する。
+  # - `.local/bin` は一部（`ghostty-tab`, `dot`）だけ store 取り込みにして sandbox 問題を回避する。
   home.file =
     let
       top = builtins.readDir homeRoot;

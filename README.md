@@ -61,7 +61,7 @@ direnv allow
 vim ~/.config/local-env/flake.nix
 
 # 反映（どこでも使えるPATHに入る）
-ev m apply
+dot apply -m
 ```
 
 ### 使い分けの指針
@@ -69,40 +69,43 @@ ev m apply
 - **shared**: `modules/home.nix` / `modules/darwin.nix`
 - **machine**: `~/.config/local-env/flake.nix`
 
-## ev（環境管理CLI）
+## dot（環境管理CLI）
 
 3つのスコープを共通インターフェースで操作するためのCLI。
 
 | スコープ | 意味 | 対象 |
 |---------|------|------|
-| `s` | shared | `home.nix` / `darwin.nix` |
-| `m` | machine | `~/.config/local-env/flake.nix` |
-| `d` | dir | カレントの `flake.nix` |
+| shared | `dot add <query>` | `modules/home.nix` / `modules/darwin.nix` |
+| machine | `dot add -m <query>` | `~/.config/local-env/flake.nix` |
+| dir | `dot add -d <query>` | カレントの `flake.nix` |
 
 ### 使い方（短いインターフェース）
 
 ```bash
 # 曖昧検索 → 候補提示 → 選択
-ev s jira
-ev m notion
-ev d volta
+dot add jira
+dot add -m notion
+dot add -d volta
 
 # 反映
-ev s apply
-ev m apply
-ev d apply
+dot apply
+dot apply -m
+dot apply -d
 ```
 
 ### 補足
 
-- `s` は `home.nix` / `darwin.nix` に追記されるため、`apply` が必要。
-- `m` は `ev m apply` で反映（profile更新）。
-- `d` は `direnv allow` 後、`direnv reload` で反映。
+- shared は `home.nix` / `darwin.nix` に追記されるため、`apply` が必要。
+- machine は `dot apply -m` で反映（profile更新）。
+- dir は `direnv allow` 後、`direnv reload` で反映。
 
 ## 更新
 
 ```bash
 ./apply.sh personal  # または common
+
+# home/ 配下の追加・削除だけ反映したい場合（軽量）
+./apply-home.sh
 ```
 
 ### apply.sh が必要になるタイミング
@@ -119,6 +122,10 @@ ev d apply
 
 - 既存のリンク先ファイルの中身を編集しただけのとき
   - 例: `home/.zshrc`、`home/Library/Application Support/Cursor/User/settings.json`
+
+### apply-home.sh が向いているタイミング
+
+- `home/` 配下のファイル追加・削除のみ（nix-darwin 設定は触っていない）
 
 ## 参考
 

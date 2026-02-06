@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -z "${TMUX:-}" ]]; then
+  exit 0
+fi
+
+get_source_id() {
+  if command -v im-select >/dev/null 2>&1; then
+    im-select 2>/dev/null || true
+  elif command -v macism >/dev/null 2>&1; then
+    macism 2>/dev/null || true
+  else
+    printf '%s' ''
+  fi
+}
+
+source_id=$(get_source_id)
+if [[ -z "$source_id" ]]; then
+  exit 0
+fi
+
+if [[ "$source_id" == *Kotoeri* || "$source_id" == *Japanese* || "$source_id" == *Hiragana* || "$source_id" == *Katakana* ]]; then
+  tmux set-option -g status-style "bg=colour27,fg=colour231"
+else
+  tmux set-option -g status-style "bg=colour34,fg=colour231"
+fi

@@ -1,0 +1,325 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/src/github/k4h4shi/dotfiles}"
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  dot                  # show help
+  dot go               # cd to dotfiles directory
+  dot add <query>      # add package to shared
+  dot add -m <query>   # add package to machine
+  dot add -d <query>   # add package to dir
+  dot apply            # full apply (nix-darwin + home-manager)
+  dot apply -m         # apply machine (local-env profile)
+  dot apply -d         # apply dir (direnv reload)
+  dot link             # home-only apply (symlink refresh)
+  dot list             # list managed packages (shared)
+  dot list -m          # list managed packages (machine)
+  dot list -d          # list managed packages (dir)
+  dot status           # git status in dotfiles
+  dot help             # show help
+USAGE
+}
+
+has_cmd() { command -v "$1" >/dev/null 2>&1; }
+
+HOME_NIX="$DOTFILES_DIR/modules/home.nix"
+DARWIN_NIX="$DOTFILES_DIR/modules/darwin.nix"
+LOCAL_ENV_DIR="$HOME/.config/local-env"
+LOCAL_FLAKE="$LOCAL_ENV_DIR/flake.nix"
+
+ensure_local_env() {
+  if [ ! -d "$LOCAL_ENV_DIR" ]; then
+    mkdir -p "$LOCAL_ENV_DIR"
+  fi
+  if [ ! -e "$LOCAL_FLAKE" ] && [ -f "$LOCAL_ENV_DIR/flake.nix.template" ]; then
+    cp "$LOCAL_ENV_DIR/flake.nix.template" "$LOCAL_FLAKE"
+  fi
+  if [ ! -e "$LOCAL_ENV_DIR/.envrc" ]; then
+    printf '%s\n' "use flake" > "$LOCAL_ENV_DIR/.envrc"
+  fi
+}
+
+project_flake_template() {
+  cat <<'EOT'
+{
+  description = "Project-local environment";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  };
+
+  outputs = { nixpkgs, ... }:
+    let
+      systems = [ "aarch64-darwin" "x86_64-darwin" "x86_64-linux" "aarch64-linux" ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+    in
+    {
+      devShells = forAllSystems (system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              # dot:packages:start
+              # Add project-local packages here
+              # dot:packages:end
+            ];
+          };
+        }
+      );
+    };
+}
+EOT
+}
+
+ensure_project_env() {
+  if [ ! -f "./flake.nix" ]; then
+    project_flake_template > "./flake.nix"
+  fi
+  if [ ! -f "./.envrc" ]; then
+    printf '%s\n' "use flake" > "./.envrc"
+  fi
+}
+
+apply_local() {
+  local profile="$HOME/.local-env/profile"
+  mkdir -p "$HOME/.local-env"
+  if ! nix profile list --profile "$profile" >/dev/null 2>&1; then
+    nix profile add --profile "$profile" "$LOCAL_ENV_DIR#local-env"
+  else
+    if nix profile list --profile "$profile" 2>/dev/null | grep -q "local-env"; then
+      nix profile remove --profile "$profile" local-env >/dev/null 2>&1 || true
+      nix profile add --profile "$profile" "$LOCAL_ENV_DIR#local-env"
+    else
+      nix profile add --profile "$profile" "$LOCAL_ENV_DIR#local-env"
+    fi
+  fi
+
+  if command -v direnv >/dev/null 2>&1; then
+    (cd "$LOCAL_ENV_DIR" && direnv reload) || true
+  fi
+}
+
+apply_project() {
+  direnv reload
+}
+
+add_to_marked_list() {
+  local file="$1"
+  local start="$2"
+  local end="$3"
+  local line="$4"
+
+  rg -q --fixed-strings "$line" "$file" && return 0
+
+  awk -v start="$start" -v end="$end" -v line="$line" '
+    { print }
+    $0 ~ end && !added {
+      print line
+      added = 1
+    }
+  ' "$file" > "${file}.dot.tmp"
+  mv "${file}.dot.tmp" "$file"
+}
+
+search_nix() {
+  local query="$1"
+  nix search nixpkgs "$query" --json 2>/dev/null \
+    | jq -r 'to_entries[] | "nix\t" + .key + "\t" + (.value.version // "") + "\t" + (.value.description // "")'
+}
+
+search_cask() {
+  local query="$1"
+  if ! has_cmd brew; then
+    return 0
+  fi
+  brew search --casks "$query" 2>/dev/null \
+    | awk '{print "cask\t" $0}'
+}
+
+choose_candidate() {
+  local query="$1"
+  local scope="$2"
+  local candidates
+
+  candidates="$(search_nix "$query")"
+  if [ "$scope" = "s" ] || [ "$scope" = "m" ]; then
+    candidates="${candidates}"$'\n'"$(search_cask "$query")"
+  fi
+
+  if [ -z "${candidates//[$'\t\r\n ']}" ]; then
+    echo "dot: no candidates found for: $query" >&2
+    exit 1
+  fi
+
+  if has_cmd fzf; then
+    printf "%s\n" "$candidates" | fzf --prompt="dot> " --with-nth=2,3,4
+  else
+    local i=1
+    echo "$candidates" | while IFS= read -r line; do
+      printf "%2d) %s\n" "$i" "$line"
+      i=$((i + 1))
+    done
+    printf "select> " >&2
+    read -r idx
+    echo "$candidates" | sed -n "${idx}p"
+  fi
+}
+
+cmd="${1:-}"
+if [[ -z "$cmd" ]]; then
+  usage
+  exit 0
+fi
+
+case "$cmd" in
+  add)
+    shift
+    scope="s"
+    if [[ "${1:-}" == "-m" ]]; then
+      scope="m"
+      shift
+    elif [[ "${1:-}" == "-d" ]]; then
+      scope="d"
+      shift
+    fi
+    if [[ -z "${1:-}" ]]; then
+      usage
+      exit 1
+    fi
+    query="$1"
+    choice="$(choose_candidate "$query" "$scope")"
+    kind="$(echo "$choice" | awk -F'\t' '{print $1}')"
+    name="$(echo "$choice" | awk -F'\t' '{print $2}')"
+
+    case "$scope" in
+      s)
+        if [ "$kind" = "nix" ]; then
+          add_to_marked_list "$HOME_NIX" "ev:packages:start" "ev:packages:end" "    ${name#nixpkgs#}"
+          echo "Added to home.nix: ${name#nixpkgs#}"
+          echo "Run: (cd \"$DOTFILES_DIR\" && ./apply.sh)"
+        else
+          add_to_marked_list "$DARWIN_NIX" "ev:casks:common:start" "ev:casks:common:end" "    \"${name}\""
+          echo "Added to darwin.nix casks: ${name}"
+          echo "Run: (cd \"$DOTFILES_DIR\" && ./apply.sh)"
+        fi
+        ;;
+      m)
+        ensure_local_env
+        if [ "$kind" = "nix" ]; then
+          add_to_marked_list "$LOCAL_FLAKE" "ev:packages:start" "ev:packages:end" "              ${name#nixpkgs#}"
+          echo "Added to local flake: ${name#nixpkgs#}"
+          echo "Run: dot apply"
+        else
+          brew install --cask "$name"
+        fi
+        ;;
+      d)
+        ensure_project_env
+        if [ "$kind" = "nix" ]; then
+          add_to_marked_list "./flake.nix" "dot:packages:start" "dot:packages:end" "              ${name#nixpkgs#}"
+          echo "Added to project flake: ${name#nixpkgs#}"
+          echo "Run: direnv allow (first time) / direnv reload"
+        else
+          echo "dot: dir scope supports nix packages only" >&2
+          exit 1
+        fi
+        ;;
+      *)
+        usage
+        exit 1
+        ;;
+    esac
+    ;;
+  go)
+    cd "$DOTFILES_DIR"
+    ;;
+  apply)
+    if [[ "${2:-}" == "-m" ]]; then
+      apply_local
+      exit 0
+    elif [[ "${2:-}" == "-d" ]]; then
+      apply_project
+      exit 0
+    elif [[ -n "${2:-}" ]]; then
+      usage
+      exit 1
+    fi
+    exec "$DOTFILES_DIR/apply.sh"
+    ;;
+  link)
+    exec "$DOTFILES_DIR/apply-home.sh"
+    ;;
+  list)
+    scope="${2:-}"
+    if [[ "$scope" == "-m" ]]; then
+      if [[ ! -f "$LOCAL_FLAKE" ]]; then
+        echo "No local env flake found: $LOCAL_FLAKE"
+        exit 1
+      fi
+      echo "==> machine nix packages ($LOCAL_FLAKE)"
+      awk '
+        $0 ~ /ev:packages:start/ {f=1; next}
+        $0 ~ /ev:packages:end/ {exit}
+        f {print}
+      ' "$LOCAL_FLAKE" \
+        | sed -e "s/#.*$//" -e "s/^[[:space:]]*//" -e "s/[[:space:]]*$//" \
+        | sed -e "s/^pkgs\\.//" \
+        | awk "NF"
+      exit 0
+    fi
+    if [[ "$scope" == "-d" ]]; then
+      if [[ ! -f "./flake.nix" ]]; then
+        echo "No project flake found in current directory."
+        exit 1
+      fi
+      echo "==> dir nix packages (./flake.nix)"
+      awk '
+        $0 ~ /dot:packages:start/ {f=1; next}
+        $0 ~ /dot:packages:end/ {exit}
+        f {print}
+      ' "./flake.nix" \
+        | sed -e "s/#.*$//" -e "s/^[[:space:]]*//" -e "s/[[:space:]]*$//" \
+        | sed -e "s/^pkgs\\.//" \
+        | awk "NF"
+      exit 0
+    fi
+    if [[ -n "$scope" ]]; then
+      usage
+      exit 1
+    fi
+    echo "==> shared nix packages (modules/home.nix)"
+    awk '
+      $0 ~ /ev:packages:start/ {f=1; next}
+      $0 ~ /ev:packages:end/ {exit}
+      f {print}
+    ' "$HOME_NIX" \
+      | sed -e "s/#.*$//" -e "s/^[[:space:]]*//" -e "s/[[:space:]]*$//" \
+      | sed -e "s/^pkgs\\.//" \
+      | awk "NF"
+    echo ""
+    echo "==> shared casks (modules/darwin.nix)"
+    awk '
+      $0 ~ /ev:casks:common:start/ {f=1; next}
+      $0 ~ /ev:casks:common:end/ {exit}
+      f {print}
+    ' "$DARWIN_NIX" \
+      | sed -e "s/#.*$//" -e "s/^[[:space:]]*//" -e "s/[[:space:]]*$//" \
+      | sed -e "s/^\"//" -e "s/\"$//" \
+      | awk "NF"
+    ;;
+  status)
+    exec git -C "$DOTFILES_DIR" status -sb
+    ;;
+  help|-h|--help)
+    usage
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if command -v im-select >/dev/null 2>&1; then
+  source_id=$(im-select 2>/dev/null || true)
+elif command -v macism >/dev/null 2>&1; then
+  source_id=$(macism 2>/dev/null || true)
+else
+  printf '%s' 'IME:??'
+  exit 0
+fi
+if [[ -z "$source_id" ]]; then
+  printf '%s' 'IME:??'
+  exit 0
+fi
+
+case "$source_id" in
+  *Kotoeri*|*Japanese*|*Hiragana*|*Katakana*)
+    printf '%s' 'IME:JP'
+    ;;
+  *)
+    printf '%s' 'IME:EN'
+    ;;
+esac
