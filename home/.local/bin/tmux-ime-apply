@@ -5,6 +5,11 @@ if [[ -z "${TMUX:-}" ]]; then
   exit 0
 fi
 
+silent=false
+if [[ "${1:-}" == "--silent" ]]; then
+  silent=true
+fi
+
 get_source_id() {
   if command -v im-select >/dev/null 2>&1; then
     im-select 2>/dev/null || true
@@ -20,8 +25,26 @@ if [[ -z "$source_id" ]]; then
   exit 0
 fi
 
+theme=$(tmux show-options -gqv "@powerkit_theme")
+variant=$(tmux show-options -gqv "@powerkit_theme_variant")
+[[ -z "$theme" ]] && theme="tokyo-night"
+[[ -z "$variant" ]] && variant="night"
+
+theme_file="$HOME/.tmux/plugins/tmux-powerkit/src/themes/${theme}/${variant}.sh"
+if [[ -f "$theme_file" ]]; then
+  # shellcheck source=/dev/null
+  source "$theme_file"
+fi
+
+bg="${THEME_COLORS[background]:-default}"
+fg="${THEME_COLORS[text]:-default}"
+
 if [[ "$source_id" == *Kotoeri* || "$source_id" == *Japanese* || "$source_id" == *Hiragana* || "$source_id" == *Katakana* ]]; then
-  tmux set-option -g status-style "bg=colour27,fg=colour231"
+  tmux set-option -g status-style "bg=${fg},fg=${bg}"
 else
-  tmux set-option -g status-style "bg=colour34,fg=colour231"
+  tmux set-option -g status-style "bg=${bg},fg=${fg}"
+fi
+
+if [[ "$silent" == false ]]; then
+  exit 0
 fi

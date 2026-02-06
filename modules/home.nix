@@ -312,6 +312,10 @@ in
           source = mkOutOfStoreSource ".vive";
           recursive = true;
         };
+        ".tmux" = {
+          source = mkOutOfStoreSource ".tmux";
+          recursive = true;
+        };
       };
 
       # Library (files-only)

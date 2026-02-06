@@ -30,4 +30,8 @@ home/.claude/file-history/
 home/.claude/history.jsonl
 home/.cursor/projects/
 home/.cursor/ide_state.json
+home/.cursor/argv.json
+home/.cursor/extensions/
+home/.cursor/ai-tracking/
+home/.tmux/plugins/tmux-powerkit/
 home/.codex/

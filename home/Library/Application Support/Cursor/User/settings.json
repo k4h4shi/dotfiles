@@ -34,5 +34,6 @@
   },
   "githubPullRequests.ignoredPullRequestBranches": [
     "issue-"
-  ]
+  ],
+  "workbench.colorTheme": "Tokyo Night"
 }

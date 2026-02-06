@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+dir="$PWD"
+style="minimal"
+depth="2"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dir)
+      if [[ -n "${2:-}" ]]; then
+        dir="$2"
+        shift 2
+      else
+        shift
+      fi
+      ;;
+    --style)
+      if [[ -n "${2:-}" ]]; then
+        style="$2"
+        shift 2
+      else
+        shift
+      fi
+      ;;
+    --depth)
+      if [[ -n "${2:-}" ]]; then
+        depth="$2"
+        shift 2
+      else
+        shift
+      fi
+      ;;
+    *)
+      shift
+      ;;
+  esac
+  done
+
+path_out="$($HOME/.tmux/bin/path --dir "$dir" --style "$style" --depth "$depth")"
+ime_out="$(tmux-ime-status 2>/dev/null || true)"
+
+if [[ -n "$ime_out" ]]; then
+  printf '%s | %s' "$path_out" "$ime_out"
+else
+  printf '%s' "$path_out"
+fi
