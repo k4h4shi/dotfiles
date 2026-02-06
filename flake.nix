@@ -109,19 +109,25 @@
       };
 
       # Linux用: home-manager設定（macOS以外で使う場合）
-      homeConfigurations = {
-        "${username}" = mkHomeConfig {
-          system = currentSystem;
-          user = username;
-          home = homeDirectory;
-        };
-
-        "default" = mkHomeConfig {
-          system = currentSystem;
-          user = username;
-          home = homeDirectory;
-        };
-      };
+      homeConfigurations =
+        let
+          userConfig = {
+            "${username}" = mkHomeConfig {
+              system = currentSystem;
+              user = username;
+              home = homeDirectory;
+            };
+          };
+          defaultConfig = {
+            "default" = mkHomeConfig {
+              system = currentSystem;
+              user = username;
+              home = homeDirectory;
+            };
+          };
+        in
+        # username が "default" にフォールバックした場合でも重複しないようにする
+        userConfig // (if username == "default" then { } else defaultConfig);
 
       # 開発シェル（このリポジトリの編集用）
       devShells = forAllSystems (system:

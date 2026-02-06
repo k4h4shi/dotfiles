@@ -25,6 +25,57 @@ let
 
   # `.local/bin` のうち、sandbox で out-of-store が読めず失敗しやすいものは store 取り込みにする
   localBinStoreImportNames = [ "ghostty-tab" "ev" ];
+
+  # `home/Library` は macOS が内部で書き込む（例: `~/Library/Fonts`）ため、
+  # ルートディレクトリ自体を symlink にすると Home Manager の安全チェックに引っかかる。
+  #
+  # そのため `~/Library` は実ディレクトリのままにして、`home/Library` 配下の “ファイル” だけを
+  # 個別に展開する（ディレクトリは symlink 化しない）。
+  mkLibraryFileEntries =
+    let
+      walk = relPrefix: dirPath:
+        let children = builtins.readDir dirPath;
+        in
+        lib.foldl' lib.recursiveUpdate { } (
+          lib.mapAttrsToList
+            (name: type:
+              let
+                rel =
+                  if relPrefix == "" then name else "${relPrefix}/${name}";
+                full = dirPath + "/${name}";
+              in
+              if type == "directory" then
+                walk rel full
+              else if type == "regular" || type == "symlink" then
+                lib.nameValuePair "Library/${rel}" {
+                  source = mkOutOfStoreSource "Library/${rel}";
+                }
+              else
+                { }
+            )
+            children
+        );
+    in
+    dirPath:
+      let
+        # Fonts は Home Manager 側で触るため除外（`~/Library` は実 dir のままにする）
+        top = readDirIfExists dirPath;
+        topFiltered = lib.filterAttrs (name: _type: name != "Fonts") top;
+      in
+      lib.foldl' lib.recursiveUpdate { } (
+        lib.mapAttrsToList
+          (name: type:
+            if type == "directory" then
+              walk name (dirPath + "/${name}")
+            else if type == "regular" || type == "symlink" then
+              lib.nameValuePair "Library/${name}" {
+                source = mkOutOfStoreSource "Library/${name}";
+              }
+            else
+              { }
+          )
+          topFiltered
+      );
 in
 {
   home.username = username;
@@ -199,9 +250,16 @@ in
     let
       top = builtins.readDir homeRoot;
 
-      # `.config` / `.local` は例外ルールを適用するため、ここでは除外
-      topAuto = lib.filterAttrs (name: _type: name != ".config" && name != ".local") top;
+      # `.config` / `.local` / `Library` は例外ルールを適用するため、ここでは除外
+      topAuto =
+        lib.filterAttrs
+          (name: _type: name != ".config" && name != ".local" && name != "Library")
+          top;
       topAutoEntries = lib.mapAttrs' (name: type: mkAutoEntry name type) topAuto;
+
+      # Library (files-only)
+      libraryDir = homeRoot + "/Library";
+      libraryEntries = mkLibraryFileEntries libraryDir;
 
       # .config
       configDir = homeRoot + "/.config";
@@ -257,6 +315,7 @@ in
     in
     lib.foldl' lib.recursiveUpdate { } [
       topAutoEntries
+      libraryEntries
       configNonLocalEnvEntries
       localEnvEntries
       localNonBinEntries
