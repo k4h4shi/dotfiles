@@ -302,6 +302,13 @@ in
           top;
       topDotfilesEntries = lib.mapAttrs' (name: type: mkAutoEntry name type) topDotfilesRegular;
 
+      # Explicit entries (non-dotfile)
+      explicitEntries = {
+        "AGENTS.md" = {
+          source = mkOutOfStoreSource "AGENTS.md";
+        };
+      };
+
       # Tool roots:
       # `.claude` / `.cursor` / `.gemini` / `.codex` / `.vive` は配下ディレクトリも含めて展開する。
       #
@@ -392,6 +399,7 @@ in
     in
     lib.foldl' lib.recursiveUpdate { } [
       topDotfilesEntries
+      explicitEntries
       toolRootEntries
       libraryEntries
       configNonLocalEnvEntries

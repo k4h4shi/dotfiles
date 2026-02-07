@@ -39,3 +39,8 @@ home/.cursor/extensions/
 home/.cursor/ai-tracking/
 home/.tmux/plugins/tmux-powerkit/
 home/.codex/
+
+# Local-only caches
+home/.claude/stats-cache.json
+# gh-dash local config
+home/.config/gh-dash/

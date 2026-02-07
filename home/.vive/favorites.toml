@@ -1,7 +1,8 @@
 projects = [
-    "k4h4shi/mechanix",
-    "k4h4shi/vive",
-    "user/project-alpha",
     "k4h4shi/k4h4shi.com",
+    "k4h4shi/vive",
+    "k4h4shi/Curriculum-Vitae",
+    "user/project-alpha",
     "k4h4shi/dotfiles",
+    "k4h4shi/mechanix",
 ]
