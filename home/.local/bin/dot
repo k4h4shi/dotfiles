@@ -29,6 +29,8 @@ HOME_NIX="$DOTFILES_DIR/modules/home.nix"
 DARWIN_NIX="$DOTFILES_DIR/modules/darwin.nix"
 LOCAL_ENV_DIR="$HOME/.config/local-env"
 LOCAL_FLAKE="$LOCAL_ENV_DIR/flake.nix"
+DOT_ADD_SPINNER="${DOT_ADD_SPINNER:-1}"
+DOT_ADD_AUTO_APPLY="${DOT_ADD_AUTO_APPLY:-1}"
 
 ensure_local_env() {
   if [ ! -d "$LOCAL_ENV_DIR" ]; then
@@ -129,7 +131,7 @@ add_to_marked_list() {
 search_nix() {
   local query="$1"
   nix search nixpkgs "$query" --json 2>/dev/null \
-    | jq -r 'to_entries[] | "nix\t" + .key + "\t" + (.value.version // "") + "\t" + (.value.description // "")'
+    | jq -r 'to_entries[] | "nixpkgs\t" + (.key | sub("^nixpkgs#"; "")) + "\t" + (.value.version // "") + "\t" + (.value.description // "") + "\t" + (.value.homepage // "")'
 }
 
 search_cask() {
@@ -137,29 +139,89 @@ search_cask() {
   if ! has_cmd brew; then
     return 0
   fi
-  brew search --casks "$query" 2>/dev/null \
-    | awk '{print "cask\t" $0}'
+  local casks
+  mapfile -t casks < <(brew search --casks "$query" 2>/dev/null)
+  if [ "${#casks[@]}" -eq 0 ]; then
+    return 0
+  fi
+  if has_cmd jq; then
+    brew info --cask --json=v2 "${casks[@]}" 2>/dev/null \
+      | jq -r '.casks[] | "cask\t" + .token + "\t" + (.version // "") + "\t" + (.desc // "") + "\t" + (.homepage // "")'
+    return 0
+  fi
+  printf '%s\n' "${casks[@]}" | awk '{print "cask\t" $0 "\t\t\t"}'
+}
+
+spin_until_done() {
+  local pid="$1"
+  local label="${2:-}"
+  local frames='|/-\'
+  local i=0
+  while kill -0 "$pid" 2>/dev/null; do
+    printf "\r%s%s" "${label:+$label }" "${frames:i%4:1}" >&2
+    i=$((i + 1))
+    sleep 0.1
+  done
+  printf "\r%s\r" "${label:+$label }" >&2
+}
+
+maybe_auto_apply() {
+  local scope="$1"
+  if [ "$DOT_ADD_AUTO_APPLY" = "0" ]; then
+    case "$scope" in
+      s) echo "Run: dot apply" ;;
+      m) echo "Run: dot apply -m" ;;
+      d) echo "Run: dot apply -d" ;;
+    esac
+    return 0
+  fi
+  case "$scope" in
+    s) dot apply ;;
+    m) dot apply -m ;;
+    d) dot apply -d ;;
+  esac
 }
 
 choose_candidate() {
   local query="$1"
   local scope="$2"
   local candidates
-
-  candidates="$(search_nix "$query")"
-  if [ "$scope" = "s" ] || [ "$scope" = "m" ]; then
-    candidates="${candidates}"$'\n'"$(search_cask "$query")"
+  local tmp
+  tmp="$(mktemp)"
+  (
+    search_nix "$query"
+    if [ "$scope" = "s" ] || [ "$scope" = "m" ]; then
+      search_cask "$query"
+    fi
+  ) > "$tmp" &
+  local spid=$!
+  if [ "$DOT_ADD_SPINNER" != "0" ]; then
+    spin_until_done "$spid" "dot(add): searching"
   fi
+  wait "$spid"
+  candidates="$(cat "$tmp")"
+  rm -f "$tmp"
 
   if [ -z "${candidates//[$'\t\r\n ']}" ]; then
     echo "dot: no candidates found for: $query" >&2
     exit 1
   fi
 
+  local header="source\tname\tversion\tdescription\thomepage"
   if has_cmd fzf; then
-    printf "%s\n" "$candidates" | fzf --prompt="dot> " --with-nth=2,3,4
+    printf "%s\n" "$header" "$candidates" | fzf \
+      --prompt="dot(add)> " \
+      --header-lines=1 \
+      --delimiter=$'\t' \
+      --with-nth=1,2,3,4 \
+      --preview='
+        printf "name: %s\nversion: %s\nhomepage: %s\n\n%s\n" "{2}" "{3}" "{5}" "{4}"
+      ' \
+      --bind 'ctrl-y:execute-silent(printf %s {5} | pbcopy)' \
+      --bind 'ctrl-o:execute-silent(open -- {5})'
   else
     local i=1
+    printf "%s\n" "$header"
     echo "$candidates" | while IFS= read -r line; do
       printf "%2d) %s\n" "$i" "$line"
       i=$((i + 1))
@@ -196,34 +258,38 @@ case "$cmd" in
     kind="$(echo "$choice" | awk -F'\t' '{print $1}')"
     name="$(echo "$choice" | awk -F'\t' '{print $2}')"
 
+    is_nix_kind() {
+      [ "$1" = "nix" ] || [ "$1" = "nixpkgs" ]
+    }
+
     case "$scope" in
       s)
-        if [ "$kind" = "nix" ]; then
+        if is_nix_kind "$kind"; then
           add_to_marked_list "$HOME_NIX" "ev:packages:start" "ev:packages:end" "    ${name#nixpkgs#}"
           echo "Added to home.nix: ${name#nixpkgs#}"
-          echo "Run: (cd \"$DOTFILES_DIR\" && ./apply.sh)"
+          maybe_auto_apply "s"
         else
           add_to_marked_list "$DARWIN_NIX" "ev:casks:common:start" "ev:casks:common:end" "    \"${name}\""
           echo "Added to darwin.nix casks: ${name}"
-          echo "Run: (cd \"$DOTFILES_DIR\" && ./apply.sh)"
+          maybe_auto_apply "s"
         fi
         ;;
       m)
         ensure_local_env
-        if [ "$kind" = "nix" ]; then
+        if is_nix_kind "$kind"; then
           add_to_marked_list "$LOCAL_FLAKE" "ev:packages:start" "ev:packages:end" "              ${name#nixpkgs#}"
           echo "Added to local flake: ${name#nixpkgs#}"
-          echo "Run: dot apply"
+          maybe_auto_apply "m"
         else
           brew install --cask "$name"
         fi
         ;;
       d)
         ensure_project_env
-        if [ "$kind" = "nix" ]; then
+        if is_nix_kind "$kind"; then
           add_to_marked_list "./flake.nix" "dot:packages:start" "dot:packages:end" "              ${name#nixpkgs#}"
           echo "Added to project flake: ${name#nixpkgs#}"
-          echo "Run: direnv allow (first time) / direnv reload"
+          maybe_auto_apply "d"
         else
           echo "dot: dir scope supports nix packages only" >&2
           exit 1

@@ -35,6 +35,8 @@ let
     # line - App Store からインストール（Caskなし）
     "readdle-spark"
     # ev:casks:common:end
+    "hiddenbar"
+    "appcleaner"
     "codex-app"
   ];
 
