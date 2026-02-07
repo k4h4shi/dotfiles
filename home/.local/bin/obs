@@ -82,8 +82,6 @@ lines = path.read_text(encoding="utf-8").splitlines(True)
 
 if lines and not lines[-1].endswith("\n"):
     lines[-1] += "\n"
-if lines and lines[-1].strip() != "":
-    lines.append("\n")
 
 lines.append(f"- {time_str} {text}\n")
 
