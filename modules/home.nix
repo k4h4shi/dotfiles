@@ -29,7 +29,7 @@ let
   readDirIfExists = path: if builtins.pathExists path then builtins.readDir path else { };
 
   # `.local/bin` のうち、sandbox で out-of-store が読めず失敗しやすいものは store 取り込みにする
-  localBinStoreImportNames = [ "ghostty-tab" "tmux-ime-status" "tmux-ime-apply" "dot" ];
+  localBinStoreImportNames = [ "ghostty-tab" "tmux-ime-status" "tmux-ime-apply" "dot" "obs" ];
 
   # `home/Library` は macOS が内部で書き込む（例: `~/Library/Fonts`）ため、
   # ルートディレクトリ自体を symlink にすると Home Manager の安全チェックに引っかかる。
@@ -88,6 +88,14 @@ in
   home.username = username;
   home.homeDirectory = homeDirectory;
   home.stateVersion = "24.05";
+
+  # Unfree packages (home-manager standalone)
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "claude-code"
+    "claude-code-bin"
+    "claude-code-acp"
+    "claude-code-router"
+  ];
 
   # パッケージ
   home.packages = with pkgs; [

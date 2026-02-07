@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VAULT="${OBS_VAULT:-$HOME/src/github/k4h4shi/k4h4shi.com/vault}"
+EDITOR_CMD="${OBS_EDITOR:-vim}"
+DAILY_DIR="$VAULT/10_private/02_daily"
+PUBLIC_DIR="$VAULT/00_garden/thoughts"
+TEMPLATE="$VAULT/90_templates/Daily Template.md"
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  obs daily     # open today's daily note (create if missing)
+  obs post      # pick a public post via fzf and open
+  obs help
+Environment:
+  OBS_VAULT   # vault path (default: ~/src/github/k4h4shi/k4h4shi.com/vault)
+  OBS_EDITOR  # editor command (default: vim)
+USAGE
+}
+
+die() {
+  echo "obs: $*" >&2
+  exit 1
+}
+
+ensure_cmd() {
+  command -v "$1" >/dev/null 2>&1 || die "missing dependency: $1"
+}
+
+render_daily() {
+  local template="$1"
+  local date_str="$2"
+  python3 - "$template" "$date_str" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+template = Path(sys.argv[1])
+date_str = sys.argv[2]
+
+in_block = False
+out_lines = []
+
+for line in template.read_text(encoding="utf-8").splitlines(True):
+    if not in_block and line.lstrip().startswith("<%*"):
+        in_block = True
+        if "%>" in line:
+            in_block = False
+        continue
+    if in_block:
+        if "%>" in line:
+            in_block = False
+        continue
+    line = line.replace('<% tp.date.now("YYYY-MM-DD") %>', date_str)
+    line = re.sub(r"<%.*?%>", "", line)
+    out_lines.append(line)
+
+sys.stdout.write("".join(out_lines))
+PY
+}
+
+cmd="${1:-help}"
+case "$cmd" in
+  help|-h|--help)
+    usage
+    ;;
+  daily)
+    [[ -d "$VAULT" ]] || die "vault not found: $VAULT"
+    [[ -f "$TEMPLATE" ]] || die "template not found: $TEMPLATE"
+    mkdir -p "$DAILY_DIR"
+    date_str="$(date +%F)"
+    daily_file="$DAILY_DIR/$date_str.md"
+    if [[ ! -f "$daily_file" ]]; then
+      render_daily "$TEMPLATE" "$date_str" > "$daily_file"
+    fi
+    exec "$EDITOR_CMD" "$daily_file"
+    ;;
+  post)
+    [[ -d "$PUBLIC_DIR" ]] || die "public dir not found: $PUBLIC_DIR"
+    ensure_cmd rg
+    ensure_cmd fzf
+    selection="$(rg --files -g '*.md' "$PUBLIC_DIR" | fzf --prompt="obs> " || true)"
+    [[ -n "$selection" ]] || exit 0
+    exec "$EDITOR_CMD" "$selection"
+    ;;
+  *)
+    die "unknown command: $cmd"
+    ;;
+esac
