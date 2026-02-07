@@ -12,6 +12,7 @@ usage() {
 Usage:
   obs daily     # open today's daily note (create if missing)
   obs post      # pick a public post via fzf and open
+  obs memos     # append a memo to today's daily note
   obs help
 Environment:
   OBS_VAULT   # vault path (default: ~/src/github/k4h4shi/k4h4shi.com/vault)
@@ -60,6 +61,72 @@ sys.stdout.write("".join(out_lines))
 PY
 }
 
+append_memo() {
+  local daily_file="$1"
+  local text="$2"
+  local time_str
+  time_str="$(date +%H:%M)"
+  python3 - "$daily_file" "$time_str" "$text" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+time_str = sys.argv[2]
+text = sys.argv[3].strip()
+
+if not text:
+    sys.exit(0)
+
+lines = path.read_text(encoding="utf-8").splitlines(True)
+
+section_header = "## Memos"
+header_re = re.compile(r"^##\\s+Memos\\s*$")
+next_header_re = re.compile(r"^##\\s+\\S")
+
+header_idx = None
+for i, line in enumerate(lines):
+    if header_re.match(line):
+        header_idx = i
+        break
+
+insert_idx = None
+if header_idx is None:
+    if lines and not lines[-1].endswith("\n"):
+        lines[-1] += "\n"
+    if lines and lines[-1].strip() != "":
+        lines.append("\n")
+    lines.append(f"{section_header}\n")
+    lines.append("\n")
+    insert_idx = len(lines)
+else:
+    for j in range(header_idx + 1, len(lines)):
+        if next_header_re.match(lines[j]):
+            insert_idx = j
+            break
+    if insert_idx is None:
+        insert_idx = len(lines)
+    if insert_idx > 0 and lines[insert_idx - 1].strip() != "":
+        lines.insert(insert_idx, "\n")
+        insert_idx += 1
+
+entry = f"- {time_str} {text}\n"
+lines.insert(insert_idx, entry)
+
+path.write_text("".join(lines), encoding="utf-8")
+PY
+}
+
+capture_memo_text() {
+  local tmp
+  tmp="$(mktemp "${TMPDIR:-/tmp}/obs-memo.XXXXXX")"
+  "$EDITOR_CMD" "$tmp"
+  if [[ -s "$tmp" ]]; then
+    tr -d '\r' < "$tmp" | awk 'NF {print; found=1} !NF && found {print ""}' | sed -e :a -e '/^\\n*$/{$d;N;ba' -e '}' | tr '\n' ' ' | sed 's/  */ /g'
+  fi
+  rm -f "$tmp"
+}
+
 cmd="${1:-help}"
 case "$cmd" in
   help|-h|--help)
@@ -83,6 +150,23 @@ case "$cmd" in
     selection="$(rg --files -g '*.md' "$PUBLIC_DIR" | fzf --prompt="obs> " || true)"
     [[ -n "$selection" ]] || exit 0
     exec "$EDITOR_CMD" "$selection"
+    ;;
+  memos)
+    [[ -d "$VAULT" ]] || die "vault not found: $VAULT"
+    [[ -f "$TEMPLATE" ]] || die "template not found: $TEMPLATE"
+    mkdir -p "$DAILY_DIR"
+    date_str="$(date +%F)"
+    daily_file="$DAILY_DIR/$date_str.md"
+    if [[ ! -f "$daily_file" ]]; then
+      render_daily "$TEMPLATE" "$date_str" > "$daily_file"
+    fi
+    shift || true
+    if [[ $# -gt 0 ]]; then
+      text="$*"
+    else
+      text="$(capture_memo_text)"
+    fi
+    append_memo "$daily_file" "${text:-}"
     ;;
   *)
     die "unknown command: $cmd"
