@@ -17,6 +17,9 @@
 | 基本 | Prefixに入る | `C-s` |
 | 画面 | チートシート popup | `prefix + /` |
 | 画面 | 設定リロード | `prefix + r` / `prefix + C-r` |
+| セッション | t-smart session manager | `prefix + f` |
+| 保存復元 | 保存（resurrect） | `prefix + S` |
+| 保存復元 | 復元（resurrect） | `prefix + R` |
 | ペイン | 移動 | `prefix + h/j/k/l` |
 | ペイン | リサイズ | `prefix + H/J/K/L` |
 | ペイン | 分割（左右） | `prefix + \|` / `prefix + %` |
@@ -24,7 +27,7 @@
 | ペイン | 閉じる（確認なし） | `prefix + q` |
 | ペイン | 番号表示 | `prefix + Q` |
 | ウィンドウ | 一覧表示（activity付き） | `prefix + w` |
-| ウィンドウ | 直前ウィンドウに戻る | `prefix + ;` |
+| セッション | 直前セッションに戻る | `prefix + ;` |
 | ウィンドウ | 操作メニュー | `prefix + g` |
 | ウィンドウ | 左へ移動 | `prefix + <` |
 | ウィンドウ | 右へ移動 | `prefix + >` |
@@ -69,3 +72,8 @@
 - 更新間隔: 5秒 (`status-interval 5`)
 - 自動リネーム: 無効 (`allow-rename off`, `automatic-rename off`)
 - ペイン上部表示: `#P: #{pane_current_command} — #{pane_current_path}`
+
+## セッション保存（resurrect + continuum）
+
+- `tmux-resurrect`: 手動保存/復元（`prefix + S` / `prefix + R`）
+- `tmux-continuum`: 15分ごと自動保存 + 起動時自動復元
