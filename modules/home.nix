@@ -89,14 +89,6 @@ in
   home.homeDirectory = homeDirectory;
   home.stateVersion = "24.05";
 
-  # Unfree packages (home-manager standalone)
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "claude-code"
-    "claude-code-bin"
-    "claude-code-acp"
-    "claude-code-router"
-  ];
-
   # パッケージ
   home.packages = with pkgs; [
     # ev:packages:start
@@ -135,6 +127,7 @@ in
     wget
     tree
     # ev:packages:end
+    gomi
   ];
 
   # Git
@@ -176,6 +169,7 @@ in
       gd = "git diff";
       gc = "git commit";
       gp = "git push";
+      rm = "gomi";
       da = "cd ~/src/github/k4h4shi/dotfiles && ./apply.sh";
       sz = "source ~/.zshrc";
       sa = "alias | sort";
