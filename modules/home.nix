@@ -246,6 +246,9 @@ in
       [[ -n ''${key[Up]} ]] && bindkey "''${key[Up]}" up-line-or-search
       [[ -n ''${key[Down]} ]] && bindkey "''${key[Down]}" down-line-or-search
 
+      # vi mode
+      bindkey -v
+
       # マシンローカル設定（dotfiles管理外）
       [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
