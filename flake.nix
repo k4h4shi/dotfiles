@@ -71,8 +71,19 @@
 
       # Linux用: home-manager standalone
       mkHomeConfig = { system, user, home }:
+        let
+          hmPkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+              "claude-code"
+              "claude-code-bin"
+              "claude-code-acp"
+              "claude-code-router"
+            ];
+          };
+        in
         home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = hmPkgs;
           modules = [ ./modules/home.nix ];
           extraSpecialArgs = {
             username = user;

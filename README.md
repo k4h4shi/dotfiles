@@ -27,7 +27,12 @@ dotfiles/
 ├── flake.nix           # エントリーポイント
 ├── modules/
 │   ├── darwin.nix      # macOS設定 + Homebrew Cask
-│   └── home.nix        # CLIツール + シェル設定
+│   ├── home.nix        # CLIツール + シェル設定
+│   └── lib/
+│       └── home-file-entries.nix # home/自動展開ロジック
+├── scripts/
+│   └── lib/
+│       └── dotfiles.sh # install/applyの共通処理
 ├── home/               # AI設定ファイル
 │   ├── .claude/
 │   ├── .codex/
