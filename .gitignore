@@ -44,3 +44,12 @@ home/.codex/
 home/.claude/stats-cache.json
 # gh-dash local config
 home/.config/gh-dash/
+
+# Cursor built-in/generated skills
+home/.cursor/skills-cursor/
+
+# TPM-managed plugins (plugin source is not managed in this repo)
+home/.tmux/plugins/t-smart-tmux-session-manager/
+home/.tmux/plugins/tmux-continuum/
+home/.tmux/plugins/tmux-fzf/
+home/.tmux/plugins/tmux-resurrect/
