@@ -29,11 +29,10 @@ base_branch = "main"
 # strategy = "spawn"
 #
 # Command to run for spawn strategy
-# Use ghostty-tab script to open in new tab
-# command = "ghostty-tab"
+# command = "<your-command>"
 #
 # Arguments for the spawn command
-# Use {session_id} as placeholder for the target session name
+# Use placeholders like {session_id} for the target session name
 # args = ["{session_id}"]
 
 # Keybindings

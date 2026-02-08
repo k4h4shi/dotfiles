@@ -2,7 +2,7 @@
 , outOfStore
 , homeRoot
 , homeRootStr
-, localBinStoreImportNames ? [ "ghostty-tab" "tmux-ime-status" "dot" "obs" ]
+, localBinStoreImportNames ? [ "tmux-ime-status" "dot" "obs" ]
 }:
 
 let
