@@ -29,7 +29,8 @@ dotfiles/
 │   ├── darwin.nix      # macOS設定 + Homebrew Cask
 │   ├── home.nix        # CLIツール + シェル設定
 │   └── lib/
-│       └── home-file-entries.nix # home/自動展開ロジック
+│       ├── home-file-entries.nix # home/自動展開ロジック
+│       └── home-programs.nix # programs.* 設定
 ├── scripts/
 │   └── lib/
 │       └── dotfiles.sh # install/applyの共通処理
