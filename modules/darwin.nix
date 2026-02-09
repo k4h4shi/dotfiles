@@ -27,6 +27,7 @@ let
     "scroll-reverser"
     "displaylink"
     "obsidian"
+    "keycastr"
 
     # コミュニケーション・エンタメ
     "slack"

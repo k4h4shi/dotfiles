@@ -35,5 +35,8 @@
   "githubPullRequests.ignoredPullRequestBranches": [
     "issue-"
   ],
-  "workbench.colorTheme": "Tokyo Night Storm"
+  "workbench.colorTheme": "Tokyo Night Storm",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  }
 }

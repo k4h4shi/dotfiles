@@ -1,5 +1,13 @@
 { config, ... }:
 {
+  # Neovim
+  programs.neovim = {
+    enable = true;
+    vimAlias = true;
+    viAlias = true;
+    defaultEditor = true;
+  };
+
   # Git
   programs.git = {
     enable = true;
@@ -14,7 +22,7 @@
         email = "kotaro.t@k4h4shi.com";
       };
       core = {
-        editor = "vim";
+        editor = "nvim";
       };
       init.defaultBranch = "main";
       pull.rebase = false;
@@ -40,7 +48,9 @@
       gc = "git commit";
       gp = "git push";
       rm = "gomi";
-      da = "cd ~/src/github/k4h4shi/dotfiles && ./apply.sh";
+      vim = "nvim";
+      vi = "nvim";
+      da = "cd ~/src/github/k4h4shi/dotfiles && dot apply";
       sz = "source ~/.zshrc";
       sa = "alias | sort";
       ez = "exec zsh";
@@ -53,8 +63,8 @@
       fi
 
       # Default editor
-      export EDITOR=vim
-      export VISUAL=vim
+      export EDITOR=nvim
+      export VISUAL=nvim
 
       # Android SDK
       export ANDROID_HOME=/opt/homebrew/share/android-commandlinetools
@@ -112,7 +122,8 @@
 
       # vi mode
       bindkey -v
-
+      # `jj` to exit insert mode in Zsh (works inside Neovim terminal too)
+      bindkey -M viins 'jj' vi-cmd-mode
       # マシンローカル設定（dotfiles管理外）
       [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 

@@ -46,7 +46,6 @@ in
     fd
     fzf
     tmux
-    neovim
     pkgs.macism
     awscli2
     railway
