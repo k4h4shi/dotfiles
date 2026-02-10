@@ -1,5 +1,8 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
+  -- Ensure parent directories exist; git clone doesn't create leading dirs.
+  vim.fn.mkdir(vim.fn.fnamemodify(lazypath, ":h"), "p")
+
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
   local out = vim.fn.system({
     "git",
