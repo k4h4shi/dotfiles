@@ -96,8 +96,8 @@ in
   #
   # This is best-effort: if System Events automation is denied, don't fail apply.
   home.activation.macosWallpaper = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    src="${dotfilesDir}/assets/wallpapers/tokyo-aerial.jpg"
-    wall="$HOME/.local/share/wallpapers/tokyo-aerial.jpg"
+    src="${dotfilesDir}/assets/wallpapers/beautiful-aerial-shot-modern-city-architecture-with-illuminated-tower-side.jpg"
+    wall="$HOME/.local/share/wallpapers/beautiful-aerial-shot-modern-city-architecture-with-illuminated-tower-side.jpg"
 
     if [ -e "$src" ]; then
       mkdir -p "$(dirname "$wall")"
