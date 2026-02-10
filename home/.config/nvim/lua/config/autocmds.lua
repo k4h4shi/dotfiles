@@ -1,10 +1,26 @@
--- Keep spell off for Markdown. LazyVim enables spell for some text filetypes.
-local aug = vim.api.nvim_create_augroup("k4h4shi-markdown", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
+-- Keep spell off for Markdown-ish buffers.
+-- Some plugins enable spell later than ftplugin, so also guard against OptionSet.
+local aug = vim.api.nvim_create_augroup("k4h4shi-markdown-nospell", { clear = true })
+local markdown_fts = { "markdown", "markdown.pandoc", "markdown.mdx", "mdx" }
+
+vim.api.nvim_create_autocmd({ "FileType", "BufEnter", "WinEnter" }, {
   group = aug,
-  pattern = "markdown",
+  callback = function(args)
+    local ft = vim.bo[args.buf].filetype
+    if vim.tbl_contains(markdown_fts, ft) then
+      vim.opt_local.spell = false
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("OptionSet", {
+  group = aug,
+  pattern = "spell",
   callback = function()
-    vim.opt_local.spell = false
+    local ft = vim.bo.filetype
+    if vim.tbl_contains(markdown_fts, ft) then
+      vim.opt_local.spell = false
+    end
   end,
 })
 
