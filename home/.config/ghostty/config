@@ -3,11 +3,11 @@
 theme = "TokyoNight Storm"
 
 # Neovim/Tmuxなどがセル背景を塗る場合でも透過を効かせる
-background-opacity-cells = true
+# background-opacity-cells = true
 
 # 背景画像
-background-image = "/Users/takahashikotaro/.local/share/wallpapers/beautiful-aerial-shot-modern-city-architecture-with-illuminated-tower-side.jpg"
+background-image = "../../.local/share/wallpapers/beautiful-aerial-shot-modern-city-architecture-with-illuminated-tower-side.jpg"
 background-image-fit = cover
 background-image-position = center
 background-image-repeat = false
-background-image-opacity = 0.55
+background-opacity = 0.075
