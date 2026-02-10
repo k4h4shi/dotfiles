@@ -109,6 +109,24 @@ in
       autohide = true;
       show-recents = false;
       tilesize = 48;
+      magnification = false;
+      minimize-to-application = true;
+      mineffect = "scale";
+      orientation = "right";
+      showhidden = true;
+      persistent-apps = [
+        "/Applications/1Password.app"
+        "/Applications/Arc.app"
+        "/Applications/Ghostty.app"
+        "/Applications/Cursor.app"
+        "/Applications/Slack.app"
+        "/Applications/Notion.app"
+        "/Applications/Spark Desktop.app"
+        "/Applications/Obsidian.app"
+        "/Applications/Docker.app"
+        "/Applications/Spotify.app"
+        "/Applications/AppCleaner.app"
+      ];
     };
 
     # Finder
