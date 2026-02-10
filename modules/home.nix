@@ -91,4 +91,20 @@ in
       fi
     fi
   '';
+
+  # macOS wallpaper
+  #
+  # This is best-effort: if System Events automation is denied, don't fail apply.
+  home.activation.macosWallpaper = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    src="${dotfilesDir}/assets/wallpapers/tokyo-aerial.jpg"
+    wall="$HOME/.local/share/wallpapers/tokyo-aerial.jpg"
+
+    if [ -e "$src" ]; then
+      mkdir -p "$(dirname "$wall")"
+      if ! cmp -s "$src" "$wall" 2>/dev/null; then
+        cp -f "$src" "$wall"
+      fi
+      /usr/bin/osascript -e 'tell application "System Events" to tell every desktop to set picture to POSIX file "'"$wall"'"' >/dev/null 2>&1 || true
+    fi
+  '';
 }

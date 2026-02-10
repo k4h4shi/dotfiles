@@ -6,7 +6,7 @@ theme = "TokyoNight Storm"
 background-opacity-cells = true
 
 # 背景画像
-background-image = "/Users/takahashikotaro/.config/ghostty/tokyo-aerial.jpg"
+background-image = "/Users/takahashikotaro/.local/share/wallpapers/tokyo-aerial.jpg"
 background-image-fit = cover
 background-image-position = center
 background-image-repeat = false
