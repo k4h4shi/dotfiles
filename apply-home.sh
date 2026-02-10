@@ -6,6 +6,7 @@ DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$DOTFILES/scripts/lib/dotfiles.sh"
 
 print_runtime_header "dotfiles apply (home-only)" "$DOTFILES"
+ensure_submodules
 require_nix_or_die
 enable_flakes_if_needed
 

@@ -10,6 +10,7 @@ PROFILE="${1:-common}"
 
 print_runtime_header "dotfiles apply" "$DOTFILES" "$PROFILE"
 validate_profile_or_die "$PROFILE" "$0"
+ensure_submodules
 require_nix_or_die
 enable_flakes_if_needed
 

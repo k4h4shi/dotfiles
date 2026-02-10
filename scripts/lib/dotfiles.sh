@@ -21,6 +21,17 @@ print_runtime_header() {
   echo ""
 }
 
+ensure_submodules() {
+  if [[ ! -d "$DOTFILES/.git" ]]; then
+    return 0
+  fi
+
+  if git -C "$DOTFILES" submodule status --recursive 2>/dev/null | rg -q '^-'; then
+    echo "==> Initializing git submodules..."
+    git -C "$DOTFILES" submodule update --init --recursive
+  fi
+}
+
 print_done() {
   echo ""
   echo "==> Done!"

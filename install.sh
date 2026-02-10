@@ -10,6 +10,7 @@ PROFILE="${1:-common}"
 
 print_runtime_header "dotfiles installer" "$DOTFILES" "$PROFILE"
 validate_profile_or_die "$PROFILE" "$0"
+ensure_submodules
 
 # 1. Nixのインストール
 if ! install_nix_if_missing; then
