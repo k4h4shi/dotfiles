@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Obsidian CLI entrypoint (macOS).
+# The official docs expect an `obsidian` command on PATH.
+#
+# On macOS, the Obsidian app binary lives inside the .app bundle.
+# We expose it as `obsidian` so commands like `obsidian open ...` work.
+
+app_bin="/Applications/Obsidian.app/Contents/MacOS/Obsidian"
+if [[ -x "$app_bin" ]]; then
+  exec "$app_bin" "$@"
+fi
+
+# Fallback: try to launch the app via `open` (still passes args).
+exec open -a Obsidian --args "$@"
+
