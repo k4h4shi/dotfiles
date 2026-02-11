@@ -25,18 +25,13 @@ NOTE_DIR="${OBS_NOTE_DIR:-$VAULT/20_notes}"
 POST_TEMPLATE="${OBS_POST_TEMPLATE:-$VAULT/90_templates/Thought Template.md}"
 NOTE_TEMPLATE="${OBS_NOTE_TEMPLATE:-$VAULT/90_templates/Template.md}"
 
-NOTES_START="<!-- notes:start -->"
-NOTES_END="<!-- notes:end -->"
-POSTS_START="<!-- posts:start -->"
-POSTS_END="<!-- posts:end -->"
-
 usage() {
   cat <<'USAGE'
 Usage:
   obs daily         # open today's daily note (create if missing)
-  obs thino [text]  # append thino-style memo to today's daily note
-  obs post [title]  # create a post note and link it under "今日のポスト"
-  obs note [title]  # create a note and link it under "今日のノート"
+  obs thino [text]  # append thino-style line to today's daily note
+  obs post [title]  # create a post note and link it under "ポスト"
+  obs note [title]  # create a note and link it under "ノート"
   obs d|t|p|n       # aliases
   obs help
 Environment:
@@ -126,7 +121,11 @@ tags:
 ---
 ## デイリーログ
 
-## Memos
+## ノート
+
+## ポスト
+
+## つぶやき
 EOF_DAILY
     fi
   fi
@@ -138,8 +137,7 @@ append_daily_link() {
   local kind="$2"
   local note_file="$3"
   local display_title="$4"
-  python3 - "$VAULT" "$daily_file" "$kind" "$note_file" "$display_title" "$NOTES_START" "$NOTES_END" "$POSTS_START" "$POSTS_END" <<'PY'
-import re
+  python3 - "$VAULT" "$daily_file" "$kind" "$note_file" "$display_title" <<'PY'
 import sys
 from pathlib import Path
 
@@ -148,10 +146,6 @@ daily_path = Path(sys.argv[2]).resolve()
 kind = sys.argv[3].strip()
 note_path = Path(sys.argv[4]).resolve()
 display_title = sys.argv[5].strip()
-notes_start = sys.argv[6]
-notes_end = sys.argv[7]
-posts_start = sys.argv[8]
-posts_end = sys.argv[9]
 
 text = daily_path.read_text(encoding="utf-8")
 rel = note_path.relative_to(vault).as_posix()
@@ -160,41 +154,50 @@ if not display_title:
     display_title = note_path.stem
 
 if kind == "note":
-    section_title = "今日のノート"
-    start_mark = notes_start
-    end_mark = notes_end
+    section_title = "ノート"
 elif kind == "post":
-    section_title = "今日のポスト"
-    start_mark = posts_start
-    end_mark = posts_end
+    section_title = "ポスト"
 else:
     section_title = "Links"
-    start_mark = "<!-- links:start -->"
-    end_mark = "<!-- links:end -->"
 
 line = f"- [[{link_target}|{display_title}]]"
-pattern = re.compile(re.escape(start_mark) + r"(.*?)" + re.escape(end_mark), re.S)
-m = pattern.search(text)
+lines = text.splitlines()
+heading = f"## {section_title}"
 
-if m:
-    body = m.group(1)
-    if f"[[{link_target}" in body:
-        sys.exit(0)
-    body_lines = body.splitlines()
-    while body_lines and not body_lines[0].strip():
-        body_lines.pop(0)
-    while body_lines and not body_lines[-1].strip():
-        body_lines.pop()
-    body_lines.append(line)
-    new_block = start_mark + "\n" + "\n".join(body_lines) + "\n" + end_mark
-    text = text[: m.start()] + new_block + text[m.end() :]
+heading_idx = None
+for idx, raw in enumerate(lines):
+    if raw.strip() == heading:
+        heading_idx = idx
+        break
+
+if heading_idx is None:
+    if lines and lines[-1].strip():
+        lines.append("")
+    lines.append(heading)
+    lines.append(line)
 else:
-    section = f"\n## {section_title}\n{start_mark}\n{line}\n{end_mark}\n"
-    if text and not text.endswith("\n"):
-        text += "\n"
-    text += section
+    next_idx = len(lines)
+    for idx in range(heading_idx + 1, len(lines)):
+        if lines[idx].startswith("## "):
+            next_idx = idx
+            break
 
-daily_path.write_text(text, encoding="utf-8")
+    body = lines[heading_idx + 1 : next_idx]
+    if any(f"[[{link_target}" in row for row in body):
+        sys.exit(0)
+
+    while body and not body[-1].strip():
+        body.pop()
+    body.append(line)
+    if next_idx < len(lines):
+        body.append("")
+
+    lines = lines[: heading_idx + 1] + body + lines[next_idx:]
+
+output = "\n".join(lines)
+if output and not output.endswith("\n"):
+    output += "\n"
+daily_path.write_text(output, encoding="utf-8")
 PY
 }
 
@@ -279,10 +282,12 @@ text = sys.argv[3].strip()
 if not text:
     sys.exit(0)
 
+entry = f"- {time_str} {text}"
+
 lines = path.read_text(encoding="utf-8").splitlines(True)
 if lines and not lines[-1].endswith("\n"):
     lines[-1] += "\n"
-lines.append(f"- {time_str} {text}\n")
+lines.append(f"{entry}\n")
 path.write_text("".join(lines), encoding="utf-8")
 PY
 }
