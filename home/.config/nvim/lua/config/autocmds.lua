@@ -1,22 +1,27 @@
 -- LazyVim enables spell for markdown by default (wrap_spell autocmd).
--- Disable that behavior cleanly (instead of fighting it with extra autocmds).
+-- Override only markdown *after* LazyVim sets its autocmds, without touching LazyVim internals.
 vim.api.nvim_create_autocmd("User", {
-  group = vim.api.nvim_create_augroup("k4h4shi-disable-lazyvim-wrap-spell", { clear = true }),
+  group = vim.api.nvim_create_augroup("k4h4shi-markdown-nospell", { clear = true }),
   pattern = "VeryLazy",
   callback = function()
-    -- LazyVim creates this augroup name.
-    pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
+    local markdown_fts = { "markdown", "markdown.pandoc", "markdown.mdx", "mdx" }
+    local group = vim.api.nvim_create_augroup("k4h4shi-markdown-nospell-ft", { clear = true })
 
-    -- Recreate the original behavior without markdown.
-    local group = vim.api.nvim_create_augroup("lazyvim_wrap_spell", { clear = true })
+    -- New markdown buffers: ensure spell stays off.
     vim.api.nvim_create_autocmd("FileType", {
       group = group,
-      pattern = { "text", "plaintex", "typst", "gitcommit" },
+      pattern = markdown_fts,
       callback = function()
-        vim.opt_local.wrap = true
-        vim.opt_local.spell = true
+        vim.opt_local.spell = false
       end,
     })
+
+    -- Existing markdown buffers: fix immediately when VeryLazy fires.
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_loaded(buf) and vim.tbl_contains(markdown_fts, vim.bo[buf].filetype) then
+        vim.bo[buf].spell = false
+      end
+    end
   end,
 })
 

@@ -26,7 +26,8 @@ ensure_submodules() {
     return 0
   fi
 
-  if git -C "$DOTFILES" submodule status --recursive 2>/dev/null | rg -q '^-'; then
+  # Avoid depending on ripgrep here: this runs before nix/home packages are present.
+  if git -C "$DOTFILES" submodule status --recursive 2>/dev/null | grep -q '^-'; then
     echo "==> Initializing git submodules..."
     git -C "$DOTFILES" submodule update --init --recursive
   fi
