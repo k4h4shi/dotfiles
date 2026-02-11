@@ -1,26 +1,22 @@
--- Keep spell off for Markdown-ish buffers.
--- Some plugins enable spell later than ftplugin, so also guard against OptionSet.
-local aug = vim.api.nvim_create_augroup("k4h4shi-markdown-nospell", { clear = true })
-local markdown_fts = { "markdown", "markdown.pandoc", "markdown.mdx", "mdx" }
-
-vim.api.nvim_create_autocmd({ "FileType", "BufEnter", "WinEnter" }, {
-  group = aug,
-  callback = function(args)
-    local ft = vim.bo[args.buf].filetype
-    if vim.tbl_contains(markdown_fts, ft) then
-      vim.opt_local.spell = false
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd("OptionSet", {
-  group = aug,
-  pattern = "spell",
+-- LazyVim enables spell for markdown by default (wrap_spell autocmd).
+-- Disable that behavior cleanly (instead of fighting it with extra autocmds).
+vim.api.nvim_create_autocmd("User", {
+  group = vim.api.nvim_create_augroup("k4h4shi-disable-lazyvim-wrap-spell", { clear = true }),
+  pattern = "VeryLazy",
   callback = function()
-    local ft = vim.bo.filetype
-    if vim.tbl_contains(markdown_fts, ft) then
-      vim.opt_local.spell = false
-    end
+    -- LazyVim creates this augroup name.
+    pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
+
+    -- Recreate the original behavior without markdown.
+    local group = vim.api.nvim_create_augroup("lazyvim_wrap_spell", { clear = true })
+    vim.api.nvim_create_autocmd("FileType", {
+      group = group,
+      pattern = { "text", "plaintex", "typst", "gitcommit" },
+      callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.spell = true
+      end,
+    })
   end,
 })
 
