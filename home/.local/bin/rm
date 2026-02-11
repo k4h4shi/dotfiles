@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+set -eu
+
+if command -v gtrash >/dev/null 2>&1; then
+  exec gtrash put "$@"
+fi
+
+echo "error: gtrash command is not available" >&2
+exit 127

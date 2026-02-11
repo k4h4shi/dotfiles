@@ -2,7 +2,7 @@
 , outOfStore
 , homeRoot
 , homeRootStr
-, localBinStoreImportNames ? [ "tmux-ime-status" "dot" "obs" ]
+, localBinStoreImportNames ? [ "tmux-ime-status" "dot" "obs" "rm" ]
 }:
 
 let

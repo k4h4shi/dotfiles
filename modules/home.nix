@@ -70,7 +70,7 @@ in
     wget
     tree
     # ev:packages:end
-    gomi
+    gtrash
   ];
 
   # `home/` 配下の自動展開ロジックは可読性のため別ファイルに分離

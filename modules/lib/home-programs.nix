@@ -47,7 +47,6 @@
       gd = "git diff";
       gc = "git commit";
       gp = "git push";
-      rm = "gomi";
       vim = "nvim";
       vi = "nvim";
       da = "cd ~/src/github/k4h4shi/dotfiles && dot apply";
@@ -80,6 +79,7 @@
 
       # Local bin
       export PATH="$HOME/.local/bin:$PATH"
+      export PATH="/Applications/Obsidian.app/Contents/MacOS:$PATH"
 
       # dot command: make `dot go` change current shell directory
       dot() {
