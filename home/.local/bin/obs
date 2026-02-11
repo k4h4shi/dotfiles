@@ -3,36 +3,57 @@ set -euo pipefail
 
 VAULT="${OBS_VAULT:-$HOME/src/github/k4h4shi/k4h4shi.com/vault}"
 EDITOR_CMD="${OBS_EDITOR:-vim}"
-DAILY_DIR="$VAULT/10_private/02_daily"
-PUBLIC_DIR="$VAULT/00_garden/thoughts"
-DRAFT_DIR="$VAULT/00_garden/drafts"
-TEMPLATE="$VAULT/90_templates/Daily Template.md"
-DRAFT_TEMPLATE="$VAULT/90_templates/Post Draft.md"
+
+detect_daily_dir() {
+  if [[ -d "$VAULT/10_daily" ]]; then
+    printf '%s\n' "$VAULT/10_daily"
+    return
+  fi
+  if [[ -d "$VAULT/10_private/02_daily" ]]; then
+    printf '%s\n' "$VAULT/10_private/02_daily"
+    return
+  fi
+  printf '%s\n' "$VAULT/10_daily"
+}
+
+DAILY_DIR="${OBS_DAILY_DIR:-$(detect_daily_dir)}"
+DAILY_TEMPLATE="${OBS_DAILY_TEMPLATE:-$VAULT/90_templates/Daily Template.md}"
+
+POST_DIR="${OBS_POST_DIR:-$VAULT/70_garden/thoughts}"
+NOTE_DIR="${OBS_NOTE_DIR:-$VAULT/20_notes}"
+
+POST_TEMPLATE="${OBS_POST_TEMPLATE:-$VAULT/90_templates/Thought Template.md}"
+NOTE_TEMPLATE="${OBS_NOTE_TEMPLATE:-$VAULT/90_templates/Template.md}"
+
+NOTES_START="<!-- notes:start -->"
+NOTES_END="<!-- notes:end -->"
+POSTS_START="<!-- posts:start -->"
+POSTS_END="<!-- posts:end -->"
 
 usage() {
   cat <<'USAGE'
 Usage:
-  obs daily     # open today's daily note (create if missing)
-  obs draft     # create a new draft post
-  obs post      # pick a public post via fzf and open
-  obs memos     # append a memo to today's daily note
-  obs d|p|m     # aliases for daily/post/memos
+  obs daily         # open today's daily note (create if missing)
+  obs thino [text]  # append thino-style memo to today's daily note
+  obs post [title]  # create a post note and link it under "今日のポスト"
+  obs note [title]  # create a note and link it under "今日のノート"
+  obs d|t|p|n       # aliases
   obs help
 Environment:
-  OBS_VAULT   # vault path (default: ~/src/github/k4h4shi/k4h4shi.com/vault)
-  OBS_EDITOR  # editor command (default: vim)
-  OBS_DRAFT_DIR      # draft posts path (default: $VAULT/00_garden/drafts)
-  OBS_DRAFT_TEMPLATE # draft template path (default: $VAULT/90_templates/Post Draft.md)
+  OBS_VAULT
+  OBS_EDITOR
+  OBS_DAILY_DIR
+  OBS_DAILY_TEMPLATE
+  OBS_POST_DIR
+  OBS_NOTE_DIR
+  OBS_POST_TEMPLATE
+  OBS_NOTE_TEMPLATE
 USAGE
 }
 
 die() {
   echo "obs: $*" >&2
   exit 1
-}
-
-ensure_cmd() {
-  command -v "$1" >/dev/null 2>&1 || die "missing dependency: $1"
 }
 
 render_template() {
@@ -65,27 +86,11 @@ for line in template.read_text(encoding="utf-8").splitlines(True):
         line = line.replace('<% tp.file.title %>', title)
     if date_str:
         line = line.replace('<% tp.date.now("YYYY-MM-DD") %>', date_str)
+        line = line.replace("<% tp.date.now('YYYY-MM-DD') %>", date_str)
     line = re.sub(r"<%.*?%>", "", line)
     out_lines.append(line)
 
 sys.stdout.write("".join(out_lines))
-PY
-}
-
-render_draft_frontmatter() {
-  local title="$1"
-  local date_str="$2"
-  python3 - "$title" "$date_str" <<'PY'
-import sys
-
-title = sys.argv[1]
-date_str = sys.argv[2]
-
-sys.stdout.write("---\n")
-sys.stdout.write(f'title: "{title}"\n')
-sys.stdout.write(f"date: {date_str}\n")
-sys.stdout.write("draft: true\n")
-sys.stdout.write("---\n\n")
 PY
 }
 
@@ -102,7 +107,163 @@ print(title or "untitled")
 PY
 }
 
-append_memo() {
+ensure_daily_file() {
+  local date_str="${1:-$(date +%F)}"
+  [[ -d "$VAULT" ]] || die "vault not found: $VAULT"
+  mkdir -p "$DAILY_DIR"
+
+  local daily_file="$DAILY_DIR/$date_str.md"
+  if [[ ! -f "$daily_file" ]]; then
+    if [[ -f "$DAILY_TEMPLATE" ]]; then
+      render_template "$DAILY_TEMPLATE" "" "$date_str" > "$daily_file"
+    else
+      cat > "$daily_file" <<EOF_DAILY
+---
+kind: daily
+created: $date_str
+tags:
+  - dailynotes
+---
+## デイリーログ
+
+## Memos
+EOF_DAILY
+    fi
+  fi
+  printf '%s\n' "$daily_file"
+}
+
+append_daily_link() {
+  local daily_file="$1"
+  local kind="$2"
+  local note_file="$3"
+  local display_title="$4"
+  python3 - "$VAULT" "$daily_file" "$kind" "$note_file" "$display_title" "$NOTES_START" "$NOTES_END" "$POSTS_START" "$POSTS_END" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+vault = Path(sys.argv[1]).resolve()
+daily_path = Path(sys.argv[2]).resolve()
+kind = sys.argv[3].strip()
+note_path = Path(sys.argv[4]).resolve()
+display_title = sys.argv[5].strip()
+notes_start = sys.argv[6]
+notes_end = sys.argv[7]
+posts_start = sys.argv[8]
+posts_end = sys.argv[9]
+
+text = daily_path.read_text(encoding="utf-8")
+rel = note_path.relative_to(vault).as_posix()
+link_target = rel[:-3] if rel.endswith(".md") else rel
+if not display_title:
+    display_title = note_path.stem
+
+if kind == "note":
+    section_title = "今日のノート"
+    start_mark = notes_start
+    end_mark = notes_end
+elif kind == "post":
+    section_title = "今日のポスト"
+    start_mark = posts_start
+    end_mark = posts_end
+else:
+    section_title = "Links"
+    start_mark = "<!-- links:start -->"
+    end_mark = "<!-- links:end -->"
+
+line = f"- [[{link_target}|{display_title}]]"
+pattern = re.compile(re.escape(start_mark) + r"(.*?)" + re.escape(end_mark), re.S)
+m = pattern.search(text)
+
+if m:
+    body = m.group(1)
+    if f"[[{link_target}" in body:
+        sys.exit(0)
+    body_lines = body.splitlines()
+    while body_lines and not body_lines[0].strip():
+        body_lines.pop(0)
+    while body_lines and not body_lines[-1].strip():
+        body_lines.pop()
+    body_lines.append(line)
+    new_block = start_mark + "\n" + "\n".join(body_lines) + "\n" + end_mark
+    text = text[: m.start()] + new_block + text[m.end() :]
+else:
+    section = f"\n## {section_title}\n{start_mark}\n{line}\n{end_mark}\n"
+    if text and not text.endswith("\n"):
+        text += "\n"
+    text += section
+
+daily_path.write_text(text, encoding="utf-8")
+PY
+}
+
+create_note_from_template() {
+  local kind="$1"
+  local target_dir="$2"
+  local template="$3"
+  local prompt="$4"
+  shift 4 || true
+
+  local title="${*:-}"
+  if [[ -z "$title" ]]; then
+    read -r -p "$prompt: " title
+  fi
+  [[ -n "$title" ]] || die "title is required"
+
+  local date_str slug note_file
+  date_str="$(date +%F)"
+  slug="$(slugify "$title")"
+
+  mkdir -p "$target_dir"
+  if [[ "$kind" == "note" || "$kind" == "post" ]]; then
+    note_file="$target_dir/${slug}.md"
+  else
+    note_file="$target_dir/${date_str}-${slug}.md"
+  fi
+  if [[ -f "$note_file" ]]; then
+    if [[ "$kind" == "note" || "$kind" == "post" ]]; then
+      note_file="$target_dir/${slug}-$(date +%H%M%S).md"
+    else
+      note_file="$target_dir/${date_str}-$(date +%H%M%S)-${slug}.md"
+    fi
+  fi
+
+  if [[ -f "$template" ]]; then
+    render_template "$template" "$title" "$date_str" > "$note_file"
+  else
+    cat > "$note_file" <<EOF_NOTE
+---
+kind: $kind
+created: $date_str
+modified: $date_str
+draft: true
+tags: []
+---
+
+EOF_NOTE
+  fi
+
+  "$EDITOR_CMD" "$note_file"
+
+  local daily_file
+  daily_file="$(ensure_daily_file)"
+  append_daily_link "$daily_file" "$kind" "$note_file" "$title"
+
+  printf '%s\n' "$note_file"
+}
+
+capture_thino_text() {
+  local tmp
+  tmp="$(mktemp "${TMPDIR:-/tmp}/obs-thino.XXXXXX")"
+  "$EDITOR_CMD" "$tmp"
+  if [[ -s "$tmp" ]]; then
+    tr -d '\r' < "$tmp" | awk 'NF {print; found=1} !NF && found {print ""}' | sed -e :a -e '/^\\n*$/{$d;N;ba' -e '}' | tr '\n' ' ' | sed 's/  */ /g'
+  fi
+  rm -f "$tmp"
+}
+
+append_thino_line() {
   local daily_file="$1"
   local text="$2"
   local time_str
@@ -119,24 +280,11 @@ if not text:
     sys.exit(0)
 
 lines = path.read_text(encoding="utf-8").splitlines(True)
-
 if lines and not lines[-1].endswith("\n"):
     lines[-1] += "\n"
-
 lines.append(f"- {time_str} {text}\n")
-
 path.write_text("".join(lines), encoding="utf-8")
 PY
-}
-
-capture_memo_text() {
-  local tmp
-  tmp="$(mktemp "${TMPDIR:-/tmp}/obs-memo.XXXXXX")"
-  "$EDITOR_CMD" "$tmp"
-  if [[ -s "$tmp" ]]; then
-    tr -d '\r' < "$tmp" | awk 'NF {print; found=1} !NF && found {print ""}' | sed -e :a -e '/^\\n*$/{$d;N;ba' -e '}' | tr '\n' ' ' | sed 's/  */ /g'
-  fi
-  rm -f "$tmp"
 }
 
 cmd="${1:-help}"
@@ -145,60 +293,26 @@ case "$cmd" in
     usage
     ;;
   daily|d)
-    [[ -d "$VAULT" ]] || die "vault not found: $VAULT"
-    [[ -f "$TEMPLATE" ]] || die "template not found: $TEMPLATE"
-    mkdir -p "$DAILY_DIR"
-    date_str="$(date +%F)"
-    daily_file="$DAILY_DIR/$date_str.md"
-    if [[ ! -f "$daily_file" ]]; then
-      render_template "$TEMPLATE" "" "$date_str" > "$daily_file"
-    fi
+    daily_file="$(ensure_daily_file)"
     exec "$EDITOR_CMD" "$daily_file"
     ;;
-  post|p)
-    [[ -d "$PUBLIC_DIR" ]] || die "public dir not found: $PUBLIC_DIR"
-    ensure_cmd rg
-    ensure_cmd fzf
-    selection="$(rg --files -g '*.md' "$PUBLIC_DIR" | fzf --prompt="obs> " || true)"
-    [[ -n "$selection" ]] || exit 0
-    exec "$EDITOR_CMD" "$selection"
-    ;;
-  memos|m)
-    [[ -d "$VAULT" ]] || die "vault not found: $VAULT"
-    [[ -f "$TEMPLATE" ]] || die "template not found: $TEMPLATE"
-    mkdir -p "$DAILY_DIR"
-    date_str="$(date +%F)"
-    daily_file="$DAILY_DIR/$date_str.md"
-    if [[ ! -f "$daily_file" ]]; then
-      render_template "$TEMPLATE" "" "$date_str" > "$daily_file"
-    fi
+  thino|t)
     shift || true
+    daily_file="$(ensure_daily_file)"
     if [[ $# -gt 0 ]]; then
       text="$*"
     else
-      text="$(capture_memo_text)"
+      text="$(capture_thino_text)"
     fi
-    append_memo "$daily_file" "${text:-}"
+    append_thino_line "$daily_file" "${text:-}"
     ;;
-  draft)
-    [[ -d "$VAULT" ]] || die "vault not found: $VAULT"
-    mkdir -p "${OBS_DRAFT_DIR:-$DRAFT_DIR}"
+  post|p)
     shift || true
-    title="${*:-}"
-    if [[ -z "$title" ]]; then
-      read -r -p "Title: " title
-    fi
-    [[ -n "$title" ]] || die "title is required"
-    date_str="$(date +%F)"
-    slug="$(slugify "$title")"
-    draft_file="${OBS_DRAFT_DIR:-$DRAFT_DIR}/${date_str}-${slug}.md"
-    [[ ! -f "$draft_file" ]] || die "draft already exists: $draft_file"
-    if [[ -f "${OBS_DRAFT_TEMPLATE:-$DRAFT_TEMPLATE}" ]]; then
-      render_template "${OBS_DRAFT_TEMPLATE:-$DRAFT_TEMPLATE}" "$title" "$date_str" > "$draft_file"
-    else
-      render_draft_frontmatter "$title" "$date_str" > "$draft_file"
-    fi
-    exec "$EDITOR_CMD" "$draft_file"
+    create_note_from_template "post" "$POST_DIR" "$POST_TEMPLATE" "Post title" "$@"
+    ;;
+  note|n)
+    shift || true
+    create_note_from_template "note" "$NOTE_DIR" "$NOTE_TEMPLATE" "Note title" "$@"
     ;;
   *)
     die "unknown command: $cmd"
