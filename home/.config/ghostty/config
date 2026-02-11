@@ -6,7 +6,7 @@ theme = "TokyoNight Storm"
 # background-opacity-cells = true
 
 # 背景画像
-background-image = "../../.local/share/wallpapers/beautiful-aerial-shot-modern-city-architecture-with-illuminated-tower-side.jpg"
+background-image = "~/.local/share/wallpapers/beautiful-aerial-shot-modern-city-architecture-with-illuminated-tower-side.jpg"
 background-image-fit = cover
 background-image-position = center
 background-image-repeat = false
