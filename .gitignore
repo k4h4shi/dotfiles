@@ -38,7 +38,22 @@ home/.cursor/argv.json
 home/.cursor/extensions/
 home/.cursor/ai-tracking/
 home/.tmux/plugins/tmux-powerkit/
-home/.codex/
+# Codex runtime/state (keep config/skills/docs trackable)
+home/.codex/.codex-global-state.json
+home/.codex/.personality_migration
+home/.codex/archived_sessions/
+home/.codex/auth.json
+home/.codex/history.jsonl
+home/.codex/log/
+home/.codex/models_cache.json
+home/.codex/sessions/
+home/.codex/sqlite/
+home/.codex/tmp/
+home/.codex/vendor_imports/
+home/.codex/version.json
+home/.codex/rules/default.rules
+home/.codex/skills/.system/
+home/.codex/config.toml
 
 # Local-only caches
 home/.claude/stats-cache.json
