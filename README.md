@@ -105,6 +105,30 @@ dot apply -d
 - machine は `dot apply -m` で反映（profile更新）。
 - dir は `direnv allow` 後、`direnv reload` で反映。
 
+## タスク運用
+
+`tsks` のような専用CLIは使わず、`tasks` スキル経由で運用する。
+
+- バックログSSOT: Vault ルート `backlog.md`
+- Daily 側は `## タスク` セクションのチェックボックスだけを編集
+- 取得元は GitHub/Jira/Obsidian など複数ソースを正規化して扱う
+
+運用仕様の実体は以下:
+
+- スキル: `home/.codex/skills/tasks/SKILL.md`
+- 取得インターフェース: `home/.codex/skills/tasks/references/issue-interface.md`
+
+### `obs`
+
+```bash
+obs daily
+obs thino "軽メモ"
+obs post "公開候補の考察"
+obs note "個人ノート"
+```
+
+`thino` は当日の Daily に時刻付きで追記される。`note` は `## ノート`、`post` は `## ポスト` にリンクが自動追加される。
+
 ## 更新
 
 ```bash
