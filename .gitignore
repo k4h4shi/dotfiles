@@ -42,6 +42,8 @@ home/.codex/
 
 # Local-only caches
 home/.claude/stats-cache.json
+home/.claude/settings.local.json
+home/.claude/telemetry/
 # gh-dash local config
 home/.config/gh-dash/
 

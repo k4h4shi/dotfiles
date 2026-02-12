@@ -1,5 +1,4 @@
 # Agent Notes (k4h4shi environment)
-この環境での作業方針を簡潔にまとめたもの。迷ったらまずここを読む。
 
 ## Positioning
 - この `AGENTS.md` は AI エージェント共通のグローバル SSOT とする。
@@ -14,14 +13,13 @@
 
 ## Environment
 - ソースコードは全て `~/src`に配置されている。
+- この環境は `Nix`（`nix-darwin` + `home-manager`）で構築している。
 - dotfiles は `~/src/github/k4h4shi/dotfiles` で管理している。
 - dotfiles 固有の運用ルールは `~/src/github/k4h4shi/dotfiles/AGENTS.md` を正とする。
 
 ## Safety
-- 破壊的操作は避ける（必要なら確認する）。
-- `rm` は `gtrash` ベースの Trash 移動に置き換えて運用する。
+- `rm` は `gtrash` ベースの Trash 運用に置き換え済み。
 - 復元は `gtrash find '<pattern>' --restore --force`（全件は `gtrash find --restore --force`）。
-- 既存の未コミット変更を勝手に戻さない。
 
 ## Defaults
 - エディタ: `vim`
