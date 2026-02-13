@@ -92,6 +92,26 @@ in
     fi
   '';
 
+  # Rust toolchain bootstrap (best-effort)
+  #
+  # Keep shared baseline ready on fresh machines:
+  # - stable toolchain
+  # - rustfmt / clippy / rust-src / rust-analyzer
+  #
+  # NOTE:
+  # This may need network access on first run; failures should not block apply.
+  home.activation.rustToolchainBootstrap = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    rustupBin="${pkgs.rustup}/bin/rustup"
+    if [ -x "$rustupBin" ]; then
+      if ! "$rustupBin" toolchain list 2>/dev/null | grep -q '^stable'; then
+        "$rustupBin" toolchain install stable >/dev/null 2>&1 || true
+      fi
+
+      "$rustupBin" default stable >/dev/null 2>&1 || true
+      "$rustupBin" component add rustfmt clippy rust-src rust-analyzer >/dev/null 2>&1 || true
+    fi
+  '';
+
   # macOS wallpaper
   #
   # This is best-effort: if System Events automation is denied, don't fail apply.
