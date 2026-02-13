@@ -16,6 +16,8 @@
 - この環境は `Nix`（`nix-darwin` + `home-manager`）で構築している。
 - dotfiles は `~/src/github/k4h4shi/dotfiles` で管理している。
 - dotfiles 固有の運用ルールは `~/src/github/k4h4shi/dotfiles/AGENTS.md` を正とする。
+- Obsidian Vault ルート: `src/github/k4h4shi/k4h4shi.com/vault`
+- Daily ノート: Vault 配下 `10_daily/YYYY-MM-DD.md`（テンプレート: `90_templates/Daily Template.md`）
 
 ## Safety
 - `rm` は `gtrash` ベースの Trash 運用に置き換え済み。

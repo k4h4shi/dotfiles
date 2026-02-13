@@ -70,3 +70,8 @@ home/.tmux/plugins/t-smart-tmux-session-manager/
 home/.tmux/plugins/tmux-continuum/
 home/.tmux/plugins/tmux-fzf/
 home/.tmux/plugins/tmux-resurrect/
+
+# Local-only
+home/.vive/favorites.toml
+home/.codex/shell_snapshots/
+home/Library/Application Support/Sonarworks/
