@@ -112,7 +112,7 @@ in
       magnification = false;
       minimize-to-application = true;
       mineffect = "scale";
-      orientation = "right";
+      orientation = "bottom";
       showhidden = true;
       persistent-apps = [
         "/Applications/1Password.app"
@@ -149,6 +149,13 @@ in
     trackpad = {
       Clicking = true;  # タップでクリック
       TrackpadRightClick = true;
+    };
+
+    # カスタム設定（未定義キー）
+    CustomUserPreferences = {
+      NSGlobalDomain = {
+        "com.apple.mouse.scaling" = 1.0;
+      };
     };
   };
 

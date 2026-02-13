@@ -26,11 +26,9 @@ def _read_task_meta(path: Path) -> tuple[str | None, str | None]:
     return task_id, task_status
 
 
-def _link_title(title: str, rel_path: str, needs_path: bool) -> str:
-    if needs_path:
-        target = rel_path[:-3] if rel_path.endswith(".md") else rel_path
-        return f"[[{target}|{title}]]"
-    return f"[[{title}]]"
+def _link_title(title: str, rel_path: str) -> str:
+    target = rel_path[:-3] if rel_path.endswith(".md") else rel_path
+    return f"[[{target}|{title}]]"
 
 
 def collect_obsidian_items(vault: Path) -> list[dict]:
@@ -56,8 +54,7 @@ def collect_obsidian_items(vault: Path) -> list[dict]:
             continue
         title = path.stem
         rel_path = path.relative_to(vault).as_posix()
-        needs_path = stems.get(title, 0) > 1
-        link = _link_title(title, rel_path, needs_path)
+        link = _link_title(title, rel_path)
         items.append(
             {
                 "title": link,

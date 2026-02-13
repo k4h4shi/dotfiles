@@ -70,7 +70,8 @@ def collect_github_items(include_repos: list[str] | None = None) -> list[dict]:
             items.extend(_search_issues(["--assignee", "@me", "--repo", repo]))
             items.extend(_search_issues(["--repo", repo]))
             items.extend(_search_prs(["--review-requested", "@me", "--repo", repo]))
-            items.extend(_search_prs(["--repo", repo]))
+            items.extend(_search_prs(["--author", "@me", "--repo", repo]))
+            items.extend(_search_prs(["--assignee", "@me", "--repo", repo]))
     else:
         items.extend(_search_issues(["--assignee", "@me"]))
         items.extend(_search_issues(["--owner", owner, "--limit", "200"]))

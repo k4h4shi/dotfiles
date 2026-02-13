@@ -14,6 +14,8 @@ description: "Obsidianのbacklog.mdとDailyノートのタスク欄を管理す�
 - Daily ノート形式は `デイリーログ / ノート / ポスト / タスク / つぶやき` を維持する
 - 作業用スクリプトは `scripts/update-backlog.py` に集約する
 - Taskは1行形式: `- [{status}] {title} [{identity}]`
+- GitHub/Jiraの `{title}` はリンクにする（`[title](url)`）。
+- Obsidianの `{title}` は `[[path|title]]` の内部リンクにする。
 - identityは独自スキーム: `tsks:{source}:{org}/{proj}:{key}`
 - Obsidian実体タスクはノートに `task_id: <6chars>` を持たせ、identityは `tsks:obsidian:{vault}:{task_id}`
 - Obsidian実体タスクのtitleはノートリンクにする（必要ならパス付き）

@@ -4,6 +4,7 @@ from __future__ import annotations
 import os
 import re
 import subprocess
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -16,11 +17,12 @@ REASON_RE = re.compile(r"^\s+-\s+reason:\s*(.+)$")
 IDENT_RE = re.compile(r"^tsks:([^:]+):([^/]+)/([^:]+):(.+)$")
 
 
-def _daily_path(vault: Path) -> Path:
+def _daily_path(vault: Path, date_str: str | None) -> Path:
     override = os.environ.get("OBS_DAILY_DIR", "").strip()
+    target = date_str or date.today().isoformat()
     if override:
-        return Path(override) / f"{date.today().isoformat()}.md"
-    return vault / "10_daily" / f"{date.today().isoformat()}.md"
+        return Path(override) / f"{target}.md"
+    return vault / "10_daily" / f"{target}.md"
 
 
 def _read_reason_from_file(path: Path, line_no: int) -> str | None:
@@ -40,12 +42,17 @@ def _read_reason_from_file(path: Path, line_no: int) -> str | None:
     return None
 
 
-def _read_tasks(daily_path: Path, vault: Path) -> list[dict]:
+def _read_tasks(daily_path: Path, vault: Path, date_str: str | None) -> list[dict]:
     if not daily_path.exists():
         raise SystemExit(f"daily not found: {daily_path}")
 
     try:
-        output = run_text(["obsidian", "tasks", "daily", "verbose"])
+        if date_str:
+            output = run_text(
+                ["obsidian", "tasks", f"file={daily_path.relative_to(vault).as_posix()}", "verbose"]
+            )
+        else:
+            output = run_text(["obsidian", "tasks", "daily", "verbose"])
     except subprocess.CalledProcessError as exc:
         raise SystemExit(f"obsidian tasks failed: {exc}") from exc
 
@@ -176,8 +183,11 @@ def main() -> int:
     config = load_config(config_path)
     jira_cfg = config.get("jira", {})
     jira_done_status = jira_cfg.get("done_status") if isinstance(jira_cfg, dict) else None
-    daily_path = _daily_path(vault)
-    tasks = _read_tasks(daily_path, vault)
+    date_str = None
+    if len(sys.argv) > 1:
+        date_str = sys.argv[1]
+    daily_path = _daily_path(vault, date_str)
+    tasks = _read_tasks(daily_path, vault, date_str)
 
     errors = []
     for task in tasks:

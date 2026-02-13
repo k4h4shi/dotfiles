@@ -39,7 +39,34 @@ def update_front_matter(text: str) -> str:
 
 def format_task_line(status: str, system: str, org: str, proj: str, key: str, title: str) -> str:
     ident = f"tsks:{system}:{org}/{proj}:{key}"
+    if system == "github":
+        url = f"https://github.com/{org}/{proj}/issues/{key}"
+        title = f"[{title}]({url})"
+    elif system == "jira":
+        url = f"https://{org}.atlassian.net/browse/{key}"
+        title = f"[{title}]({url})"
     return f"- [{status}] {title} [{ident}]"
+
+
+def _daily_path(vault: Path) -> Path:
+    override = os.environ.get("OBS_DAILY_DIR", "").strip()
+    target = date.today().isoformat()
+    if override:
+        return Path(override) / f"{target}.md"
+    return vault / "10_daily" / f"{target}.md"
+
+
+def _read_daily_identities(vault: Path) -> set[str]:
+    daily = _daily_path(vault)
+    if not daily.exists():
+        return set()
+    pattern = re.compile(r"^- \[(.)\]\s+.+\[(tsks:[^\]]+)\]\s*$")
+    identities = set()
+    for line in daily.read_text(encoding="utf-8").splitlines():
+        match = pattern.match(line)
+        if match:
+            identities.add(match.group(2))
+    return identities
 
 
 def parse_task_identity(line: str) -> str | None:
@@ -120,8 +147,23 @@ def main() -> int:
     if not items:
         return 0
 
+    daily_identities = _read_daily_identities(vault)
     text = load_backlog(backlog)
     text = update_front_matter(text)
+    if daily_identities:
+        filtered = []
+        for item in items:
+            system = item.get("system")
+            org = item.get("organization")
+            proj = item.get("project")
+            key = item.get("key")
+            if not (system and org and proj and key):
+                continue
+            ident = f"tsks:{system}:{org}/{proj}:{key}"
+            if ident in daily_identities:
+                continue
+            filtered.append(item)
+        items = filtered
     text = insert_backlog_items(text, items)
     backlog.write_text(text, encoding="utf-8")
     return 0
