@@ -68,6 +68,7 @@ in
     # その他
     curl
     wget
+    w3m
     tree
     # ev:packages:end
     gtrash
@@ -96,7 +97,7 @@ in
   #
   # Keep shared baseline ready on fresh machines:
   # - stable toolchain
-  # - rustfmt / clippy / rust-src / rust-analyzer
+  # - rustfmt / clippy / rust-src / rust-analyzer / rust-docs
   #
   # NOTE:
   # This may need network access on first run; failures should not block apply.
@@ -108,7 +109,7 @@ in
       fi
 
       "$rustupBin" default stable >/dev/null 2>&1 || true
-      "$rustupBin" component add rustfmt clippy rust-src rust-analyzer >/dev/null 2>&1 || true
+      "$rustupBin" component add rustfmt clippy rust-src rust-analyzer rust-docs >/dev/null 2>&1 || true
     fi
   '';
 

@@ -76,6 +76,18 @@
 
       # Rust
       [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+      rstdoc() {
+        local doc_path
+        doc_path="$(rustup doc --path "$@")" || return 1
+        if command -v w3m >/dev/null 2>&1; then
+          w3m -o accept_encoding=identity -O UTF-8 "$doc_path"
+        elif command -v lynx >/dev/null 2>&1; then
+          lynx -display_charset=utf-8 "$doc_path"
+        else
+          echo "rstdoc: install lynx or w3m" >&2
+          return 1
+        fi
+      }
 
       # Local bin
       export PATH="$HOME/.local/bin:$PATH"

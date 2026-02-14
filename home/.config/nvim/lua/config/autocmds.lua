@@ -16,10 +16,11 @@ vim.api.nvim_create_autocmd("User", {
       end,
     })
 
-    -- Existing markdown buffers: fix immediately when VeryLazy fires.
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    -- Existing markdown windows: spell is window-local, so update by window.
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local buf = vim.api.nvim_win_get_buf(win)
       if vim.api.nvim_buf_is_loaded(buf) and vim.tbl_contains(markdown_fts, vim.bo[buf].filetype) then
-        vim.bo[buf].spell = false
+        vim.wo[win].spell = false
       end
     end
   end,

@@ -2,12 +2,17 @@
 
 theme = "TokyoNight Storm"
 
-# Neovim/Tmuxなどがセル背景を塗る場合でも透過を効かせる
-# background-opacity-cells = true
+# 常に不透明にする
+background = #24283b
+background-opacity = 1
+background-opacity-cells = false
+background-blur = false
 
-# 背景画像
-background-image = "~/.local/share/wallpapers/beautiful-aerial-shot-modern-city-architecture-with-illuminated-tower-side.jpg"
-background-image-fit = cover
-background-image-position = center
-background-image-repeat = false
-background-opacity = 0.075
+# macOS標準の透明タイトルバーを無効化
+macos-titlebar-style = tabs
+
+# 背景画像は一旦無効化（再有効化する場合はコメント解除）
+# background-image = "~/.local/share/wallpapers/beautiful-aerial-shot-modern-city-architecture-with-illuminated-tower-side.jpg"
+# background-image-fit = cover
+# background-image-position = center
+# background-image-repeat = false

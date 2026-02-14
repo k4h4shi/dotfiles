@@ -17,6 +17,15 @@ return {
       opts.picker.win.list.keys = opts.picker.win.list.keys or {}
       opts.picker.win.list.keys["<C-S>"] = false
       opts.picker.win.list.keys["<C-X>"] = "edit_split"
+
+      -- Show line numbers in Snacks Explorer list window.
+      opts.picker.sources = opts.picker.sources or {}
+      opts.picker.sources.explorer = opts.picker.sources.explorer or {}
+      opts.picker.sources.explorer.win = opts.picker.sources.explorer.win or {}
+      opts.picker.sources.explorer.win.list = opts.picker.sources.explorer.win.list or {}
+      opts.picker.sources.explorer.win.list.wo = opts.picker.sources.explorer.win.list.wo or {}
+      opts.picker.sources.explorer.win.list.wo.number = true
+      opts.picker.sources.explorer.win.list.wo.relativenumber = true
     end,
   },
 }

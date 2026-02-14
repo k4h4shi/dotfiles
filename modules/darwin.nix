@@ -98,8 +98,13 @@ in
     };
     brews = [
       "ffmpeg"  # 動画処理
+      "mas"  # Mac App Store CLI（masApps用）
     ];
     casks = casks;
+    masApps = {
+      # 有料アプリは Apple ID での購入済み/認証済みが前提
+      Magnet = 441258766;
+    };
   };
 
   # macOSシステム設定
@@ -120,7 +125,6 @@ in
         "/Applications/Ghostty.app"
         "/Applications/Cursor.app"
         "/Applications/Slack.app"
-        "/Applications/Notion.app"
         "/Applications/Spark Desktop.app"
         "/Applications/Obsidian.app"
         "/Applications/Docker.app"
@@ -154,7 +158,8 @@ in
     # カスタム設定（未定義キー）
     CustomUserPreferences = {
       NSGlobalDomain = {
-        "com.apple.mouse.scaling" = 1.0;
+        # マウス移動速度（現在値）
+        "com.apple.mouse.scaling" = 1;
       };
     };
   };
