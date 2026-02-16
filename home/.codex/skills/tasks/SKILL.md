@@ -1,6 +1,6 @@
 ---
 name: tasks
-description: "Obsidianのbacklog.mdとDailyノートのタスク欄を管理する。GitHub/Jira/Obsidianなど複数ソースからイシューを取得して正規化し、Dailyへ提案・バックログへ同期する。Usage: /tasks"
+description: "Obsidianのbacklog.mdとDailyノートのログ欄を管理する。GitHub/Jira/Obsidianなど複数ソースからイシューを取得して正規化し、Dailyへ提案・バックログへ同期する。Usage: /tasks"
 ---
 
 # Tasks Skill
@@ -9,9 +9,9 @@ description: "Obsidianのbacklog.mdとDailyノートのタスク欄を管理す�
 - Obsidianの操作は `obsidian task(s)` CLI を使う。
 
 - `15_tasks/queue.md` を作業キューとして更新（SSoTは外部ソース）
-- Daily ノートの `## タスク` を当日実行リストとして更新
+- Daily ノートの `## ログ` を当日実行リストとして更新
 - GitHub/Jira/Obsidian など複数ソースのイシューを共通形式で取り扱う
-- Daily ノート形式は `デイリーログ / ノート / ポスト / タスク / つぶやき` を維持する
+- Daily ノート形式は `ログ / ノート / ポスト / つぶやき` を維持する
 - 作業用スクリプトは `scripts/update-backlog.py` に集約する
 - Taskは1行形式: `- [{status}] {title} [{identity}]`
 - GitHub/Jiraの `{title}` はリンクにする（`[title](url)`）。
@@ -29,9 +29,9 @@ description: "Obsidianのbacklog.mdとDailyノートのタスク欄を管理す�
    - GitHubは「自分がアサインされているオープンIssue」と「自分が管理するリポジトリのオープンIssue」を取得する。
    - GitHub PR（自分が管理するリポジトリのPR / レビュー依頼PR）も取得する。
    - `15_tasks/queue.md` の `## バックログ` を更新する（再生成）。
-   - 当日の Daily `## タスク` に実行候補を反映する。
+   - 当日の Daily `## ログ` に実行候補を反映する。
 2. 日中:
-   - ユーザーが Daily `## タスク` のチェックボックスを手動更新する。
+   - ユーザーが Daily `## ログ` のチェックボックスを手動更新する。
 3. 終了時:
    - Daily の完了/未完を読み取り、未完了を `backlog.md` に戻す。
    - 完了/廃棄は `scripts/reflect-daily.py` でソースに反映する。

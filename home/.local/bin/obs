@@ -23,16 +23,17 @@ POST_DIR="${OBS_POST_DIR:-$VAULT/70_garden/thoughts}"
 NOTE_DIR="${OBS_NOTE_DIR:-$VAULT/20_notes}"
 
 POST_TEMPLATE="${OBS_POST_TEMPLATE:-$VAULT/90_templates/Thought Template.md}"
-NOTE_TEMPLATE="${OBS_NOTE_TEMPLATE:-$VAULT/90_templates/Template.md}"
+NOTE_TEMPLATE="${OBS_NOTE_TEMPLATE:-$VAULT/90_templates/Note Template.md}"
 
 usage() {
   cat <<'USAGE'
 Usage:
   obs daily         # open today's daily note (create if missing)
+  obs task [text]   # append a checkbox task under "ログ" in today's daily note
   obs thino [text]  # append thino-style line to today's daily note
   obs post [title]  # create a post note and link it under "ポスト"
   obs note [title]  # create a note and link it under "ノート"
-  obs d|t|p|n       # aliases
+  obs d|t|task|todo|td|p|n  # aliases
   obs help
 Environment:
   OBS_VAULT
@@ -119,7 +120,7 @@ created: $date_str
 tags:
   - dailynotes
 ---
-## デイリーログ
+## ログ
 
 ## ノート
 
@@ -292,6 +293,71 @@ path.write_text("".join(lines), encoding="utf-8")
 PY
 }
 
+append_task_line() {
+  local daily_file="$1"
+  local text="$2"
+  python3 - "$daily_file" "$text" <<'PY'
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+text = sys.argv[2].strip()
+
+if not text:
+    sys.exit(0)
+
+entry = f"- [ ] {text}"
+heading = "## ログ"
+legacy_headings = {"## タスク", "## デイリーログ"}
+
+lines = path.read_text(encoding="utf-8").splitlines()
+heading_idx = None
+for idx, raw in enumerate(lines):
+    if raw.strip() == heading:
+        heading_idx = idx
+        break
+
+if heading_idx is None:
+    for idx, raw in enumerate(lines):
+        if raw.strip() in legacy_headings:
+            lines[idx] = heading
+            heading_idx = idx
+            break
+
+if heading_idx is None:
+    if lines and lines[-1].strip():
+        lines.append("")
+    lines.append(heading)
+    lines.append("")
+    lines.append(entry)
+else:
+    next_idx = len(lines)
+    for idx in range(heading_idx + 1, len(lines)):
+        if lines[idx].startswith("## "):
+            next_idx = idx
+            break
+
+    body = lines[heading_idx + 1 : next_idx]
+    while body and not body[-1].strip():
+        body.pop()
+
+    if not body:
+        body = ["", entry]
+    else:
+        body.append(entry)
+
+    if next_idx < len(lines):
+        body.append("")
+
+    lines = lines[: heading_idx + 1] + body + lines[next_idx:]
+
+output = "\n".join(lines)
+if output and not output.endswith("\n"):
+    output += "\n"
+path.write_text(output, encoding="utf-8")
+PY
+}
+
 cmd="${1:-help}"
 case "$cmd" in
   help|-h|--help)
@@ -310,6 +376,17 @@ case "$cmd" in
       text="$(capture_thino_text)"
     fi
     append_thino_line "$daily_file" "${text:-}"
+    ;;
+  task|todo|td)
+    shift || true
+    daily_file="$(ensure_daily_file)"
+    if [[ $# -gt 0 ]]; then
+      text="$*"
+    else
+      read -r -p "Task: " text
+    fi
+    [[ -n "${text// }" ]] || die "task text is required"
+    append_task_line "$daily_file" "$text"
     ;;
   post|p)
     shift || true
