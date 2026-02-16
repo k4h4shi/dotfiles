@@ -113,6 +113,18 @@ in
     fi
   '';
 
+  # Magnet preferences sync (for cross-iCloud setups)
+  #
+  # Keep a shared template in dotfiles and import it on apply.
+  # This avoids symlinking ~/Library/Preferences directly, so runtime counters
+  # written by Magnet do not dirty the repository.
+  home.activation.magnetPreferences = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    src="${dotfilesDir}/home/.config/magnet/com.crowdcafe.windowmagnet.plist"
+    if [ -f "$src" ]; then
+      /usr/bin/defaults import com.crowdcafe.windowmagnet "$src" >/dev/null 2>&1 || true
+    fi
+  '';
+
   # macOS wallpaper
   #
   # This is best-effort: if System Events automation is denied, don't fail apply.
