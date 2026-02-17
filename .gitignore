@@ -59,6 +59,8 @@ home/.codex/config.toml
 home/.claude/stats-cache.json
 home/.claude/settings.local.json
 home/.claude/telemetry/
+__pycache__/
+*.pyc
 # gh-dash local config
 home/.config/gh-dash/
 
