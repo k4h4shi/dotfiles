@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import json
 import os
 import re
 import shutil
@@ -11,8 +10,10 @@ from sources.github import collect_github_items
 from sources.jira import collect_jira_items
 from sources.obsidian import collect_obsidian_items
 
+
 def have(cmd: str) -> bool:
     return shutil.which(cmd) is not None
+
 
 def load_backlog(path: Path) -> str:
     return path.read_text(encoding="utf-8")
@@ -37,7 +38,34 @@ def update_front_matter(text: str) -> str:
     return "---".join(parts)
 
 
-def format_task_line(status: str, system: str, org: str, proj: str, key: str, title: str) -> str:
+def _normalize_project_tag(value: str) -> str:
+    normalized = value.strip().lower().replace("_", "-")
+    normalized = normalized.replace(" ", "-")
+    normalized = re.sub(r"[^\w-]+", "-", normalized, flags=re.UNICODE)
+    normalized = re.sub(r"-{2,}", "-", normalized)
+    return normalized.strip("-")
+
+
+def _project_tag_for_item(system: str, proj: str) -> str | None:
+    tag = None
+    if system == "github":
+        tag = _normalize_project_tag(proj)
+    elif system == "jira":
+        tag = _normalize_project_tag(proj)
+    if not tag:
+        return None
+    return f"#project/{tag}"
+
+
+def format_task_line(
+    status: str,
+    system: str,
+    org: str,
+    proj: str,
+    key: str,
+    title: str,
+    project_tag: str | None = None,
+) -> str:
     ident = f"tsks:{system}:{org}/{proj}:{key}"
     if system == "github":
         url = f"https://github.com/{org}/{proj}/issues/{key}"
@@ -45,7 +73,11 @@ def format_task_line(status: str, system: str, org: str, proj: str, key: str, ti
     elif system == "jira":
         url = f"https://{org}.atlassian.net/browse/{key}"
         title = f"[{title}]({url})"
-    return f"- [{status}] {title} [{ident}]"
+    parts = [f"- [{status}] {title}"]
+    if project_tag:
+        parts.append(project_tag)
+    parts.append(f"[{ident}]")
+    return " ".join(parts)
 
 
 def _daily_path(vault: Path) -> Path:
@@ -76,7 +108,10 @@ def parse_task_identity(line: str) -> str | None:
     return match.group(3)
 
 
-def insert_backlog_items(text: str, items: list[dict]) -> str:
+def insert_backlog_items(
+    text: str,
+    items: list[dict],
+) -> str:
     lines = text.splitlines()
     # queue.md has no section header; use full body after front matter.
     start_idx = 0
@@ -85,7 +120,6 @@ def insert_backlog_items(text: str, items: list[dict]) -> str:
             if lines[i].strip() == "---":
                 start_idx = i + 1
                 break
-    section_lines = lines[start_idx:]
     prefix = lines[:start_idx]
     suffix = []
 
@@ -105,7 +139,8 @@ def insert_backlog_items(text: str, items: list[dict]) -> str:
         seen.add(ident)
         if title.startswith("[PR] "):
             title = title[len("[PR] ") :]
-        new_lines.append(format_task_line(" ", system, org, proj, key, title))
+        project_tag = _project_tag_for_item(system, proj)
+        new_lines.append(format_task_line(" ", system, org, proj, key, title, project_tag))
 
     insert_block = []
     if new_lines:

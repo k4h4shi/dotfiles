@@ -13,7 +13,7 @@ description: "Obsidianのbacklog.mdとDailyノートのログ欄を管理する�
 - GitHub/Jira/Obsidian など複数ソースのイシューを共通形式で取り扱う
 - Daily ノート形式は `ログ / ノート / ポスト / つぶやき` を維持する
 - 作業用スクリプトは `scripts/update-backlog.py` に集約する
-- Taskは1行形式: `- [{status}] {title} [{identity}]`
+- Taskは1行形式: `- [{status}] {title} #project/{tag} [{identity}]`（`#project/...` は任意）
 - GitHub/Jiraの `{title}` はリンクにする（`[title](url)`）。
 - Obsidianの `{title}` は `[[path|title]]` の内部リンクにする。
 - identityは独自スキーム: `tsks:{source}:{org}/{proj}:{key}`
